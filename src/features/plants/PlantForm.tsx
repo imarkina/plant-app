@@ -1,9 +1,11 @@
 import { type ChangeEvent, useState } from 'react';
 
-import './App.css';
 import { resizeImage } from '../../shared/image/resize';
+import type { PhotoEntry, Plant } from './plant.types';
+import { usePlants } from './usePlants';
 
 function PlantForm() {
+  const { plants, addPlant } = usePlants();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -20,8 +22,21 @@ function PlantForm() {
       setPreviewUrl(objectUrl);
 
       const resizedImage = await resizeImage(selectedFile);
-      console.log('size', resizedImage.size);
       event.target.value = '';
+
+      const photoEntry: PhotoEntry = {
+        id: crypto.randomUUID(),
+        createdAt: Date.now(),
+        image: resizedImage,
+      };
+
+      const plant: Plant = {
+        id: crypto.randomUUID(),
+        name: selectedFile.name,
+        photos: [photoEntry],
+      };
+
+      await addPlant(plant);
     }
   };
 
@@ -53,6 +68,13 @@ function PlantForm() {
           />
         </div>
       )}
+      <ul>
+        {plants.map((plant) => (
+          <li key={plant.id}>
+            {plant.name} — фото: {plant.photos.length}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
