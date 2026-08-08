@@ -24,6 +24,10 @@ function PlantForm() {
       const resizedImage = await resizeImage(selectedFile);
       event.target.value = '';
 
+      const res = await fetch('http://localhost:3000/api/analyze', { method: 'POST' });
+      const data = await res.json();
+      console.log(data);
+
       const photoEntry: PhotoEntry = {
         id: crypto.randomUUID(),
         createdAt: Date.now(),
