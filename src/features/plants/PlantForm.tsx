@@ -3,11 +3,14 @@ import { type ChangeEvent, useState } from 'react';
 import { resizeImage } from '../../shared/image/resize';
 import type { PhotoEntry, Plant } from './plant.types';
 import { usePlants } from './usePlants';
-
+import Markdown from 'react-markdown';
+import type { PlantReport } from './plant-report.types';
 function PlantForm() {
   const { plants, addPlant } = usePlants();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const [plantReport, setPlantReport] = useState<PlantReport | null>(null);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const fileList: FileList | null = event.target.files;
@@ -24,9 +27,15 @@ function PlantForm() {
       const resizedImage = await resizeImage(selectedFile);
       event.target.value = '';
 
-      const res = await fetch('http://localhost:3000/api/analyze', { method: 'POST' });
+      const formData = new FormData();
+      formData.append('image', resizedImage, selectedFile.name);
+      const res = await fetch('http://localhost:3000/api/analyze', {
+        method: 'POST',
+        body: formData,
+      });
       const data = await res.json();
-      console.log(data);
+
+      setPlantReport(data.result);
 
       const photoEntry: PhotoEntry = {
         id: crypto.randomUUID(),
@@ -72,6 +81,7 @@ function PlantForm() {
           />
         </div>
       )}
+      <Markdown>{plantReport && JSON.stringify(plantReport)}</Markdown>
       <ul>
         {plants.map((plant) => (
           <li key={plant.id}>
