@@ -22,7 +22,6 @@ class LocalStoragePlantsRepository implements PlantsRepository {
     }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(plants));
-    return undefined;
   }
 }
 

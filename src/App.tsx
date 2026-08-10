@@ -1,6 +1,6 @@
 import './App.css';
 
-import PlantForm from './features/plants/PlantForm';
+import PlantForm from './features/plants';
 
 function App() {
   return <PlantForm />;

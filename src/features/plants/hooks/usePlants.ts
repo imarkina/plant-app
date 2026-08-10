@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { Plant } from './plant.types';
-import { localStoragePlantsRepository } from './plant.repository';
+import type { Plant } from '../models/plant.types';
+import { localStoragePlantsRepository } from '../models/plant.repository';
 
 export function usePlants() {
   const [plants, setPlants] = useState<Plant[]>([]);

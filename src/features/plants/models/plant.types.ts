@@ -1,7 +1,10 @@
+import type { PlantReport } from './plant-report.types';
+
 export interface PhotoEntry {
   id: string;
   createdAt: number;
-  image: Blob;
+  image?: Blob;
+  analysis?: PlantReport;
 }
 
 export interface Plant {
