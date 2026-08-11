@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-
 import { Button } from '../shared/ui/components/Button/Button';
 
 const meta = {
@@ -18,14 +17,14 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     variant: 'primary',
-    label: 'Анализировать',
+    children: 'Анализировать',
   },
 };
 
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
-    label: 'Отмена',
+    children: 'Отмена',
   },
 };
 
@@ -33,6 +32,6 @@ export const Disabled: Story = {
   args: {
     variant: 'primary',
     disabled: true,
-    label: 'Анализировать',
+    children: 'Анализировать',
   },
 };

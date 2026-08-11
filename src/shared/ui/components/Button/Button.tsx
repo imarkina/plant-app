@@ -1,20 +1,16 @@
 import './button.css';
-import type { ButtonHTMLAttributes } from 'react';
+import { type ButtonHTMLAttributes } from 'react';
+import React from 'react';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  label: string;
+  children: React.ReactNode;
   variant: 'primary' | 'secondary';
 };
 
-export const Button = ({ variant = 'primary', label, ...props }: ButtonProps) => {
+export const Button = ({ variant = 'primary', children, ...props }: ButtonProps) => {
   return (
-    <button
-      type="button"
-      className={['btn', `btn--${variant}`].join(' ')}
-
-      {...props}
-    >
-      {label}
+    <button type="button" className={`btn btn--${variant}`} {...props}>
+      {children}
     </button>
   );
 };
