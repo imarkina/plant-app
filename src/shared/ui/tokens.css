@@ -1,0 +1,77 @@
+:root {
+  /* ── Уровень 1: примитивы (сырые цвета, не зависят от темы) ── */
+  --green-900: #14260f; /* самый тёмный — текст на светлом, фон тёмной темы */
+  --green-700: #2d4a1e; /* границы тёмной темы */
+  --green-500: #5c8a2d; /* акцент-зелёный, ссылки */
+  --green-100: #e8f5cc; /* светлый тинт (success-фон) */
+  --cream-50: #fbfbf6; /* тёплый фон светлой темы */
+  --white: #ffffff; /* поверхности светлой темы */
+
+  --lime-400: #c3f53d; /* ГЛАВНЫЙ акцент */
+  --lime-500: #a8db28; /* акцент hover (темнее) */
+
+  --berry-500: #ce4760; /* danger-текст/акцент */
+  --berry-100: #fbeaf0; /* danger-фон (светлый тинт) */
+  --berry-900: #4b1528; /* danger-фон тёмной темы */
+
+  --green-surface-dark: #1e3618; /* поверхности тёмной темы */
+  --green-tint-dark: #27500a; /* success-фон тёмной темы */
+  --green-muted-dark: #8fb04a; /* приглушённый текст тёмной темы */
+
+  /* ── Уровень 2: семантические токены — СВЕТЛАЯ тема (роли → примитивы) ── */
+  --color-bg: var(--cream-50);
+  --color-surface: var(--white);
+  --color-text: var(--green-900);
+  --color-text-muted: #6b7a5a;
+  --color-border: #e0ded3;
+  --color-border-strong: #c9c7bc;
+
+  --color-primary: var(--lime-400);
+  --color-primary-hover: var(--lime-500);
+  --color-on-primary: var(--green-900); /* тёмный текст на светлом лайме — a11y */
+
+  --color-accent: var(--green-500); /* второстепенный акцент, ссылки */
+
+  --color-success-bg: var(--green-100);
+  --color-success-text: var(--green-500);
+  --color-danger-bg: var(--berry-100);
+  --color-danger-text: var(--berry-500);
+
+  /* ── Нецветовые токены (одинаковы в обеих темах) ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+
+  --font-size-sm: 13px;
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-weight-normal: 400;
+  --font-weight-bold: 500;
+
+  --font-family: 'Nunito Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Уровень 2: переопределение ролей для ТЁМНОЙ темы ── */
+[data-theme='dark'] {
+  --color-bg: var(--green-900);
+  --color-surface: var(--green-surface-dark);
+  --color-text: var(--green-100);
+  --color-text-muted: var(--green-muted-dark);
+  --color-border: var(--green-700);
+  --color-border-strong: #3d5a2a;
+
+  /* primary НЕ трогаем — лайм один на обе темы (осознанное решение) */
+
+  --color-success-bg: var(--green-tint-dark);
+  --color-success-text: #c0dd97;
+  --color-danger-bg: var(--berry-900);
+  --color-danger-text: #f4c0d1;
+}
