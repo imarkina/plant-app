@@ -1,9 +1,10 @@
 import React from 'react';
 import './Badge.css';
 
+export type BadgeVariant = 'success' | 'danger' | 'neutral';
 export type BadgeProps = {
   children: React.ReactNode;
-  variant: 'success' | 'danger' | 'neutral';
+  variant: BadgeVariant;
 };
 
 export const Badge = ({ children, variant = 'neutral' }: BadgeProps) => {
