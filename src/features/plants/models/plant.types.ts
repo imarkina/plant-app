@@ -1,4 +1,5 @@
 import type { PlantReport } from './plant-report.types';
+import type { DBSchema } from 'idb';
 
 export interface PhotoEntry {
   id: string;
@@ -16,4 +17,11 @@ export interface Plant {
 export interface PlantsRepository {
   getAll(): Promise<Plant[]>;
   save(plant: Plant): Promise<void>;
+}
+
+export interface PlantRepositorySchema extends DBSchema {
+  plants: {
+    key: string;
+    value: Plant;
+  };
 }

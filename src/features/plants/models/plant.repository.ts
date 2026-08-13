@@ -1,28 +1,37 @@
-import type { Plant, PlantsRepository } from './plant.types';
+import type { Plant, PlantRepositorySchema, PlantsRepository } from './plant.types';
+import { type IDBPDatabase, openDB } from 'idb';
 
-const STORAGE_KEY = 'plants';
+const DB_NAME = 'plant-app';
+const DB_VERSION = 1;
 
-class LocalStoragePlantsRepository implements PlantsRepository {
-  getAll(): Promise<Plant[]> {
-    const items = localStorage.getItem(STORAGE_KEY);
-    const plants: Plant[] = items ? JSON.parse(items) : [];
+class IndexedDbPlantsRepository implements PlantsRepository {
+  private dbPromise?: Promise<IDBPDatabase<PlantRepositorySchema>>;
 
-    return Promise.resolve(plants);
+  private init() {
+    if (!this.dbPromise) {
+      this.dbPromise = openDB<PlantRepositorySchema>(DB_NAME, DB_VERSION, {
+        upgrade(database) {
+          if (!database.objectStoreNames.contains('plants')) {
+            database.createObjectStore('plants', { keyPath: 'id' });
+          }
+        },
+      });
+    }
+
+    return this.dbPromise;
+  }
+
+  async getAll(): Promise<Plant[]> {
+    const db = await this.init();
+
+    return db.getAll('plants');
   }
 
   async save(plant: Plant): Promise<void> {
-    const plants = await this.getAll();
+    const db = await this.init();
 
-    const existingPlantIndex = plants.findIndex((p) => p.id === plant.id);
-
-    if (existingPlantIndex !== -1) {
-      plants.splice(existingPlantIndex, 1, plant);
-    } else {
-      plants.push(plant);
-    }
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(plants));
+    await db.put('plants', plant);
   }
 }
 
-export const localStoragePlantsRepository = new LocalStoragePlantsRepository();
+export const plantsRepository = new IndexedDbPlantsRepository();

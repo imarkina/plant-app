@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { Plant } from '../models/plant.types';
-import { localStoragePlantsRepository } from '../models/plant.repository';
+import { plantsRepository } from '../models/plant.repository';
 
 export function usePlants() {
   const [plants, setPlants] = useState<Plant[]>([]);
 
   useEffect(() => {
     const load = async () => {
-      const saved = await localStoragePlantsRepository.getAll();
+      const saved = await plantsRepository.getAll();
       setPlants(saved);
     };
 
@@ -15,8 +15,8 @@ export function usePlants() {
   }, []);
 
   const addPlant = async (plant: Plant) => {
-    await localStoragePlantsRepository.save(plant);
-    const updatedPlants = await localStoragePlantsRepository.getAll();
+    await plantsRepository.save(plant);
+    const updatedPlants = await plantsRepository.getAll();
     setPlants(updatedPlants);
   };
 
