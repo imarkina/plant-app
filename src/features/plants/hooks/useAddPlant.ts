@@ -1,10 +1,10 @@
-import { usePlants } from './usePlants';
 import { resizeImage } from '../../../shared/image/resize';
 import type { PhotoEntry, Plant } from '../models/plant.types';
 import { usePlantReport } from './usePlantReport';
+import { usePlantsContext } from './usePlantsContext';
 
 export function useAddPlant() {
-  const { addPlant } = usePlants();
+  const { addPlant } = usePlantsContext();
   const { fetchAnalysis, loading, error } = usePlantReport();
 
   const addPlantFromFile = async (file: File) => {

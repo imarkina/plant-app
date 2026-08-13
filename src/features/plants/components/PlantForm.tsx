@@ -1,15 +1,15 @@
 import { type ChangeEvent, useState } from 'react';
 
-import { usePlants } from '../hooks/usePlants';
 import type { PlantReport } from '../models/plant-report.types';
 import { PlantPreview } from './PlantPreview';
 import { PlantReportView } from './PlantReportView';
 import { PlantList } from './PlantList';
 import { useAddPlant } from '../hooks/useAddPlant';
+import { usePlantsContext } from '../hooks/usePlantsContext';
 
 function PlantForm() {
   const { loading, error, addPlantFromFile } = useAddPlant();
-  const { plants } = usePlants();
+  const { plants } = usePlantsContext();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [plantReport, setPlantReport] = useState<PlantReport | null>(null);

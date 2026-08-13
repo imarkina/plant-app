@@ -1,6 +1,6 @@
 import './App.css';
 
-import PlantForm from './features/plants';
+import PlantForm, { PlantsProvider } from './features/plants';
 import { useTheme } from './shared/ui/hooks/useTheme';
 
 function App() {
@@ -9,7 +9,9 @@ function App() {
   return (
     <div>
       <button onClick={toggle}>{theme === 'light' ? 'Темная' : 'Светлая'}</button>
-      <PlantForm />
+      <PlantsProvider>
+        <PlantForm />
+      </PlantsProvider>
     </div>
   );
 }

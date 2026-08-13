@@ -1,5 +1,6 @@
 import type { HealthStatus, ThreatLevel } from './plant-report.types';
 import type { BadgeVariant } from '../../../shared/ui/components/Badge/Badge';
+import type { PhotoEntry, Plant } from './plant.types';
 
 export function statusToVariant(status: HealthStatus): BadgeVariant {
   switch (status) {
@@ -44,4 +45,21 @@ export function confidenceToVariant(confidencePercent: number): BadgeVariant {
   }
 
   return 'neutral';
+}
+
+export function supbaseRowToPlant(row: any): Plant {
+  return {
+    id: row.id,
+    name: row.name,
+    photos: row.photos.map(supbaseRowToPhotoEntry),
+  };
+}
+
+export function supbaseRowToPhotoEntry(row: any): PhotoEntry {
+  return {
+    id: row.id,
+    createdAt: new Date(row.created_at).getTime(),
+    imageUrl: row.image_url,
+    analysis: row.analysis,
+  };
 }

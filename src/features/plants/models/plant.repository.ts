@@ -1,37 +1,44 @@
-import type { Plant, PlantRepositorySchema, PlantsRepository } from './plant.types';
-import { type IDBPDatabase, openDB } from 'idb';
+import type { Plant, PlantsRepository } from './plant.types';
 
-const DB_NAME = 'plant-app';
-const DB_VERSION = 1;
+import { supabase } from '../../../shared/supabase/client';
+import { supbaseRowToPlant } from './plant.mappers';
 
-class IndexedDbPlantsRepository implements PlantsRepository {
-  private dbPromise?: Promise<IDBPDatabase<PlantRepositorySchema>>;
+class SupabasePlantsRepository implements PlantsRepository {
+  async getAll(): Promise<Plant[]> {
+    const { data, error } = await supabase.from('plants').select('*, photos(*)');
 
-  private init() {
-    if (!this.dbPromise) {
-      this.dbPromise = openDB<PlantRepositorySchema>(DB_NAME, DB_VERSION, {
-        upgrade(database) {
-          if (!database.objectStoreNames.contains('plants')) {
-            database.createObjectStore('plants', { keyPath: 'id' });
-          }
-        },
-      });
+    if (error) {
+      throw error;
     }
 
-    return this.dbPromise;
-  }
-
-  async getAll(): Promise<Plant[]> {
-    const db = await this.init();
-
-    return db.getAll('plants');
+    return data.map(supbaseRowToPlant);
   }
 
   async save(plant: Plant): Promise<void> {
-    const db = await this.init();
+    for (const photo of plant.photos) {
+      const path = `${plant.id}/${photo.id}.jpg`;
+      if (photo.image) {
+        await supabase.storage.from('plant-photos').upload(path, photo.image);
 
-    await db.put('plants', plant);
+        const { data } = supabase.storage.from('plant-photos').getPublicUrl(path);
+
+        photo.imageUrl = data.publicUrl;
+      }
+    }
+
+    await supabase.from('plants').insert({ id: plant.id, name: plant.name });
+
+    await supabase.from('photos').insert(
+      plant.photos.map((p) => ({
+        id: p.id,
+        plant_id: plant.id,
+        created_at: new Date(p.createdAt).toISOString(),
+        analysis: p.analysis,
+        image_url: p.imageUrl,
+      })),
+    );
+    return Promise.resolve(undefined);
   }
 }
 
-export const plantsRepository = new IndexedDbPlantsRepository();
+export const plantsRepository = new SupabasePlantsRepository();
