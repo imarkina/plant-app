@@ -1,20 +1,32 @@
 import { useState } from 'react';
 import type { PlantReport } from '../models/plant-report.types';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+const blobToBase64 = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      resolve(result.split(',')[1]);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 
 export const usePlantReport = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAnalysis = async (formData: FormData): Promise<PlantReport | undefined> => {
+  const fetchAnalysis = async (image: Blob): Promise<PlantReport | undefined> => {
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch(`${API_URL}/api/analyze`, {
+      const base64 = await blobToBase64(image);
+
+      const res = await fetch('/api/analyze', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64, mimeType: image.type }),
       });
 
       if (!res.ok) {
@@ -30,9 +42,5 @@ export const usePlantReport = () => {
     }
   };
 
-  return {
-    fetchAnalysis,
-    loading,
-    error,
-  };
+  return { fetchAnalysis, loading, error };
 };

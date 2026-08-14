@@ -9,11 +9,7 @@ export function useAddPlant() {
 
   const addPlantFromFile = async (file: File) => {
     const resized = await resizeImage(file);
-    const formData = new FormData();
-
-    formData.append('image', resized, file.name);
-
-    const analysis = await fetchAnalysis(formData);
+    const analysis = await fetchAnalysis(resized);
 
     // сохраняем растение даже если анализ упал
     const photoEntry: PhotoEntry = {
