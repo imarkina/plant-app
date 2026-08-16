@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { plantReportSchema, type PlantReportSchema } from './schema';
+import { plantReportSchema, type PlantReportSchema } from './shema';
 import { z } from 'zod';
 
 const client = new GoogleGenAI({

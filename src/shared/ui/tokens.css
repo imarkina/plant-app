@@ -70,8 +70,6 @@
   --color-border: var(--green-700);
   --color-border-strong: #3d5a2a;
 
-  /* primary НЕ трогаем — лайм один на обе темы (осознанное решение) */
-
   --color-success-bg: var(--green-tint-dark);
   --color-success-text: #c0dd97;
   --color-danger-bg: var(--berry-900);

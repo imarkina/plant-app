@@ -27,7 +27,7 @@ export function useAddPlant() {
 
     await addPlant(plant);
 
-    return analysis;
+    return plant.id;
   };
 
   return { addPlantFromFile, loading, error };

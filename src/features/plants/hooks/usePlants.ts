@@ -4,13 +4,15 @@ import { plantsRepository } from '../models/plant.repository';
 
 export function usePlants() {
   const [plants, setPlants] = useState<Plant[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
+      setLoading(true);
       const saved = await plantsRepository.getAll();
       setPlants(saved);
+      setLoading(false);
     };
-
     void load();
   }, []);
 
@@ -20,5 +22,5 @@ export function usePlants() {
     setPlants(updatedPlants);
   };
 
-  return { plants, addPlant };
+  return { plants, addPlant, loading };
 }

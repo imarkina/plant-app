@@ -6,20 +6,10 @@ import { ActionPlanSection } from './report/ActionPlanSection';
 import { CarePassportSection } from './report/CarePassportSection';
 
 type Props = {
-  loading: boolean;
-  error: string | null;
   analysis: PlantReport | null;
 };
 
-export const PlantReportView = ({ loading, analysis, error }: Props) => {
-  if (loading) {
-    return <p>анализируем...</p>;
-  }
-
-  if (error) {
-    return <p>ошибка: {error}</p>;
-  }
-
+export const PlantReportView = ({ analysis }: Props) => {
   if (!analysis) {
     return null;
   }
