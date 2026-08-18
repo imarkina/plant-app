@@ -24,7 +24,7 @@ export const ActionPlanSection = ({ actionPlan, title }: Props) => {
       <hr />
 
       <div>
-        <h3 style={{ fontSize: '1rem', color: 'var(--color-accent)', marginBottom: '8px' }}>
+        <h3 style={{ fontSize: '1rem', color: 'var(--color-danger-text)', marginBottom: '8px' }}>
           Категорически запрещено:
         </h3>
         <ul className="prohibitions-list">

@@ -4,6 +4,7 @@ import { PlantList } from './PlantList';
 import { useAddPlant } from '../hooks/useAddPlant';
 import { usePlantsContext } from '../hooks/usePlantsContext';
 import { useNavigate } from 'react-router-dom';
+import { UploadZone } from '../../../shared/ui/components/UploadZone/UploadZone';
 
 function PlantForm() {
   const { loading, error, addPlantFromFile } = useAddPlant();
@@ -26,16 +27,7 @@ function PlantForm() {
 
   return (
     <div>
-      <label htmlFor="plant-image">Выберите изображение:</label>
-      <input
-        name="plant-image"
-        id="plant-image"
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={handleFileChange}
-      />
-      {loading && <div>Анализируем...</div>}
+      <UploadZone onFileSelect={handleFileChange} loading={loading} />
       {error && <div>{error}</div>}
       <PlantList plants={plants} />
     </div>
