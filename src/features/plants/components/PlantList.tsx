@@ -16,16 +16,22 @@ export const PlantList = ({ plants }: Props) => {
       {plants.map((plant) => {
         const photo = plant.photos[0];
 
+        if (!photo || !photo.analysis) {
+          return null;
+        }
+
         return (
           <Link key={plant.id} to={`/plant/${plant.id}`} className="plant-row">
-            {photo?.imageUrl && (
-              <img src={photo.imageUrl} alt={plant.name} className="plant-row__photo" />
+            {photo.imageUrl && (
+              <img
+                src={photo.imageUrl}
+                alt={photo.analysis.identification.commonName}
+                className="plant-row__photo"
+              />
             )}
             <div className="plant-row__info">
-              <p className="plant-row__name">{plant.name}</p>
-              {photo?.analysis && (
-                <p className="plant-row__species">{photo.analysis.identification.botanicalName}</p>
-              )}
+              <p className="plant-row__name">{photo.analysis.identification.commonName}</p>
+              <p className="plant-row__species">{photo.analysis.identification.botanicalName}</p>
             </div>
           </Link>
         );
