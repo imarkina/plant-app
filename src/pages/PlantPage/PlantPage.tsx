@@ -1,9 +1,10 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { usePlantsContext } from '../../features/plants/hooks/usePlantsContext';
 import { PlantReportView } from '../../features/plants/components/PlantReportView';
 import { PlantPreview } from '../../features/plants/components/PlantPreview';
 import { useState } from 'react';
 import { Tabs } from '../../shared/ui/components/Tabs/Tabs';
+import { BackButton } from '../../shared/ui/components/BackButton/BackButton';
 
 const tabs = [
   { id: 'diagnosis', label: 'Диагноз' },
@@ -25,7 +26,7 @@ export const PlantPage = () => {
 
   return (
     <div style={{ paddingBottom: '80px', maxWidth: '600px', margin: '0 auto' }}>
-      <Link to="/">Назад к растениям</Link>
+      <BackButton />
       {plant.photos[0].imageUrl && <PlantPreview previewUrl={plant.photos[0].imageUrl} />}
       <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
       {activeTab === 'diagnosis' && <PlantReportView analysis={plant.photos[0].analysis ?? null} />}

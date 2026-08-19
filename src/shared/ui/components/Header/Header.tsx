@@ -17,7 +17,7 @@ export const Header = () => {
           {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
         </button>
       </header>
-      <h1 className="home-greeting">Что растёт сегодня?</h1>{' '}
+      <h1 className="home-greeting">Что растёт сегодня?</h1>
     </>
   );
 };
