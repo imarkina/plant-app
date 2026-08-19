@@ -39,6 +39,8 @@
   --color-neutral-bg: #eceee4; /* светлый серо-зелёный */
   --color-neutral-text: #5a6650; /* приглушённый тёмный */
 
+  --color-surface-sunken: #eceee4;
+
   /* ── Нецветовые токены (одинаковы в обеих темах) ── */
   --space-1: 4px;
   --space-2: 8px;
@@ -76,4 +78,6 @@
   --color-danger-text: #f4c0d1;
   --color-neutral-bg: #2a3826;
   --color-neutral-text: #a8b89a;
+
+  --color-surface-sunken: #2a3d24;
 }
