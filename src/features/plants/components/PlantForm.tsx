@@ -27,7 +27,12 @@ function PlantForm() {
 
   return (
     <div>
-      <UploadZone onFileSelect={handleFileChange} loading={loading} />
+      <UploadZone
+        onFileSelect={handleFileChange}
+        loading={loading}
+        title="Загрузите фото растения"
+        subtitle="Определим вид, состояние и план ухода"
+      />
       {error && <div>{error}</div>}
       <PlantList plants={plants} />
     </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Plant } from '../models/plant.types';
+import type { PhotoEntry, Plant } from '../models/plant.types';
 import { plantsRepository } from '../models/plant.repository';
 
 export function usePlants() {
@@ -22,5 +22,11 @@ export function usePlants() {
     setPlants(updatedPlants);
   };
 
-  return { plants, addPlant, loading };
+  const addPhoto = async (plantId: string, photo: PhotoEntry) => {
+    await plantsRepository.addPhoto(plantId, photo);
+    const updated = await plantsRepository.getAll();
+    setPlants(updated);
+  };
+
+  return { plants, addPlant, loading, addPhoto };
 }

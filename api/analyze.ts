@@ -8,7 +8,7 @@ export default async function handler(req: Request): Promise<Response> {
     if (!image) {
       return Response.json({ error: 'no image' }, { status: 400 });
     }
-    const result = await analyzePlantImage(image, mimeType); // base64 уже готов
+    const result = await analyzePlantImage(image, mimeType);
     return Response.json({ result });
   } catch (e) {
     console.error('analyze failed:', e);

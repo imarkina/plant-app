@@ -1,6 +1,7 @@
-import type { HealthStatus, ThreatLevel } from './plant-report.types';
+import type { CompareStatus, HealthStatus, ThreatLevel } from './plant-report.types';
 import type { BadgeVariant } from '../../../shared/ui/components/Badge/Badge';
 import type { PhotoEntry, Plant } from './plant.types';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 export function statusToVariant(status: HealthStatus): BadgeVariant {
   switch (status) {
@@ -63,3 +64,20 @@ export function supbaseRowToPhotoEntry(row: any): PhotoEntry {
     analysis: row.analysis,
   };
 }
+
+export const trendMeta = (
+  status: CompareStatus,
+): { Icon: typeof Minus; label: string; variant: string } => {
+  switch (status) {
+    case 'positive':
+      return { Icon: TrendingUp, label: 'Динамика улучшилась', variant: 'positive' };
+    case 'negative':
+      return { Icon: TrendingDown, label: 'Состояние ухудшилось', variant: 'negative' };
+    case 'neutral':
+      return { Icon: Minus, label: 'Динамика стабильна', variant: 'neutral' };
+    default: {
+      const _exhaustive: never = status;
+      return _exhaustive;
+    }
+  }
+};

@@ -5,6 +5,7 @@ import { PlantPreview } from '../../features/plants/components/PlantPreview';
 import { useState } from 'react';
 import { Tabs } from '../../shared/ui/components/Tabs/Tabs';
 import { BackButton } from '../../shared/ui/components/BackButton/BackButton';
+import { PlantTimelineView } from '../../features/plants';
 
 const tabs = [
   { id: 'diagnosis', label: 'Диагноз' },
@@ -30,7 +31,7 @@ export const PlantPage = () => {
       {plant.photos[0].imageUrl && <PlantPreview previewUrl={plant.photos[0].imageUrl} />}
       <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
       {activeTab === 'diagnosis' && <PlantReportView analysis={plant.photos[0].analysis ?? null} />}
-      {activeTab === 'timeline' && <p>Таймлайн скоро</p>}
+      {activeTab === 'timeline' && <PlantTimelineView plant={plant} />}
       {activeTab === 'care' && <p>Уход скоро</p>}
     </div>
   );

@@ -1,4 +1,4 @@
-import type { Plant, PlantsRepository } from './plant.types';
+import type { PhotoEntry, Plant, PlantsRepository } from './plant.types';
 
 import { supabase } from '../../../shared/supabase/client';
 import { supbaseRowToPlant } from './plant.mappers';
@@ -15,29 +15,46 @@ class SupabasePlantsRepository implements PlantsRepository {
   }
 
   async save(plant: Plant): Promise<void> {
-    for (const photo of plant.photos) {
-      const path = `${plant.id}/${photo.id}.jpg`;
-      if (photo.image) {
-        await supabase.storage.from('plant-photos').upload(path, photo.image);
+    const { error } = await supabase.from('plants').insert({ id: plant.id, name: plant.name });
 
-        const { data } = supabase.storage.from('plant-photos').getPublicUrl(path);
-
-        photo.imageUrl = data.publicUrl;
-      }
+    if (error) {
+      throw error;
     }
 
-    await supabase.from('plants').insert({ id: plant.id, name: plant.name });
+    for (const photo of plant.photos) {
+      await this.addPhoto(plant.id, photo);
+    }
+  }
 
-    await supabase.from('photos').insert(
-      plant.photos.map((p) => ({
-        id: p.id,
-        plant_id: plant.id,
-        created_at: new Date(p.createdAt).toISOString(),
-        analysis: p.analysis,
-        image_url: p.imageUrl,
-      })),
-    );
-    return Promise.resolve(undefined);
+  async addPhoto(plantId: string, photo: PhotoEntry): Promise<void> {
+    const path = `${plantId}/${photo.id}.jpg`;
+    let imageUrl;
+
+    if (photo.image) {
+      const { error: uploadError } = await supabase.storage
+        .from('plant-photos')
+        .upload(path, photo.image, { contentType: photo.image.type });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data } = supabase.storage.from('plant-photos').getPublicUrl(path);
+
+      imageUrl = data.publicUrl;
+    }
+
+    const { error: insertError } = await supabase.from('photos').insert({
+      id: photo.id,
+      plant_id: plantId,
+      created_at: new Date(photo.createdAt).toISOString(),
+      analysis: photo.analysis,
+      image_url: imageUrl,
+    });
+
+    if (insertError) {
+      throw insertError;
+    }
   }
 }
 

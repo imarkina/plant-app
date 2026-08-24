@@ -17,4 +17,5 @@ export interface Plant {
 export interface PlantsRepository {
   getAll(): Promise<Plant[]>;
   save(plant: Plant): Promise<void>;
+  addPhoto(plantId: string, photo: PhotoEntry): Promise<void>;
 }

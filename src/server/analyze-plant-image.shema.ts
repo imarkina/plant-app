@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+export const PlantHealthEnum = z.enum(['excellent', 'good', 'fair', 'poor', 'critical']);
+
+export const ThreatLevelEnum = z.enum(['low', 'medium', 'high', 'critical']);
+
 export const plantReportSchema = z.object({
   identification: z.object({
     commonName: z
@@ -11,16 +15,10 @@ export const plantReportSchema = z.object({
     confidencePercent: z.number().min(0).max(100).describe('Степень уверенности в %'),
   }),
   health: z.object({
-    status: z
-      .enum(['excellent', 'good', 'fair', 'poor', 'critical'])
-      .optional()
-      .describe('Общий статус состояния'),
+    status: PlantHealthEnum.optional().describe('Общий статус состояния'),
     description: z.string().optional().describe('Подробное описание внешнего вида'),
     diagnosis: z.string().optional().describe('Краткий диагноз'),
-    threatLevel: z
-      .enum(['low', 'medium', 'high', 'critical'])
-      .optional()
-      .describe('Уровень угрозы'),
+    threatLevel: ThreatLevelEnum.optional().describe('Уровень угрозы'),
     pestsOrDiseasesFound: z.boolean().optional().describe('Обнаружены ли вредители или болезни'),
   }),
   actionPlan: z.object({
@@ -56,6 +54,6 @@ export const plantReportSchema = z.object({
   }),
 });
 
-export const jsonSchema = z.toJSONSchema(plantReportSchema);
-
 export type PlantReportSchema = z.infer<typeof plantReportSchema>;
+export type PlantHealthSchema = z.infer<typeof PlantHealthEnum>;
+export type ThreatLevelSchema = z.infer<typeof ThreatLevelEnum>;
