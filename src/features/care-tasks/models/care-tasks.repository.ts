@@ -1,0 +1,42 @@
+import { supabase } from '../../../shared/supabase/client';
+import type { CareTask, CareTasksRepository } from './care-tasks.model';
+import { supabaseRowToCareTask } from './care-tasks.mappers';
+
+class SupabaseCareTasksRepository implements CareTasksRepository {
+  async getCareTasks(plantId: string): Promise<CareTask[]> {
+    const { data, error } = await supabase.from('care_tasks').select('*').eq('plant_id', plantId);
+
+    if (error) {
+      throw error;
+    }
+
+    return data.map(supabaseRowToCareTask);
+  }
+
+  async addCareTask(task: CareTask): Promise<void> {
+    const { error } = await supabase.from('care_tasks').insert({
+      id: task.id,
+      plant_id: task.plantId,
+      type: task.type,
+      interval_days: task.intervalDays,
+      last_done_at: task.lastDoneAt ? new Date(task.lastDoneAt).toISOString() : null,
+    });
+
+    if (error) {
+      throw error;
+    }
+  }
+
+  async markCareDone(taskId: string): Promise<void> {
+    const { error } = await supabase
+      .from('care_tasks')
+      .update({ last_done_at: new Date().toISOString() })
+      .eq('id', taskId);
+
+    if (error) {
+      throw error;
+    }
+  }
+}
+
+export const careTasksRepository = new SupabaseCareTasksRepository();
