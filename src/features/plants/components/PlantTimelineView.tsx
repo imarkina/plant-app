@@ -1,4 +1,4 @@
-import { type ChangeEvent, useEffect } from 'react';
+import { type ChangeEvent } from 'react';
 import { useAddPhoto } from '../hooks/useAddPhoto';
 import { UploadZone } from '../../../shared/ui/components/UploadZone/UploadZone';
 import type { Plant } from '../models/plant.types';
@@ -7,7 +7,6 @@ import { statusToVariant } from '../models/plant.mappers';
 import { formatDate } from '../../../shared/helpers';
 import './PlantTimelineView.css';
 import { PlantComparison } from './PlantsComparison';
-import { useCareTasks } from '../../care-tasks/hooks/useCareTasks';
 
 type Props = {
   plant: Plant;
@@ -16,7 +15,6 @@ type Props = {
 export const PlantTimelineView = ({ plant }: Props) => {
   const { addPhotoFromFile, loading } = useAddPhoto(plant.id);
 
-  const {getCareTasks} = useCareTasks();
   const sortedPhotos = [...plant.photos].sort((a, b) => a.createdAt - b.createdAt);
 
   const handleAddPhoto = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,9 +24,6 @@ export const PlantTimelineView = ({ plant }: Props) => {
     }
   };
 
-  useEffect(() => {
-    getCareTasks(plant.id).then(res => console.log(res))
-  }, []);
   return (
     <div>
       <UploadZone

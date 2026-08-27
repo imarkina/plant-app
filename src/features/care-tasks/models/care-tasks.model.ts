@@ -1,4 +1,4 @@
-export type CareTaskType = 'watering' | 'feeding' | 'misting';
+export type CareTaskType = 'watering' | 'feeding' | 'misting' | 'photo';
 
 export type CareStatus = 'overdue' | 'soon' | 'ok';
 

@@ -1,4 +1,5 @@
-import type { CareStatus, CareTask } from './care-tasks.model';
+import type { CareStatus, CareTask, CareTaskType } from './care-tasks.model';
+import { pluralDays } from '../../../shared/helpers';
 
 const daysToMs = (days: number) => {
   return days * 24 * 60 * 60 * 1000;
@@ -17,12 +18,58 @@ const TWO_DAYS_LEFT_BEFORE_TASK = 2;
 export const getCareStatus = (task: CareTask): CareStatus => {
   const nextDue = getNextDue(task);
   const now = Date.now();
+
   if (nextDue < now) {
     return 'overdue';
   }
+
   if (nextDue - now < daysToMs(TWO_DAYS_LEFT_BEFORE_TASK)) {
     return 'soon';
   }
 
   return 'ok';
+};
+
+const DEFAULT_TASKS: Array<{ type: CareTaskType; intervalDays: number }> = [
+  { type: 'watering', intervalDays: 5 },
+  { type: 'feeding', intervalDays: 21 },
+  { type: 'misting', intervalDays: 3 },
+  { type: 'photo', intervalDays: 14 },
+];
+
+export const createDefaultTasks = async (
+  plantId: string,
+  addTask: (task: CareTask) => Promise<void>,
+) => {
+  for (const def of DEFAULT_TASKS) {
+    await addTask({
+      id: crypto.randomUUID(),
+      plantId,
+      type: def.type,
+      intervalDays: def.intervalDays,
+      lastDoneAt: null,
+    });
+  }
+};
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+export const formatDue = (nextDue: number): string => {
+  const now = Date.now();
+  const diffDays = Math.round((nextDue - now) / MS_PER_DAY);
+
+  if (diffDays < 0) {
+    const overdue = Math.abs(diffDays);
+    return `Просрочено на ${overdue} ${pluralDays(overdue)}`;
+  }
+
+  if (diffDays === 0) {
+    return 'Сегодня';
+  }
+
+  if (diffDays === 1) {
+    return 'Завтра';
+  }
+
+  return `Через ${diffDays} ${pluralDays(diffDays)}`;
 };
