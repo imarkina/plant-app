@@ -1,4 +1,5 @@
-import { CircleUser, LogOut } from 'lucide-react';
+import { ChevronRight, CircleUser, LogOut, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../features/auth';
 import { Button } from '../../shared/ui/components/Button/Button';
 import { Card } from '../../shared/ui/components/Card/Card';
@@ -35,6 +36,12 @@ export const ProfilePage = () => {
           </Button>
         </div>
       </Card>
+
+      <Link to="/locations" className="profile-page__menu-item">
+        <MapPin size={18} />
+        <span>Локации</span>
+        <ChevronRight size={18} className="profile-page__menu-item-chevron" />
+      </Link>
 
       <BottomNav />
     </div>

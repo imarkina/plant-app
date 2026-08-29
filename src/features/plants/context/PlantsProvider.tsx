@@ -3,10 +3,22 @@ import { usePlants } from '../hooks/usePlants';
 import { PlantsContext } from './PlantsContext';
 
 export const PlantsProvider = ({ children }: { children: React.ReactNode }) => {
-  const { plants, addPlant, loading, addPhoto } = usePlants();
+  const { plants, loading, addPlant, addPhoto, setAvatarPhoto, updateProfile, archive, restore } =
+    usePlants();
 
   return (
-    <PlantsContext.Provider value={{ plants, addPlant, loading, addPhoto }}>
+    <PlantsContext.Provider
+      value={{
+        plants,
+        loading,
+        addPlant,
+        addPhoto,
+        setAvatarPhoto,
+        updateProfile,
+        archive,
+        restore,
+      }}
+    >
       {children}
     </PlantsContext.Provider>
   );

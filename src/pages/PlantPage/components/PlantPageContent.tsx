@@ -5,7 +5,7 @@ import { BackButton } from '../../../shared/ui/components/BackButton/BackButton'
 import { PlantPreview } from '../../../features/plants/components/PlantPreview';
 import { Tabs } from '../../../shared/ui/components/Tabs/Tabs';
 import { PlantReportView } from '../../../features/plants/components/PlantReportView';
-import { PlantTimelineView } from '../../../features/plants';
+import { PlantArchiveSection, PlantProfileTab, PlantTimelineView } from '../../../features/plants';
 import { CareTab } from '../../../features/care-tasks';
 import type { CareTask } from '../../../features/care-tasks/models/care-tasks.model';
 import { useState } from 'react';
@@ -14,6 +14,7 @@ const tabs = [
   { id: 'diagnosis', label: 'Диагноз' },
   { id: 'timeline', label: 'Таймлайн' },
   { id: 'care', label: 'Уход' },
+  { id: 'profile', label: 'Профиль' },
 ];
 
 type Props = {
@@ -40,6 +41,12 @@ export const PlantPageContent = ({ plant }: Props) => {
       {activeTab === 'diagnosis' && <PlantReportView analysis={plant.photos[0].analysis ?? null} />}
       {activeTab === 'timeline' && <PlantTimelineView plant={plant} />}
       {activeTab === 'care' && <CareTab plantId={plant.id} onPhotoSelected={handlePhotoSelected} />}
+      {activeTab === 'profile' && (
+        <>
+          <PlantProfileTab plant={plant} />
+          <PlantArchiveSection plant={plant} />
+        </>
+      )}
     </div>
   );
 };

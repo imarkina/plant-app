@@ -1,15 +1,23 @@
-import { type ChangeEvent } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 import { PlantList } from './PlantList';
+import { ArchivedPlantList } from './ArchivedPlantList';
 import { useAddPlant } from '../hooks/useAddPlant';
 import { usePlantsContext } from '../hooks/usePlantsContext';
 import { useNavigate } from 'react-router-dom';
 import { UploadZone } from '../../../shared/ui/components/UploadZone/UploadZone';
+import { Tabs } from '../../../shared/ui/components/Tabs/Tabs';
+
+const HOME_TABS = [
+  { id: 'active', label: 'Активные' },
+  { id: 'archive', label: 'Архив' },
+];
 
 function PlantForm() {
   const { loading, error, addPlantFromFile } = useAddPlant();
   const { plants } = usePlantsContext();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('active');
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const fileList: FileList | null = event.target.files;
@@ -25,6 +33,9 @@ function PlantForm() {
     }
   };
 
+  const activePlants = plants.filter((plant) => !plant.isArchived);
+  const archivedPlants = plants.filter((plant) => plant.isArchived);
+
   return (
     <div>
       <UploadZone
@@ -34,7 +45,9 @@ function PlantForm() {
         subtitle="Определим вид, состояние и план ухода"
       />
       {error && <div>{error}</div>}
-      <PlantList plants={plants} />
+      <Tabs tabs={HOME_TABS} active={activeTab} onChange={setActiveTab} />
+      {activeTab === 'active' && <PlantList plants={activePlants} />}
+      {activeTab === 'archive' && <ArchivedPlantList plants={archivedPlants} />}
     </div>
   );
 }

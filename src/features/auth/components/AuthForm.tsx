@@ -78,18 +78,14 @@ export const AuthForm = () => {
       <div className="auth-form__tabs">
         <button
           type="button"
-          className={
-            mode === 'signIn' ? 'auth-form__tab auth-form__tab--active' : 'auth-form__tab'
-          }
+          className={mode === 'signIn' ? 'auth-form__tab auth-form__tab--active' : 'auth-form__tab'}
           onClick={() => switchMode('signIn')}
         >
           Вход
         </button>
         <button
           type="button"
-          className={
-            mode === 'signUp' ? 'auth-form__tab auth-form__tab--active' : 'auth-form__tab'
-          }
+          className={mode === 'signUp' ? 'auth-form__tab auth-form__tab--active' : 'auth-form__tab'}
           onClick={() => switchMode('signUp')}
         >
           Регистрация
@@ -118,9 +114,7 @@ export const AuthForm = () => {
             autoComplete={mode === 'signIn' ? 'current-password' : 'new-password'}
             disabled={submitting}
           />
-          {fieldErrors.password && (
-            <span className="auth-form__error">{fieldErrors.password}</span>
-          )}
+          {fieldErrors.password && <span className="auth-form__error">{fieldErrors.password}</span>}
         </label>
 
         {mode === 'signUp' && (
@@ -139,9 +133,7 @@ export const AuthForm = () => {
           </label>
         )}
 
-        {formError && (
-          <div className="auth-form__banner auth-form__banner--error">{formError}</div>
-        )}
+        {formError && <div className="auth-form__banner auth-form__banner--error">{formError}</div>}
         {infoMessage && (
           <div className="auth-form__banner auth-form__banner--info">{infoMessage}</div>
         )}

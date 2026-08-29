@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { PhotoEntry, Plant } from '../models/plant.types';
+import type { ArchiveStatus, PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
 import { plantsRepository } from '../models/plant.repository';
 
 export function usePlants() {
@@ -14,8 +14,12 @@ export function usePlants() {
   useEffect(() => {
     const loadInitialPlants = async () => {
       setLoading(true);
-      await refreshPlants();
-      setLoading(false);
+
+      try {
+        await refreshPlants();
+      } finally {
+        setLoading(false);
+      }
     };
     void loadInitialPlants();
   }, []);
@@ -30,5 +34,34 @@ export function usePlants() {
     await refreshPlants();
   };
 
-  return { plants, addPlant, loading, addPhoto };
+  const setAvatarPhoto = async (plantId: string, photoId: string) => {
+    await plantsRepository.setAvatarPhoto(plantId, photoId);
+    await refreshPlants();
+  };
+
+  const updateProfile = async (plantId: string, update: PlantProfileUpdate) => {
+    await plantsRepository.updateProfile(plantId, update);
+    await refreshPlants();
+  };
+
+  const archive = async (plantId: string, status: ArchiveStatus, reasonDetail?: string | null) => {
+    await plantsRepository.archive(plantId, status, reasonDetail);
+    await refreshPlants();
+  };
+
+  const restore = async (plantId: string) => {
+    await plantsRepository.restore(plantId);
+    await refreshPlants();
+  };
+
+  return {
+    plants,
+    loading,
+    addPlant,
+    addPhoto,
+    setAvatarPhoto,
+    updateProfile,
+    archive,
+    restore,
+  };
 }
