@@ -38,7 +38,9 @@ export const CareTaskItem = ({ task, onDone, onPhotoSelected }: Props) => {
       </div>
       <div className="care-item__info">
         <p className="care-item__title">{label}</p>
-        <p className="care-item__due">{formatDue(nextDue)}</p>
+        <p className="care-item__due">
+          {task.lastDoneAt === null ? 'Ещё не делали' : formatDue(nextDue)}
+        </p>
       </div>
       {task.type === 'photo' ? (
         <label className="care-item__btn">

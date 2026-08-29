@@ -16,6 +16,10 @@ export const getNextDue = (task: CareTask): number => {
 const TWO_DAYS_LEFT_BEFORE_TASK = 2;
 
 export const getCareStatus = (task: CareTask): CareStatus => {
+  if (task.lastDoneAt === null) {
+    return 'overdue';
+  }
+
   const nextDue = getNextDue(task);
   const now = Date.now();
 
@@ -34,7 +38,6 @@ const DEFAULT_TASKS: Array<{ type: CareTaskType; intervalDays: number }> = [
   { type: 'watering', intervalDays: 5 },
   { type: 'feeding', intervalDays: 21 },
   { type: 'misting', intervalDays: 3 },
-  { type: 'photo', intervalDays: 14 },
 ];
 
 export const createDefaultTasks = async (

@@ -15,3 +15,19 @@ export const pluralDays = (n: number): string => {
 
   return 'дней';
 };
+
+export const formatInterval = (days: number): string => {
+  if (days === 7) {
+    return 'Неделя';
+  }
+
+  if (days === 14) {
+    return '2 недели';
+  }
+
+  if (days === 30) {
+    return 'Месяц';
+  }
+
+  return `${days} ${pluralDays(days)}`;
+};
