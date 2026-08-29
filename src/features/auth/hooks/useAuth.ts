@@ -9,7 +9,7 @@ function toAuthUser(user: User | null | undefined): AuthUser | null {
     return null;
   }
 
-  return { id: user.id, email: user.email ?? null };
+  return { id: user.id, email: user.email ?? null, createdAt: user.created_at ?? null };
 }
 
 export function useAuth() {
