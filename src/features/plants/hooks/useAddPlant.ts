@@ -1,5 +1,5 @@
 import { resizeImage } from '../../../shared/image/resize';
-import type { PhotoEntry, Plant } from '../models/plant.types';
+import { EMPTY_PLANT_PROFILE, type PhotoEntry, type Plant } from '../models/plant.types';
 import { usePlantReport } from './usePlantReport';
 import { usePlantsContext } from './usePlantsContext';
 
@@ -23,6 +23,7 @@ export function useAddPlant() {
       id: crypto.randomUUID(),
       name: file.name,
       photos: [photoEntry],
+      ...EMPTY_PLANT_PROFILE,
     };
 
     await addPlant(plant);

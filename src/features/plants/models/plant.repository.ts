@@ -1,7 +1,13 @@
-import type { PhotoEntry, Plant, PlantsRepository } from './plant.types';
+import type {
+  ArchiveStatus,
+  PhotoEntry,
+  Plant,
+  PlantProfileUpdate,
+  PlantsRepository,
+} from './plant.types';
 
 import { supabase } from '../../../shared/supabase/client';
-import { mapPlantRowToPlant } from './plant.mappers';
+import { mapPlantProfileUpdateToRow, mapPlantRowToPlant } from './plant.mappers';
 
 const PLANTS_TABLE = 'plants';
 const PHOTOS_TABLE = 'photos';
@@ -24,6 +30,22 @@ function buildPhotoStoragePath(plantId: string, photoId: string): string {
 class SupabasePlantsRepository implements PlantsRepository {
   async getAll(): Promise<Plant[]> {
     const rows = unwrap(await supabase.from(PLANTS_TABLE).select('*, photos(*)'));
+
+    return rows.map(mapPlantRowToPlant);
+  }
+
+  async getActive(): Promise<Plant[]> {
+    return this.getAllFilteredByArchiveState(false);
+  }
+
+  async getArchived(): Promise<Plant[]> {
+    return this.getAllFilteredByArchiveState(true);
+  }
+
+  private async getAllFilteredByArchiveState(isArchived: boolean): Promise<Plant[]> {
+    const rows = unwrap(
+      await supabase.from(PLANTS_TABLE).select('*, photos(*)').eq('is_archived', isArchived),
+    );
 
     return rows.map(mapPlantRowToPlant);
   }
@@ -64,6 +86,54 @@ class SupabasePlantsRepository implements PlantsRepository {
     const { data } = supabase.storage.from(PLANT_PHOTOS_BUCKET).getPublicUrl(storagePath);
 
     return data.publicUrl;
+  }
+
+  async setAvatarPhoto(plantId: string, photoId: string): Promise<void> {
+    unwrap(await supabase.from(PHOTOS_TABLE).update({ is_avatar: false }).eq('plant_id', plantId));
+
+    unwrap(await supabase.from(PHOTOS_TABLE).update({ is_avatar: true }).eq('id', photoId));
+  }
+
+  async updateProfile(plantId: string, update: PlantProfileUpdate): Promise<void> {
+    const row = mapPlantProfileUpdateToRow(update);
+
+    if (Object.keys(row).length === 0) {
+      return;
+    }
+
+    unwrap(await supabase.from(PLANTS_TABLE).update(row).eq('id', plantId));
+  }
+
+  async archive(
+    plantId: string,
+    status: ArchiveStatus,
+    reasonDetail?: string | null,
+  ): Promise<void> {
+    unwrap(
+      await supabase
+        .from(PLANTS_TABLE)
+        .update({
+          is_archived: true,
+          archive_status: status,
+          archive_reason_detail: reasonDetail ?? null,
+          archived_at: new Date().toISOString(),
+        })
+        .eq('id', plantId),
+    );
+  }
+
+  async restore(plantId: string): Promise<void> {
+    unwrap(
+      await supabase
+        .from(PLANTS_TABLE)
+        .update({
+          is_archived: false,
+          archive_status: null,
+          archive_reason_detail: null,
+          archived_at: null,
+        })
+        .eq('id', plantId),
+    );
   }
 }
 
