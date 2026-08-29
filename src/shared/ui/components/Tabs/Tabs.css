@@ -1,0 +1,29 @@
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  padding: 4px;
+  background: var(--color-surface-sunken);
+  border-radius: 999px;
+  margin: var(--space-4) 0;
+}
+
+.tabs__tab {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.tabs__tab--active {
+  background: var(--color-surface); /* активная пилюля «всплывает» на фоне желобка */
+  color: var(--color-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}

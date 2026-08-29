@@ -1,0 +1,33 @@
+export const formatDate = (ts: number) =>
+  new Date(ts).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+export const pluralDays = (n: number): string => {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+
+  if (mod10 === 1 && mod100 !== 11) {
+    return 'день';
+  }
+
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
+    return 'дня';
+  }
+
+  return 'дней';
+};
+
+export const formatInterval = (days: number): string => {
+  if (days === 7) {
+    return 'Неделя';
+  }
+
+  if (days === 14) {
+    return '2 недели';
+  }
+
+  if (days === 30) {
+    return 'Месяц';
+  }
+
+  return `${days} ${pluralDays(days)}`;
+};

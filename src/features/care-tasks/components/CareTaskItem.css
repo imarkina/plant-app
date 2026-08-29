@@ -1,0 +1,96 @@
+.care-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-border); /* статус-полоска слева */
+}
+
+/* цвет левой полоски по статусу */
+.care-item--overdue {
+  border-left-color: var(--color-danger-text);
+}
+.care-item--soon {
+  border-left-color: var(--lime-500); /* или amber, если заведёшь */
+}
+.care-item--ok {
+  border-left-color: var(--color-success-text);
+}
+
+/* иконка задачи в цветной плашке */
+.care-item__icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.care-item__info {
+  flex: 1;
+  min-width: 0;
+}
+.care-item__title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0;
+}
+.care-item__due {
+  font-size: var(--font-size-sm);
+  margin: 2px 0 0;
+}
+
+.care-item__done {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+/* цвет текста «когда» по статусу */
+.care-item--overdue .care-item__due {
+  color: var(--color-danger-text);
+  font-weight: var(--font-weight-bold);
+}
+.care-item--soon .care-item__due {
+  color: var(--color-text-muted);
+}
+.care-item--ok .care-item__due {
+  color: var(--color-text-muted);
+}
+
+/* кнопка «Готово» */
+.care-item__btn {
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.care-item__btn:hover {
+  background: var(--color-surface-sunken);
+}
+/* просроченную — акцентная кнопка (призыв сделать) */
+.care-item--overdue .care-item__btn {
+  background: var(--color-accent);
+  color: var(--color-surface);
+  border-color: var(--color-accent);
+}

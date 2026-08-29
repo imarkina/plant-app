@@ -1,0 +1,66 @@
+.timeline {
+  position: relative;
+  margin-top: var(--space-6);
+  padding-left: var(--space-6); /* место под вертикальную линию */
+}
+
+/* вертикальная линия — через ::before на контейнере */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+/* точка на линии напротив каждого фото */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -20px; /* попадает на линию */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-surface); /* «вырез» вокруг точки */
+}
+
+.timeline-item__photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.timeline-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.timeline-item__date {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.timeline-empty-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: var(--space-4) 0;
+}

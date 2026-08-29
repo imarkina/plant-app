@@ -1,0 +1,53 @@
+.action-card {
+  border-radius: 12px;
+  padding: var(--space-3);
+}
+.action-card--keep {
+  background: var(--color-success-bg);
+}
+.action-card--urgent {
+  background: var(--color-danger-bg);
+}
+.action-card--watch {
+  background: var(--color-surface-sunken);
+}
+.action-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: 6px;
+}
+.action-card__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+.action-card--keep .action-card__title,
+.action-card--keep .action-card__icon {
+  color: var(--color-success-text);
+}
+.action-card--urgent .action-card__title,
+.action-card--urgent .action-card__icon {
+  color: var(--color-danger-text);
+}
+.action-card--watch .action-card__title,
+.action-card--watch .action-card__icon {
+  color: var(--color-text-muted);
+}
+.action-card__icon {
+  display: flex;
+  align-items: center;
+}
+.action-card__text {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  margin: 0;
+}
+.action-card--keep .action-card__text {
+  color: var(--color-success-text);
+}
+.action-card--urgent .action-card__text {
+  color: var(--color-danger-text);
+}
+.action-card--watch .action-card__text {
+  color: var(--color-text-muted);
+}

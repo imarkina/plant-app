@@ -1,0 +1,14 @@
+.auth-page {
+  padding-top: var(--space-8);
+}
+
+.auth-page__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
