@@ -3,7 +3,7 @@ import { useAddPhoto } from '../hooks/useAddPhoto';
 import { UploadZone } from '../../../shared/ui/components/UploadZone/UploadZone';
 import type { Plant } from '../models/plant.types';
 import { Badge } from '../../../shared/ui/components/Badge/Badge';
-import { statusToVariant } from '../models/plant.mappers';
+import { statusToVariant } from '../models/report-status.mappers';
 import { formatDate } from '../../../shared/helpers';
 import './PlantTimelineView.css';
 import { PlantComparison } from './PlantsComparison';

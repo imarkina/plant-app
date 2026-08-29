@@ -1,7 +1,7 @@
 import type { PhotoEntry } from '../models/plant.types';
 import { usePlantComparison } from '../hooks/usePlantComparison';
 import './PlantsComparison.css';
-import { trendMeta } from '../models/plant.mappers';
+import { getComparisonTrendMeta } from '../models/plant-comparison.mappers';
 import { useState } from 'react';
 import { AdjustmentCard } from '../../../shared/ui/components/AdjustmentCard/AdjustmentCard';
 import { AlertTriangle, ChevronDown, CircleCheck, Eye } from 'lucide-react';
@@ -42,7 +42,7 @@ export const PlantComparison = ({ photos }: Props) => {
         <div className="comparison__card">
           {/* Вердикт с меткой тренда */}
           {(() => {
-            const { Icon, label, variant } = trendMeta(result.summary.status);
+            const { Icon, label, variant } = getComparisonTrendMeta(result.summary.status);
             return (
               <div className="comparison__summary">
                 <span className={`comparison__trend comparison__trend--${variant}`}>

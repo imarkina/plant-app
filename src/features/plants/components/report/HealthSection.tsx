@@ -1,7 +1,7 @@
 import { Card } from '../../../../shared/ui/components/Card/Card';
 import { Badge } from '../../../../shared/ui/components/Badge/Badge';
 import type { PlantReport } from '../../models/plant-report.types';
-import { statusToVariant, threatToVariant } from '../../models/plant.mappers';
+import { statusToVariant, threatToVariant } from '../../models/report-status.mappers';
 
 type Props = {
   title: string;

@@ -5,6 +5,14 @@ import type { PhotoEntry } from '../models/plant.types';
 
 import type { PlantComparison } from '../models/plant-comparison.types';
 
+const COMPARE_ENDPOINT = '/api/compare';
+const COMPARE_IMAGE_MIME_TYPE = 'image/jpeg';
+const COMPARISON_FAILED_MESSAGE = 'Не удалось сравнить';
+
+interface CompareResponseBody {
+  result: PlantComparison;
+}
+
 export const usePlantComparison = () => {
   const [result, setResult] = useState<PlantComparison | null>(null);
   const [loading, setLoading] = useState(false);
@@ -13,25 +21,25 @@ export const usePlantComparison = () => {
   const compare = async (first: PhotoEntry, last: PhotoEntry) => {
     setLoading(true);
     try {
-      const [imgFirst, imgLast] = await Promise.all([
+      const [firstImageBase64, lastImageBase64] = await Promise.all([
         imageUrlToBase64(first.imageUrl!),
         imageUrlToBase64(last.imageUrl!),
       ]);
-      const res = await fetch('/api/compare', {
+      const response = await fetch(COMPARE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          base64First: imgFirst,
-          base64Last: imgLast,
+          base64First: firstImageBase64,
+          base64Last: lastImageBase64,
           analysisFirst: first.analysis,
           analysisLast: last.analysis,
-          mimeType: 'image/jpeg',
+          mimeType: COMPARE_IMAGE_MIME_TYPE,
         }),
       });
-      const data = await res.json();
-      setResult(data.result);
-    } catch (e) {
-      setError('Не удалось сравнить');
+      const responseBody: CompareResponseBody = await response.json();
+      setResult(responseBody.result);
+    } catch {
+      setError(COMPARISON_FAILED_MESSAGE);
     } finally {
       setLoading(false);
     }
