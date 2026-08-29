@@ -2,7 +2,7 @@ import { Card } from '../../../../shared/ui/components/Card/Card';
 import { Badge } from '../../../../shared/ui/components/Badge/Badge';
 import type { PlantReport } from '../../models/plant-report.types';
 import './IdentificationHeader.css';
-import { confidenceToVariant } from '../../models/plant.mappers';
+import { confidenceToVariant } from '../../models/report-status.mappers';
 
 type Props = {
   identification: PlantReport['identification'];

@@ -2,6 +2,13 @@ import { useState } from 'react';
 import type { PlantReport } from '../models/plant-report.types';
 import { blobToBase64 } from '../../../shared/image/blob';
 
+const ANALYZE_ENDPOINT = '/api/analyze';
+const ANALYSIS_FAILED_MESSAGE = 'Не удалось проанализировать фото';
+
+interface AnalyzeResponseBody {
+  result?: PlantReport;
+}
+
 export const usePlantReport = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -11,22 +18,22 @@ export const usePlantReport = () => {
     setError(null);
 
     try {
-      const base64 = await blobToBase64(image);
+      const base64Image = await blobToBase64(image);
 
-      const res = await fetch('/api/analyze', {
+      const response = await fetch(ANALYZE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: base64, mimeType: image.type }),
+        body: JSON.stringify({ image: base64Image, mimeType: image.type }),
       });
 
-      if (!res.ok) {
-        throw new Error('Не удалось проанализировать фото');
+      if (!response.ok) {
+        throw new Error(ANALYSIS_FAILED_MESSAGE);
       }
 
-      const data = await res.json();
-      return data.result;
-    } catch (e) {
-      setError('Не удалось проанализировать фото');
+      const responseBody: AnalyzeResponseBody = await response.json();
+      return responseBody.result;
+    } catch {
+      setError(ANALYSIS_FAILED_MESSAGE);
     } finally {
       setLoading(false);
     }
