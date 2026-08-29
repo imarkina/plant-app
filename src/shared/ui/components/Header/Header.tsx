@@ -1,9 +1,11 @@
 import { useTheme } from '../../hooks/useTheme';
-import { Leaf, Moon, Sun } from 'lucide-react';
+import { Leaf, LogOut, Moon, Sun } from 'lucide-react';
+import { useAuthContext } from '../../../../features/auth';
 import './Header.css';
 
 export const Header = () => {
   const { theme, toggle } = useTheme();
+  const { user, signOut } = useAuthContext();
 
   return (
     <>
@@ -13,9 +15,21 @@ export const Header = () => {
             <Leaf />
           </div>
         </div>
-        <button className="app-header__theme" onClick={toggle}>
-          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-        </button>
+        <div className="app-header__actions">
+          {user && (
+            <button
+              className="app-header__theme"
+              onClick={() => void signOut()}
+              aria-label="Выйти"
+              title="Выйти"
+            >
+              <LogOut size={18} />
+            </button>
+          )}
+          <button className="app-header__theme" onClick={toggle}>
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+        </div>
       </header>
       <h1 className="home-greeting">Что растёт сегодня?</h1>
     </>
