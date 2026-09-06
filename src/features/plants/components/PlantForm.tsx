@@ -7,9 +7,11 @@ import { usePlantsContext } from '../hooks/usePlantsContext';
 import { useNavigate } from 'react-router-dom';
 import { UploadZone } from '../../../shared/ui/components/UploadZone/UploadZone';
 import { Tabs } from '../../../shared/ui/components/Tabs/Tabs';
+import { PlantSearch } from '../../search';
 
 const HOME_TABS = [
   { id: 'active', label: 'Активные' },
+  { id: 'search', label: 'Поиск' },
   { id: 'archive', label: 'Архив' },
 ];
 
@@ -47,6 +49,7 @@ function PlantForm() {
       {error && <div>{error}</div>}
       <Tabs tabs={HOME_TABS} active={activeTab} onChange={setActiveTab} />
       {activeTab === 'active' && <PlantList plants={activePlants} />}
+      {activeTab === 'search' && <PlantSearch plants={activePlants} />}
       {activeTab === 'archive' && <ArchivedPlantList plants={archivedPlants} />}
     </div>
   );
