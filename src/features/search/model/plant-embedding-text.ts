@@ -11,12 +11,10 @@ export function buildPlantEmbeddingText(plant: Plant): string | null {
     return null;
   }
 
-  const { identification, health } = latestAnalysis;
+  const { health } = latestAnalysis;
 
   return [
     plant.name,
-    identification.commonName,
-    identification.botanicalName,
     health.description,
     health.diagnosis,
   ]
