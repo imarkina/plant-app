@@ -12,6 +12,7 @@ export interface CareTask {
 
 export interface CareTasksRepository {
   getCareTasks(plantId: string): Promise<CareTask[]>;
+  getCareTasksForPlants(plantIds: string[]): Promise<CareTask[]>;
   addCareTask(task: CareTask): Promise<void>;
   markCareDone(taskId: string): Promise<void>;
   // deleteCareTask(taskId: string): Promise<void>;

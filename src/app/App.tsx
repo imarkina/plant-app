@@ -17,7 +17,7 @@ const PlantsLayout = () => (
 
 function App() {
   return (
-    <div style={{ paddingBottom: '80px', maxWidth: '600px', margin: '0 auto' }}>
+    <div className="mx-auto max-w-full pb-20 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
       <BrowserRouter>
         <AuthProvider>
           <Routes>

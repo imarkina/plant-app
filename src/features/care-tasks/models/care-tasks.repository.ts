@@ -13,6 +13,20 @@ class SupabaseCareTasksRepository implements CareTasksRepository {
     return data.map(supabaseRowToCareTask);
   }
 
+  async getCareTasksForPlants(plantIds: string[]): Promise<CareTask[]> {
+    if (plantIds.length === 0) {
+      return [];
+    }
+
+    const { data, error } = await supabase.from('care_tasks').select('*').in('plant_id', plantIds);
+
+    if (error) {
+      throw error;
+    }
+
+    return data.map(supabaseRowToCareTask);
+  }
+
   async addCareTask(task: CareTask): Promise<void> {
     const { error } = await supabase.from('care_tasks').insert({
       id: task.id,

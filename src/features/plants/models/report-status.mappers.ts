@@ -48,3 +48,28 @@ export function confidenceToVariant(confidencePercent: number): BadgeVariant {
 
   return 'neutral';
 }
+
+/** Собирает 5 статусов здоровья в 3 бакета для Collection-фильтра ("здорово/предупреждение/болеет"). */
+export type HealthBucket = 'healthy' | 'warning' | 'sick';
+
+const HEALTH_BUCKET: Record<HealthStatus, HealthBucket> = {
+  excellent: 'healthy',
+  good: 'healthy',
+  fair: 'warning',
+  poor: 'sick',
+  critical: 'sick',
+};
+
+export function healthStatusToBucket(status: HealthStatus): HealthBucket {
+  return HEALTH_BUCKET[status];
+}
+
+const HEALTH_BUCKET_DOT_CLASSES: Record<HealthBucket, string> = {
+  healthy: 'bg-accent',
+  warning: 'bg-warn',
+  sick: 'bg-danger',
+};
+
+export function healthBucketToDotClassName(bucket: HealthBucket): string {
+  return HEALTH_BUCKET_DOT_CLASSES[bucket];
+}
