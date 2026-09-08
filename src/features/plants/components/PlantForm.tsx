@@ -1,6 +1,6 @@
 import { type ChangeEvent, useState } from 'react';
 
-import { PlantList } from './PlantList';
+import { CollectionTab } from './CollectionTab';
 import { ArchivedPlantList } from './ArchivedPlantList';
 import { useAddPlant } from '../hooks/useAddPlant';
 import { usePlantsContext } from '../hooks/usePlantsContext';
@@ -48,7 +48,7 @@ function PlantForm() {
       />
       {error && <div>{error}</div>}
       <Tabs tabs={HOME_TABS} active={activeTab} onChange={setActiveTab} />
-      {activeTab === 'active' && <PlantList plants={activePlants} />}
+      {activeTab === 'active' && <CollectionTab plants={activePlants} />}
       {activeTab === 'search' && <PlantSearch plants={activePlants} />}
       {activeTab === 'archive' && <ArchivedPlantList plants={archivedPlants} />}
     </div>
