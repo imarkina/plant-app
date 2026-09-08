@@ -1,57 +1,235 @@
+@import 'tailwindcss';
+
+/*
+ * Plant Parent OS — Design System v1.0 (2026-09-08).
+ * Тёмная тема — дефолт (по спеке, раздел 3.1); светлая — [data-theme='light'].
+ * :root ниже уже задаёт тёмные значения, чтобы не было мигания темы при
+ * загрузке (useTheme.ts стартует с 'dark', синхронно с этим файлом).
+ */
+
+@theme {
+  /* ── Breakpoints (раздел 2) — добавлены поверх дефолтных Tailwind ── */
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1440px;
+
+  /* ── Цвета (раздел 3.1) — значения тёмной темы, светлая переопределяет ниже ── */
+  --color-bg-primary: #0b120f;
+  --color-bg-secondary: #121c18;
+  --color-bg-tertiary: #1a2620;
+  --color-bg-elevated: #1f2e27;
+  --color-surface-glass: rgba(255, 255, 255, 0.04);
+  --color-surface-glass-border: rgba(255, 255, 255, 0.08);
+  --color-text-primary: #f0fdf4;
+  --color-text-secondary: #a7f3d0;
+  --color-text-muted: rgba(167, 243, 208, 0.5);
+  --color-text-inverse: #064e3b;
+  --color-accent: #4ade80;
+  --color-accent-hover: #22c55e;
+  --color-accent-glow: rgba(74, 222, 128, 0.25);
+  --color-warn: #fbbf24;
+  --color-warn-soft: rgba(251, 191, 36, 0.12);
+  --color-danger: #f87171;
+  --color-danger-soft: rgba(248, 113, 113, 0.1);
+  --color-info: #60a5fa;
+  --color-info-soft: rgba(96, 165, 250, 0.1);
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  /* ── Градиенты (раздел 3.2) — тёмная тема ── */
+  --background-image-hero: linear-gradient(
+    135deg,
+    rgba(21, 128, 61, 0.3) 0%,
+    rgba(6, 78, 59, 0.4) 100%
+  );
+  --background-image-card-overlay: linear-gradient(
+    to top,
+    rgba(11, 18, 15, 0.9) 0%,
+    transparent 60%
+  );
+  --background-image-glow-top: radial-gradient(
+    ellipse at 20% 0%,
+    rgba(74, 222, 128, 0.12) 0%,
+    transparent 50%
+  );
+  --background-image-glow-bottom: radial-gradient(
+    ellipse at 80% 100%,
+    rgba(16, 185, 129, 0.08) 0%,
+    transparent 50%
+  );
+
+  /* ── Типографика (раздел 4) ── */
+  --font-sans:
+    Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Мобильный размер = имя токена; десктопный = имя + "-lg" (используть с variant desktop:) */
+  --text-hero: 32px;
+  --text-hero--line-height: 1.1;
+  --text-hero--font-weight: 800;
+  --text-hero--letter-spacing: -0.02em;
+  --text-hero-lg: 48px;
+  --text-hero-lg--line-height: 1.1;
+  --text-hero-lg--font-weight: 800;
+  --text-hero-lg--letter-spacing: -0.02em;
+
+  --text-h1: 28px;
+  --text-h1--line-height: 1.15;
+  --text-h1--font-weight: 700;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1-lg: 40px;
+  --text-h1-lg--line-height: 1.15;
+  --text-h1-lg--font-weight: 700;
+  --text-h1-lg--letter-spacing: -0.02em;
+
+  --text-h2: 22px;
+  --text-h2--line-height: 1.2;
+  --text-h2--font-weight: 700;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2-lg: 32px;
+  --text-h2-lg--line-height: 1.2;
+  --text-h2-lg--font-weight: 700;
+  --text-h2-lg--letter-spacing: -0.02em;
+
+  --text-h3: 18px;
+  --text-h3--line-height: 1.25;
+  --text-h3--font-weight: 600;
+  --text-h3--letter-spacing: -0.02em;
+  --text-h3-lg: 24px;
+  --text-h3-lg--line-height: 1.25;
+  --text-h3-lg--font-weight: 600;
+  --text-h3-lg--letter-spacing: -0.02em;
+
+  --text-h4: 16px;
+  --text-h4--line-height: 1.3;
+  --text-h4--font-weight: 600;
+  --text-h4--letter-spacing: -0.02em;
+  --text-h4-lg: 18px;
+  --text-h4-lg--line-height: 1.3;
+  --text-h4-lg--font-weight: 600;
+  --text-h4-lg--letter-spacing: -0.02em;
+
+  --text-body: 15px;
+  --text-body--line-height: 1.6;
+  --text-body--font-weight: 400;
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 1.5;
+  --text-body-sm--font-weight: 400;
+  --text-body-sm-lg: 14px;
+  --text-body-sm-lg--line-height: 1.5;
+  --text-body-sm-lg--font-weight: 400;
+
+  --text-caption: 11px;
+  --text-caption--line-height: 1.4;
+  --text-caption--font-weight: 500;
+  --text-caption-lg: 12px;
+  --text-caption-lg--line-height: 1.4;
+  --text-caption-lg--font-weight: 500;
+
+  --text-label: 10px;
+  --text-label--line-height: 1.2;
+  --text-label--font-weight: 600;
+  --text-label--letter-spacing: 0.05em;
+  --text-label-lg: 11px;
+  --text-label-lg--line-height: 1.2;
+  --text-label-lg--font-weight: 600;
+  --text-label-lg--letter-spacing: 0.05em;
+
+  --text-button: 14px;
+  --text-button--line-height: 1;
+  --text-button--font-weight: 600;
+
+  --text-nav: 12px;
+  --text-nav--line-height: 1;
+  --text-nav--font-weight: 500;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.05em;
+
+  /* ── Радиусы (раздел 6, значения компонентов) ── */
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-4xl: 32px;
+
+  /* ── Тени и glow (раздел 7) — тёмная тема ── */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-fab: 0 4px 24px rgba(74, 222, 128, 0.3);
+  --shadow-glow-accent: 0 0 20px rgba(74, 222, 128, 0.25);
+  --shadow-glow-warn: 0 0 12px rgba(251, 191, 36, 0.3);
+  --shadow-glow-danger: 0 0 12px rgba(248, 113, 113, 0.3);
+
+  /* ── Motion (раздел 13) ── */
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  /* easing-default из спеки = встроенный Tailwind ease-in-out (0.4,0,0.2,1) */
+}
+
+/*
+ * Вне @theme: значения, не являющиеся частью системы теми Tailwind
+ * (z-index, именованные duration для ручного CSS, старые алиасы токенов).
+ * Именно поэтому используем :root вместо продолжения @theme.
+ */
 :root {
-  /* ── Уровень 1: примитивы (сырые цвета, не зависят от темы) ── */
-  --green-900: #14260f; /* самый тёмный — текст на светлом, фон тёмной темы */
-  --green-700: #2d4a1e; /* границы тёмной темы */
-  --green-500: #5c8a2d; /* акцент-зелёный, ссылки */
-  --green-100: #e8f5cc; /* светлый тинт (success-фон) */
-  --cream-50: #fbfbf6; /* тёплый фон светлой темы */
-  --white: #ffffff; /* поверхности светлой темы */
+  /* ── Z-index (раздел 12) ── */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-nav: 50;
+  --z-fab: 60;
+  --z-drawer: 100;
+  --z-modal: 200;
+  --z-popover: 300;
+  --z-toast: 400;
+  --z-confetti: 500;
 
-  --lime-400: #c3f53d; /* ГЛАВНЫЙ акцент */
-  --lime-500: #a8db28; /* акцент hover (темнее) */
+  /* ── Именованные длительности (раздел 13) — для ручных transition в CSS.
+     В Tailwind-классах достаточно встроенных duration-100/200/300/500/700. ── */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
 
-  --berry-500: #ce4760; /* danger-текст/акцент */
-  --berry-100: #fbeaf0; /* danger-фон (светлый тинт) */
-  --berry-900: #4b1528; /* danger-фон тёмной темы */
+  /* ── Алиасы старых токенов (совместимость с существующими *.css) ──
+     Новая система не отличает "primary"/"secondary" акцент и success
+     от accent — оба старых токена смотрят на новый --color-accent. */
+  --color-bg: var(--color-bg-primary);
+  --color-surface: var(--color-bg-secondary);
+  --color-text: var(--color-text-primary);
+  --color-border: var(--color-surface-glass-border);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
 
-  --green-surface-dark: #1e3618; /* поверхности тёмной темы */
-  --green-tint-dark: #27500a; /* success-фон тёмной темы */
-  --green-muted-dark: #8fb04a; /* приглушённый текст тёмной темы */
+  --color-primary: var(--color-accent);
+  --color-primary-hover: var(--color-accent-hover);
+  --color-on-primary: var(--color-text-inverse);
 
-  /* ── Уровень 2: семантические токены — СВЕТЛАЯ тема (роли → примитивы) ── */
-  --color-bg: var(--cream-50);
-  --color-surface: var(--white);
-  --color-text: var(--green-900);
-  --color-text-muted: #6b7a5a;
-  --color-border: #e0ded3;
-  --color-border-strong: #c9c7bc;
+  --color-success-bg: var(--color-accent-glow);
+  --color-success-text: var(--color-accent);
+  --color-danger-bg: var(--color-danger-soft);
+  --color-danger-text: var(--color-danger);
+  --color-neutral-bg: var(--color-bg-tertiary);
+  --color-neutral-text: var(--color-text-secondary);
 
-  --color-primary: var(--lime-400);
-  --color-primary-hover: var(--lime-500);
-  --color-on-primary: var(--green-900); /* тёмный текст на светлом лайме — a11y */
+  --color-surface-sunken: var(--color-bg-tertiary);
 
-  --color-accent: var(--green-500); /* второстепенный акцент, ссылки */
-
-  --color-success-bg: var(--green-100);
-  --color-success-text: var(--green-500);
-  --color-danger-bg: var(--berry-100);
-  --color-danger-text: var(--berry-500);
-  --color-neutral-bg: #eceee4; /* светлый серо-зелёный */
-  --color-neutral-text: #5a6650; /* приглушённый тёмный */
-
-  --color-surface-sunken: #eceee4;
-
-  /* ── Нецветовые токены (одинаковы в обеих темах) ── */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
-  --space-5: 14px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
   --radius-pill: 999px;
 
   --font-size-xs: 10px;
@@ -62,24 +240,52 @@
   --font-weight-normal: 400;
   --font-weight-bold: 500;
 
-  --font-family: 'Nunito Sans', system-ui, -apple-system, sans-serif;
+  --font-family: var(--font-sans);
 }
 
-/* ── Уровень 2: переопределение ролей для ТЁМНОЙ темы ── */
-[data-theme='dark'] {
-  --color-bg: var(--green-900);
-  --color-surface: var(--green-surface-dark);
-  --color-text: var(--green-100);
-  --color-text-muted: var(--green-muted-dark);
-  --color-border: var(--green-700);
-  --color-border-strong: #3d5a2a;
+/* ── Светлая тема — переопределение (раздел 3.1, 3.2, 7.2) ── */
+[data-theme='light'] {
+  --color-bg-primary: #f6f7f6;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #edf2ee;
+  --color-bg-elevated: #ffffff;
+  --color-surface-glass: rgba(255, 255, 255, 0.7);
+  --color-surface-glass-border: rgba(0, 0, 0, 0.06);
+  --color-text-primary: #0f1c17;
+  --color-text-secondary: #3d6b54;
+  --color-text-muted: rgba(61, 107, 84, 0.55);
+  --color-text-inverse: #ffffff;
+  --color-accent: #16a34a;
+  --color-accent-hover: #15803d;
+  --color-accent-glow: rgba(22, 163, 74, 0.2);
+  --color-warn: #d97706;
+  --color-warn-soft: rgba(217, 119, 6, 0.08);
+  --color-danger: #dc2626;
+  --color-danger-soft: rgba(220, 38, 38, 0.06);
+  --color-info: #2563eb;
+  --color-info-soft: rgba(37, 99, 235, 0.06);
+  --color-overlay: rgba(0, 0, 0, 0.35);
 
-  --color-success-bg: var(--green-tint-dark);
-  --color-success-text: #c0dd97;
-  --color-danger-bg: var(--berry-900);
-  --color-danger-text: #f4c0d1;
-  --color-neutral-bg: #2a3826;
-  --color-neutral-text: #a8b89a;
+  --background-image-hero: linear-gradient(
+    135deg,
+    rgba(22, 163, 74, 0.1) 0%,
+    rgba(21, 128, 61, 0.15) 100%
+  );
+  --background-image-card-overlay: linear-gradient(
+    to top,
+    rgba(246, 247, 246, 0.95) 0%,
+    transparent 50%
+  );
+  --background-image-glow-top: radial-gradient(
+    ellipse at 20% 0%,
+    rgba(22, 163, 74, 0.06) 0%,
+    transparent 50%
+  );
 
-  --color-surface-sunken: #2a3d24;
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-fab: 0 4px 20px rgba(22, 163, 74, 0.25);
+  --shadow-glow-accent: 0 0 16px rgba(22, 163, 74, 0.2);
+
+  --color-border-strong: rgba(0, 0, 0, 0.12);
 }
