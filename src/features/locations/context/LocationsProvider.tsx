@@ -3,11 +3,11 @@ import { useLocations } from '../hooks/useLocations';
 import { LocationsContext } from './LocationsContext';
 
 export const LocationsProvider = ({ children }: { children: React.ReactNode }) => {
-  const { sites, locations, loading, createSite, createLocation, removeLocation } = useLocations();
+  const { locations, loading, createLocation, removeLocation } = useLocations();
 
   return (
     <LocationsContext.Provider
-      value={{ sites, locations, loading, createSite, createLocation, removeLocation }}
+      value={{ locations, loading, createLocation, removeLocation }}
     >
       {children}
     </LocationsContext.Provider>

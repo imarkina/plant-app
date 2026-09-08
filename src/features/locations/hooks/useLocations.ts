@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react';
-import type { Location, NewLocationInput, Site } from '../models/location.types';
-import { locationsRepository, sitesRepository } from '../models/location.repository';
+import type { Location, NewLocationInput } from '../models/location.types';
+import { locationsRepository } from '../models/location.repository';
 
 export function useLocations() {
-  const [sites, setSites] = useState<Site[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refresh = async () => {
-    const [loadedSites, loadedLocations] = await Promise.all([
-      sitesRepository.getAll(),
-      locationsRepository.getAll(),
-    ]);
-    setSites(loadedSites);
+    const loadedLocations = await locationsRepository.getAll();
     setLocations(loadedLocations);
   };
 
@@ -29,12 +24,6 @@ export function useLocations() {
     void loadInitial();
   }, []);
 
-  const createSite = async (name: string): Promise<Site> => {
-    const site = await sitesRepository.create({ name });
-    await refresh();
-    return site;
-  };
-
   const createLocation = async (input: NewLocationInput): Promise<Location> => {
     const location = await locationsRepository.create(input);
     await refresh();
@@ -46,5 +35,5 @@ export function useLocations() {
     await refresh();
   };
 
-  return { sites, locations, loading, createSite, createLocation, removeLocation };
+  return { locations, loading, createLocation, removeLocation };
 }
