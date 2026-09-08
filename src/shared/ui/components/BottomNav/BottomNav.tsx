@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom';
 import { Home, Users, User } from 'lucide-react';
-import './BottomNav.css';
 
 const items = [
   { to: '/', label: 'Главная', icon: Home, end: true },
@@ -10,18 +9,20 @@ const items = [
 
 export const BottomNav = () => {
   return (
-    <nav className="bottom-nav">
+    <nav className="fixed bottom-0 left-1/2 z-[var(--z-nav)] flex w-full max-w-[440px] -translate-x-1/2 items-center justify-around rounded-t-3xl border-t border-surface-glass-border bg-bg-elevated/90 px-2 pt-2 pb-[calc(8px+env(safe-area-inset-bottom))] backdrop-blur-xl">
       {items.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}
           to={to}
           end={end}
           className={({ isActive }) =>
-            isActive ? 'bottom-nav__item bottom-nav__item--active' : 'bottom-nav__item'
+            `flex flex-col items-center gap-1 rounded-2xl px-4 py-2 text-text-muted transition-colors duration-100 ${
+              isActive ? 'bg-accent/15 text-accent' : ''
+            }`
           }
         >
-          <Icon size={22} strokeWidth={2} />
-          <span className="bottom-nav__label">{label}</span>
+          <Icon size={20} strokeWidth={2} />
+          <span className="sr-only">{label}</span>
         </NavLink>
       ))}
     </nav>
