@@ -11,7 +11,7 @@ export type {
 } from './models/location.types';
 export { locationsRepository, sitesRepository } from './models/location.repository';
 export { roomIcon } from './models/location-icon';
-export { windowDirectionLabel, lightLevelLabel } from './models/location-options';
+export { windowDirectionLabel, windowDirectionPhrase, lightLevelLabel } from './models/location-options';
 export { LocationsProvider } from './context/LocationsProvider';
 export { useLocationsContext } from './hooks/useLocationsContext';
 export { LocationForm } from './components/LocationForm';

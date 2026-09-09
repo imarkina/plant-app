@@ -18,6 +18,18 @@ export function windowDirectionLabel(value: WindowDirection | null): string | nu
   return WINDOW_DIRECTION_OPTIONS.find((option) => option.value === value)?.label ?? null;
 }
 
+const WINDOW_DIRECTION_PHRASE: Record<WindowDirection, string> = {
+  N: 'Северное окно',
+  S: 'Южное окно',
+  E: 'Восточное окно',
+  W: 'Западное окно',
+};
+
+/** "Южное окно" и т.п. — для строк вида "5 растений · Южное окно". */
+export function windowDirectionPhrase(value: WindowDirection | null): string | null {
+  return value ? WINDOW_DIRECTION_PHRASE[value] : null;
+}
+
 export function lightLevelLabel(value: LightLevel | null): string | null {
   return LIGHT_LEVEL_OPTIONS.find((option) => option.value === value)?.label ?? null;
 }
