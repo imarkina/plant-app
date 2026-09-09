@@ -65,7 +65,7 @@ export const PlantBottomSheet = ({ plant, open, locations, onClose }: Props) => 
     .join(' · ');
 
   return (
-    <BottomSheet open={open} onClose={onClose}>
+    <BottomSheet open={open} onClose={onClose} labelledBy="plant-sheet-title">
       <div className="relative -mx-4 -mt-1 mb-4 aspect-[16/11] overflow-hidden">
         {photo?.imageUrl && (
           <img src={photo.imageUrl} alt={name} className="absolute inset-0 size-full object-cover" />
@@ -80,7 +80,9 @@ export const PlantBottomSheet = ({ plant, open, locations, onClose }: Props) => 
         </button>
       </div>
 
-      <h2 className="text-h1 text-text-primary">{name}</h2>
+      <h2 id="plant-sheet-title" className="text-h1 text-text-primary">
+        {name}
+      </h2>
       {subtitle && <p className="mt-1 text-body-sm text-text-muted italic">{subtitle}</p>}
 
       <div className="mt-4 grid grid-cols-3 gap-2">
