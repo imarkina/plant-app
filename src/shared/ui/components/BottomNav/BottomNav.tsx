@@ -9,7 +9,7 @@ const items = [
 
 export const BottomNav = () => {
   return (
-    <nav className="fixed bottom-0 left-1/2 z-[var(--z-nav)] flex w-full max-w-[440px] -translate-x-1/2 items-center justify-around rounded-t-3xl border-t border-surface-glass-border bg-bg-elevated/90 px-2 pt-2 pb-[calc(8px+env(safe-area-inset-bottom))] backdrop-blur-xl">
+    <nav className="fixed bottom-0 left-1/2 z-[var(--z-nav)] flex w-full max-w-[440px] -translate-x-1/2 items-center justify-around rounded-t-3xl border-t border-surface-glass-border bg-surface-glass px-2 pt-2 pb-[calc(8px+env(safe-area-inset-bottom))] backdrop-blur-xl backdrop-saturate-150 shadow-elevated">
       {items.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}

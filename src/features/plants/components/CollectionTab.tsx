@@ -1,6 +1,9 @@
-import { useMemo, useState } from 'react';
+import { type ChangeEvent, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Plant } from '../models/plant.types';
 import { PlantGrid } from './PlantGrid';
+import { PlantListView } from './PlantListView';
+import { CollectionHeader, type CollectionView } from './CollectionHeader';
 import {
   ALL_ROOMS_OPTION,
   CollectionFilters,
@@ -10,6 +13,8 @@ import {
 import { healthStatusToBucket } from '../models/report-status.mappers';
 import { useLocations } from '../../locations/hooks/useLocations';
 import { useCareTasksForPlants } from '../../care-tasks';
+import { useAddPlant } from '../hooks/useAddPlant';
+import { FAB } from '../../../shared/ui/components/FAB/FAB';
 
 type Props = {
   plants: Plant[];
@@ -26,11 +31,20 @@ export const CollectionTab = ({ plants }: Props) => {
   const plantIds = useMemo(() => plants.map((plant) => plant.id), [plants]);
   const { tasksByPlantId } = useCareTasksForPlants(plantIds);
   const [filters, setFilters] = useState<CollectionFiltersValue>(INITIAL_FILTERS);
+  const [view, setView] = useState<CollectionView>('grid');
+  const navigate = useNavigate();
+  const { addPlantFromFile, loading } = useAddPlant();
 
   const locationNameById = useMemo(
     () => new Map(locations.map((location) => [location.id, location.name])),
     [locations],
   );
+
+  const attentionCount = plants.filter((plant) => {
+    const status = plant.photos[0]?.analysis?.health.status;
+
+    return status ? healthStatusToBucket(status) !== 'healthy' : false;
+  }).length;
 
   const filteredPlants = plants.filter((plant) => {
     const analysis = plant.photos[0]?.analysis;
@@ -64,14 +78,44 @@ export const CollectionTab = ({ plants }: Props) => {
     return true;
   });
 
+  const handleFileSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const plantId = await addPlantFromFile(file);
+
+    if (plantId) {
+      navigate(`/plant/${plantId}`);
+    }
+  };
+
   return (
     <div>
-      <CollectionFilters value={filters} onChange={setFilters} rooms={locations} />
-      <PlantGrid
-        plants={filteredPlants}
-        locationNameById={locationNameById}
-        careTasksByPlantId={tasksByPlantId}
+      <CollectionHeader
+        plantsCount={plants.length}
+        roomsCount={locations.length}
+        attentionCount={attentionCount}
+        view={view}
+        onViewChange={setView}
       />
+      <CollectionFilters value={filters} onChange={setFilters} rooms={locations} />
+      {view === 'grid' ? (
+        <PlantGrid
+          plants={filteredPlants}
+          locationNameById={locationNameById}
+          careTasksByPlantId={tasksByPlantId}
+        />
+      ) : (
+        <PlantListView
+          plants={filteredPlants}
+          locationNameById={locationNameById}
+          careTasksByPlantId={tasksByPlantId}
+        />
+      )}
+      <FAB onFileSelect={handleFileSelect} loading={loading} />
     </div>
   );
 };
