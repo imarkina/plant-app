@@ -1,8 +1,8 @@
-import { type ChangeEvent, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { type ChangeEvent, useEffect, useMemo, useState } from 'react';
 import type { Plant } from '../models/plant.types';
 import { PlantGrid } from './PlantGrid';
 import { PlantListView } from './PlantListView';
+import { PlantBottomSheet } from './PlantBottomSheet';
 import { CollectionHeader, type CollectionView } from './CollectionHeader';
 import {
   ALL_ROOMS_OPTION,
@@ -32,8 +32,18 @@ export const CollectionTab = ({ plants }: Props) => {
   const { tasksByPlantId } = useCareTasksForPlants(plantIds);
   const [filters, setFilters] = useState<CollectionFiltersValue>(INITIAL_FILTERS);
   const [view, setView] = useState<CollectionView>('grid');
-  const navigate = useNavigate();
   const { addPlantFromFile, loading } = useAddPlant();
+
+  const [openPlantId, setOpenPlantId] = useState<string | null>(null);
+  const [lastOpenPlant, setLastOpenPlant] = useState<Plant | null>(null);
+
+  useEffect(() => {
+    const found = plants.find((plant) => plant.id === openPlantId);
+
+    if (found) {
+      queueMicrotask(() => setLastOpenPlant(found));
+    }
+  }, [openPlantId, plants]);
 
   const locationNameById = useMemo(
     () => new Map(locations.map((location) => [location.id, location.name])),
@@ -88,7 +98,7 @@ export const CollectionTab = ({ plants }: Props) => {
     const plantId = await addPlantFromFile(file);
 
     if (plantId) {
-      navigate(`/plant/${plantId}`);
+      setOpenPlantId(plantId);
     }
   };
 
@@ -107,15 +117,26 @@ export const CollectionTab = ({ plants }: Props) => {
           plants={filteredPlants}
           locationNameById={locationNameById}
           careTasksByPlantId={tasksByPlantId}
+          onSelect={setOpenPlantId}
         />
       ) : (
         <PlantListView
           plants={filteredPlants}
           locationNameById={locationNameById}
           careTasksByPlantId={tasksByPlantId}
+          onSelect={setOpenPlantId}
         />
       )}
       <FAB onFileSelect={handleFileSelect} loading={loading} />
+
+      {lastOpenPlant && (
+        <PlantBottomSheet
+          plant={lastOpenPlant}
+          open={openPlantId !== null}
+          locations={locations}
+          onClose={() => setOpenPlantId(null)}
+        />
+      )}
     </div>
   );
 };
