@@ -1,6 +1,8 @@
 import { Search } from 'lucide-react';
 import { ChipSelect, type ChipOption } from '../../../shared/ui/components/ChipSelect/ChipSelect';
 import type { HealthBucket } from '../models/report-status.mappers';
+import { RoomChips } from './RoomChips';
+import type { Location } from '../../locations';
 
 const STATUS_OPTIONS: ChipOption<HealthBucket>[] = [
   { value: 'healthy', label: 'Здорово' },
@@ -20,36 +22,28 @@ export type CollectionFiltersValue = {
 type Props = {
   value: CollectionFiltersValue;
   onChange: (value: CollectionFiltersValue) => void;
-  rooms: { id: string; name: string }[];
+  rooms: Location[];
 };
 
 export const CollectionFilters = ({ value, onChange, rooms }: Props) => {
   return (
     <div className="mt-4 flex flex-col gap-3">
-      <div className="flex items-center gap-2 rounded-xl border border-surface-glass-border bg-bg-secondary px-3 py-2.5">
+      <div className="flex items-center gap-2 rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 backdrop-blur-xl backdrop-saturate-150 shadow-card">
         <Search size={18} className="text-text-muted" />
         <input
           type="text"
           value={value.search}
           onChange={(event) => onChange({ ...value, search: event.target.value })}
-          placeholder="Поиск по названию"
+          placeholder="Найти растение..."
           className="flex-1 bg-transparent text-body font-sans text-text-primary outline-none placeholder:text-text-muted"
         />
       </div>
 
-      <select
+      <RoomChips
+        rooms={rooms}
         value={value.roomId}
-        onChange={(event) => onChange({ ...value, roomId: event.target.value })}
-        className="rounded-xl border border-surface-glass-border bg-bg-secondary px-3 py-2.5 text-body-sm font-sans text-text-primary"
-      >
-        <option value={ALL_ROOMS_OPTION}>Все комнаты</option>
-        <option value={NO_ROOM_OPTION}>Без комнаты</option>
-        {rooms.map((room) => (
-          <option key={room.id} value={room.id}>
-            {room.name}
-          </option>
-        ))}
-      </select>
+        onChange={(roomId) => onChange({ ...value, roomId })}
+      />
 
       <ChipSelect
         options={STATUS_OPTIONS}

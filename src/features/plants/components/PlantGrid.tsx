@@ -3,6 +3,7 @@ import { Droplet } from 'lucide-react';
 import type { Plant } from '../models/plant.types';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../models/report-status.mappers';
 import { formatDue, getCareStatus, getNextDue, type CareTask } from '../../care-tasks';
+import { roomIcon } from '../../locations';
 
 type Props = {
   plants: Plant[];
@@ -21,55 +22,73 @@ export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId }: Prop
         const photo = plant.photos[0];
         const analysis = photo?.analysis;
         const name = analysis?.identification.commonName ?? plant.name;
+        const botanicalName = analysis?.identification.botanicalName;
         const roomName = plant.locationId ? locationNameById.get(plant.locationId) : undefined;
+        const RoomIcon = roomName ? roomIcon(roomName) : null;
 
         const wateringTask = careTasksByPlantId
           .get(plant.id)
           ?.find((task) => task.type === 'watering');
         const wateringLabel = wateringTask ? formatDue(getNextDue(wateringTask)) : null;
         const isWateringOverdue = wateringTask ? getCareStatus(wateringTask) === 'overdue' : false;
+        const dotClassName = analysis?.health.status
+          ? healthBucketToDotClassName(healthStatusToBucket(analysis.health.status))
+          : null;
 
         return (
           <Link
             key={plant.id}
             to={`/plant/${plant.id}`}
-            className="group relative block aspect-[1/1.15] overflow-hidden rounded-2xl bg-bg-tertiary transition-transform duration-200 active:scale-[0.98] tablet:aspect-[1/1.1] desktop:aspect-[1/1.05] desktop:rounded-3xl wide:aspect-square"
+            className="group block overflow-hidden rounded-2xl bg-bg-elevated shadow-card transition-transform duration-200 active:scale-[0.98] desktop:rounded-3xl"
           >
-            {photo?.imageUrl && (
-              <img
-                src={photo.imageUrl}
-                alt={name}
-                className="absolute inset-0 size-full object-cover"
-              />
-            )}
-            <div className="absolute inset-0 bg-card-overlay" />
-
-            {analysis?.health.status && (
-              <span
-                className={`absolute top-3 right-3 size-2.5 rounded-full desktop:size-3 ${healthBucketToDotClassName(
-                  healthStatusToBucket(analysis.health.status),
-                )}`}
-              />
-            )}
-
-            {wateringLabel && (
-              <span
-                className={`absolute top-3 left-3 inline-flex items-center gap-1 rounded-lg bg-bg-elevated/80 px-2 py-1 text-caption backdrop-blur-sm desktop:rounded-xl desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg ${
-                  isWateringOverdue ? 'text-danger' : 'text-text-primary'
-                }`}
-              >
-                <Droplet size={12} />
-                {wateringLabel}
-              </span>
-            )}
-
-            <div className="absolute inset-x-0 bottom-0 p-3 desktop:p-4">
-              <p className="truncate text-h4 text-text-primary desktop:text-h3">{name}</p>
-              {roomName && (
-                <p className="truncate text-caption text-text-secondary desktop:text-body-sm">
-                  {roomName}
-                </p>
+            <div className="relative aspect-square overflow-hidden bg-bg-tertiary">
+              {photo?.imageUrl && (
+                <img
+                  src={photo.imageUrl}
+                  alt={name}
+                  className="absolute inset-0 size-full object-cover"
+                />
               )}
+
+              {dotClassName && (
+                <span className="absolute top-2.5 right-2.5 flex size-3 desktop:size-3.5">
+                  <span
+                    className={`absolute inline-flex size-full animate-ping rounded-full opacity-60 ${dotClassName}`}
+                  />
+                  <span
+                    className={`relative inline-flex size-full rounded-full border-2 border-white shadow-[0_2px_8px_rgba(0,0,0,0.25)] ${dotClassName}`}
+                  />
+                </span>
+              )}
+
+              {wateringLabel && (
+                <span
+                  className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 rounded-full bg-bg-elevated px-2 py-1 text-caption font-medium shadow-card desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg ${
+                    isWateringOverdue ? 'text-danger' : 'text-text-primary'
+                  }`}
+                >
+                  <Droplet size={12} />
+                  {wateringLabel}
+                </span>
+              )}
+            </div>
+
+            <div className="p-3 desktop:p-4">
+              <p className="truncate text-h4 text-text-primary desktop:text-h3">{name}</p>
+              {botanicalName && (
+                <p className="truncate text-body-sm text-text-muted italic">{botanicalName}</p>
+              )}
+              <div className="mt-2 flex items-center gap-1.5 text-caption text-text-secondary">
+                {roomName && RoomIcon && (
+                  <span className="inline-flex items-center gap-1 truncate rounded-full bg-bg-tertiary px-2 py-0.5">
+                    <RoomIcon size={11} />
+                    {roomName}
+                  </span>
+                )}
+                <span className="shrink-0">
+                  · {plant.photos.length} фото
+                </span>
+              </div>
             </div>
           </Link>
         );
