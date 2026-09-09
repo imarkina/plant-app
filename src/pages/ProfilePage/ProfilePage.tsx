@@ -8,21 +8,7 @@ import { lightLevelLabel, roomIcon } from '../../features/locations';
 import { useTheme } from '../../shared/ui/hooks/useTheme';
 import { Switch } from '../../shared/ui/components/Switch/Switch';
 import { BottomNav } from '../../shared/ui/components/BottomNav/BottomNav';
-import { formatDate, pluralizeRu } from '../../shared/helpers';
-
-function deriveDisplayName(email: string | null): string {
-  if (!email) {
-    return 'Без имени';
-  }
-
-  return email
-    .split('@')[0]
-    .replace(/[._-]+/g, ' ')
-    .split(' ')
-    .filter(Boolean)
-    .map((part) => part[0].toUpperCase() + part.slice(1))
-    .join(' ');
-}
+import { deriveDisplayName, formatDate, pluralizeRu } from '../../shared/helpers';
 
 function downloadJson(filename: string, data: unknown) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });

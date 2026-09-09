@@ -18,6 +18,20 @@ export const pluralizeRu = (n: number, one: string, few: string, many: string): 
   return many;
 };
 
+export function deriveDisplayName(email: string | null): string {
+  if (!email) {
+    return 'Без имени';
+  }
+
+  return email
+    .split('@')[0]
+    .replace(/[._-]+/g, ' ')
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export const formatInterval = (days: number): string => {
   if (days === 7) {
     return 'Неделя';
