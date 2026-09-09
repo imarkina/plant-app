@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Droplet } from 'lucide-react';
 import type { Plant } from '../models/plant.types';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../models/report-status.mappers';
@@ -9,9 +8,10 @@ type Props = {
   plants: Plant[];
   locationNameById: Map<string, string>;
   careTasksByPlantId: Map<string, CareTask[]>;
+  onSelect: (plantId: string) => void;
 };
 
-export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId }: Props) => {
+export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId, onSelect }: Props) => {
   if (plants.length === 0) {
     return <p className="mt-6 text-body-sm text-text-muted">Ничего не нашлось.</p>;
   }
@@ -36,10 +36,11 @@ export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId }: Prop
           : null;
 
         return (
-          <Link
+          <button
             key={plant.id}
-            to={`/plant/${plant.id}`}
-            className="group block overflow-hidden rounded-2xl bg-bg-elevated shadow-card transition-transform duration-200 active:scale-[0.98] desktop:rounded-3xl"
+            type="button"
+            onClick={() => onSelect(plant.id)}
+            className="group block w-full overflow-hidden rounded-2xl bg-bg-elevated text-left shadow-card transition-transform duration-200 active:scale-[0.98] desktop:rounded-3xl"
           >
             <div className="relative aspect-square overflow-hidden bg-bg-tertiary">
               {photo?.imageUrl && (
@@ -90,7 +91,7 @@ export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId }: Prop
                 </span>
               </div>
             </div>
-          </Link>
+          </button>
         );
       })}
     </div>

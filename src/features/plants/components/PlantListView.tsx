@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Droplet } from 'lucide-react';
 import type { Plant } from '../models/plant.types';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../models/report-status.mappers';
@@ -9,9 +8,10 @@ type Props = {
   plants: Plant[];
   locationNameById: Map<string, string>;
   careTasksByPlantId: Map<string, CareTask[]>;
+  onSelect: (plantId: string) => void;
 };
 
-export const PlantListView = ({ plants, locationNameById, careTasksByPlantId }: Props) => {
+export const PlantListView = ({ plants, locationNameById, careTasksByPlantId, onSelect }: Props) => {
   if (plants.length === 0) {
     return <p className="mt-6 text-body-sm text-text-muted">Ничего не нашлось.</p>;
   }
@@ -36,10 +36,11 @@ export const PlantListView = ({ plants, locationNameById, careTasksByPlantId }: 
           : null;
 
         return (
-          <Link
+          <button
             key={plant.id}
-            to={`/plant/${plant.id}`}
-            className="flex items-center gap-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-2.5 shadow-card backdrop-blur-xl backdrop-saturate-150 transition-transform duration-200 active:scale-[0.98]"
+            type="button"
+            onClick={() => onSelect(plant.id)}
+            className="flex w-full items-center gap-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-2.5 text-left shadow-card backdrop-blur-xl backdrop-saturate-150 transition-transform duration-200 active:scale-[0.98]"
           >
             <div className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-bg-tertiary desktop:size-20">
               {photo?.imageUrl && (
@@ -79,7 +80,7 @@ export const PlantListView = ({ plants, locationNameById, careTasksByPlantId }: 
                 {wateringLabel}
               </span>
             )}
-          </Link>
+          </button>
         );
       })}
     </div>
