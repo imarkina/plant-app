@@ -79,6 +79,7 @@ export const ProfilePage = () => {
           imageUrl: photo.imageUrl,
           analysis: photo.analysis,
           isAvatar: photo.isAvatar,
+          type: photo.type,
         })),
       })),
     });

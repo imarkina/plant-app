@@ -70,6 +70,7 @@ class SupabasePlantsRepository implements PlantsRepository {
         created_at: new Date(photo.createdAt).toISOString(),
         analysis: photo.analysis,
         image_url: imageUrl,
+        photo_type: photo.type,
       }),
     );
   }

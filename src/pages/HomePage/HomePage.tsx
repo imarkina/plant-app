@@ -111,7 +111,7 @@ function buildTodayItems(plants: Plant[], tasksByPlantId: Map<string, CareTask[]
 }
 
 function createPhotoEntry(image: Blob, analysis: PlantReport | undefined): PhotoEntry {
-  return { id: crypto.randomUUID(), createdAt: Date.now(), image, analysis };
+  return { id: crypto.randomUUID(), createdAt: Date.now(), image, analysis, type: 'growth' };
 }
 
 const QUICK_ACCESS = [

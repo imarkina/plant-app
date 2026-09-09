@@ -3,6 +3,7 @@ import type { PlantReport } from './plant-report.types';
 export type PotType = 'plastic' | 'terracotta' | 'ceramic_glazed' | 'self_watering';
 export type SubstrateType = 'standard' | 'aroid_mix' | 'mineral' | 'other';
 export type ArchiveStatus = 'died' | 'given_away_or_sold' | 'other';
+export type PhotoType = 'growth' | 'purchase' | 'diagnosis' | 'archive';
 
 export interface PhotoEntry {
   id: string;
@@ -11,6 +12,7 @@ export interface PhotoEntry {
   imageUrl?: string;
   analysis?: PlantReport;
   isAvatar?: boolean;
+  type: PhotoType;
 }
 
 export interface Plant {

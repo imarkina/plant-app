@@ -2,6 +2,7 @@ import type { PlantReport } from './plant-report.types';
 import type {
   ArchiveStatus,
   PhotoEntry,
+  PhotoType,
   Plant,
   PlantProfileUpdate,
   PotType,
@@ -14,6 +15,7 @@ interface SupabasePhotoRow {
   image_url: string | null;
   analysis: PlantReport | null;
   is_avatar: boolean;
+  photo_type: PhotoType | null;
 }
 
 interface SupabasePlantRow {
@@ -41,6 +43,7 @@ export function mapPhotoRowToPhotoEntry(row: SupabasePhotoRow): PhotoEntry {
     imageUrl: row.image_url ?? undefined,
     analysis: row.analysis ?? undefined,
     isAvatar: row.is_avatar,
+    type: row.photo_type ?? 'growth',
   };
 }
 

@@ -17,6 +17,7 @@ export function useAddPlant() {
       createdAt: Date.now(),
       image: resized,
       analysis,
+      type: 'growth',
     };
 
     const plant: Plant = {

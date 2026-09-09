@@ -8,7 +8,8 @@ import { AlertTriangle, ChevronDown, CircleCheck, Eye } from 'lucide-react';
 import { DetailRow } from '../../../shared/ui/components/DetailedRow/DetailedRow';
 
 type Props = {
-  photos: PhotoEntry[];
+  first: PhotoEntry;
+  last: PhotoEntry;
 };
 
 const isNoActionNeeded = (items: string[]): boolean => {
@@ -17,14 +18,9 @@ const isNoActionNeeded = (items: string[]): boolean => {
   return text.includes('не требуется') || text.includes('не нужно') || text.includes('оптимальн');
 };
 
-export const PlantComparison = ({ photos }: Props) => {
+export const PlantComparison = ({ first, last }: Props) => {
   const { compare, result, loading, error } = usePlantComparison();
   const [showDetails, setShowDetails] = useState(false);
-
-  if (photos.length < 2) return null;
-
-  const first = photos[0];
-  const last = photos[photos.length - 1];
 
   const handleCompare = () => compare(first, last);
 

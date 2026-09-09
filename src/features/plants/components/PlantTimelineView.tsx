@@ -35,7 +35,12 @@ export const PlantTimelineView = ({ plant }: Props) => {
       {sortedPhotos.length === 1 && (
         <p className="timeline-empty-hint">Добавьте ещё фото, чтобы отслеживать изменения</p>
       )}
-      <PlantComparison photos={sortedPhotos} />
+      {sortedPhotos.length >= 2 && (
+        <PlantComparison
+          first={sortedPhotos[0]}
+          last={sortedPhotos[sortedPhotos.length - 1]}
+        />
+      )}
       <div className="timeline">
         {sortedPhotos.map((photo) => (
           <div key={photo.id} className="timeline-item">
