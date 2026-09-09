@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../features/auth';
 import { usePlantsContext } from '../../features/plants/hooks/usePlantsContext';
 import { useLocations } from '../../features/locations/hooks/useLocations';
-import { roomIcon, windowDirectionPhrase } from '../../features/locations';
+import { lightLevelLabel, roomIcon } from '../../features/locations';
 import { useTheme } from '../../shared/ui/hooks/useTheme';
 import { Switch } from '../../shared/ui/components/Switch/Switch';
 import { BottomNav } from '../../shared/ui/components/BottomNav/BottomNav';
@@ -157,7 +157,7 @@ export const ProfilePage = () => {
             {locations.map((location) => {
               const RoomIcon = roomIcon(location.name);
               const count = plantsByLocation.get(location.id) ?? 0;
-              const windowPhrase = windowDirectionPhrase(location.windowDirection);
+              const lightLabel = lightLevelLabel(location.lightLevel);
 
               return (
                 <Link
@@ -172,7 +172,7 @@ export const ProfilePage = () => {
                     <p className="text-body-sm font-semibold text-text-primary">{location.name}</p>
                     <p className="truncate text-caption text-text-muted">
                       {count} {pluralizeRu(count, 'растение', 'растения', 'растений')}
-                      {windowPhrase ? ` · ${windowPhrase}` : ''}
+                      {lightLabel ? ` · ${lightLabel}` : ''}
                     </p>
                   </div>
                   <ChevronRight size={18} className="shrink-0 text-text-muted" />
