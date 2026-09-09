@@ -9,15 +9,6 @@
   font-size: var(--font-size-sm);
 }
 
-.location-list__site-name {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-muted);
-  margin: 0 0 var(--space-2);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
 .location-row {
   display: flex;
   align-items: center;

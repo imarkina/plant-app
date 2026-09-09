@@ -2,7 +2,6 @@ import { type ChangeEvent, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import type { Plant } from '../models/plant.types';
 import type { Location } from '../../locations';
-import { windowDirectionPhrase } from '../../locations';
 import { BottomSheet } from '../../../shared/ui/components/BottomSheet/BottomSheet';
 import { PlantDetailTabs } from './PlantDetailTabs';
 import { useCareTasks } from '../../care-tasks/hooks/useCareTasks';
@@ -36,7 +35,6 @@ export const PlantBottomSheet = ({ plant, open, locations, onClose }: Props) => 
   const name = analysis?.identification.commonName ?? plant.name;
   const botanicalName = analysis?.identification.botanicalName;
   const location = locations.find((l) => l.id === plant.locationId);
-  const windowPhrase = location ? windowDirectionPhrase(location.windowDirection) : null;
 
   const wateringTask = careTasks.tasks.find((task) => task.type === 'watering');
 
@@ -62,7 +60,9 @@ export const PlantBottomSheet = ({ plant, open, locations, onClose }: Props) => 
     detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const subtitle = [botanicalName, location?.name, windowPhrase].filter(Boolean).join(' · ');
+  const subtitle = [botanicalName, location?.name]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <BottomSheet open={open} onClose={onClose} labelledBy="plant-sheet-title">

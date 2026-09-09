@@ -8,7 +8,7 @@ import { PlantArchiveSection } from './PlantArchiveSection';
 import { PlantProfileTab } from './PlantProfileTab';
 import { PlantTimelineView } from './PlantTimelineView';
 import { CareTab } from '../../care-tasks';
-import type { CareTask } from '../../care-tasks/models/care-tasks.model';
+import type { CareTask } from '../../care-tasks';
 
 const PLANT_DETAIL_TABS = [
   { id: 'diagnosis', label: 'Диагноз' },
