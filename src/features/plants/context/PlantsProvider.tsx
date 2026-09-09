@@ -3,8 +3,17 @@ import { usePlants } from '../hooks/usePlants';
 import { PlantsContext } from './PlantsContext';
 
 export const PlantsProvider = ({ children }: { children: React.ReactNode }) => {
-  const { plants, loading, addPlant, addPhoto, setAvatarPhoto, updateProfile, archive, restore } =
-    usePlants();
+  const {
+    plants,
+    loading,
+    addPlant,
+    addPhoto,
+    deletePhoto,
+    setAvatarPhoto,
+    updateProfile,
+    archive,
+    restore,
+  } = usePlants();
 
   return (
     <PlantsContext.Provider
@@ -13,6 +22,7 @@ export const PlantsProvider = ({ children }: { children: React.ReactNode }) => {
         loading,
         addPlant,
         addPhoto,
+        deletePhoto,
         setAvatarPhoto,
         updateProfile,
         archive,

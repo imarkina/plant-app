@@ -5,8 +5,11 @@ import { ComingSoon } from '../../shared/ui/components/ComingSoon/ComingSoon';
 import { usePlantsContext } from '../../features/plants/hooks/usePlantsContext';
 import { AddPhotoSheet } from '../../features/plants/components/AddPhotoSheet';
 import { PlantComparison } from '../../features/plants/components/PlantsComparison';
+import { PhotoTimeline } from '../../features/plants/components/PhotoTimeline';
+import { PHOTO_TYPE_ICON } from '../../features/plants/models/photo-type-labels';
+import { PhotoLightbox } from '../../features/plants/components/PhotoLightbox';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../../features/plants/models/report-status.mappers';
-import type { Plant, PhotoEntry, PhotoType } from '../../features/plants/models/plant.types';
+import type { Plant, PhotoEntry } from '../../features/plants/models/plant.types';
 import { pluralizeRu } from '../../shared/helpers';
 
 type SubTab = 'timeline' | 'compare' | 'gallery';
@@ -16,20 +19,6 @@ const SUB_TABS: { id: SubTab; label: string; emoji: string }[] = [
   { id: 'compare', label: 'Сравнение', emoji: '⚖️' },
   { id: 'gallery', label: 'Галерея', emoji: '🖼' },
 ];
-
-const TYPE_ICON: Record<PhotoType, string> = {
-  growth: '📷',
-  purchase: '🌱',
-  diagnosis: '🩺',
-  archive: '📁',
-};
-
-const TYPE_LABEL: Record<PhotoType, string> = {
-  growth: 'Рост',
-  purchase: 'Покупка',
-  diagnosis: 'Диагноз',
-  archive: 'Архив',
-};
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -48,21 +37,13 @@ function formatGrowthDelta(days: number): string {
   return `+${months} ${pluralizeRu(months, 'месяц', 'месяца', 'месяцев')}`;
 }
 
-function photoTags(photo: PhotoEntry): string[] {
-  const tags: string[] = [photo.type];
-  const status = photo.analysis?.health.status;
-  if (status) {
-    tags.push(healthStatusToBucket(status));
-  }
-  return tags;
-}
-
 export const AlbumPage = () => {
-  const { plants } = usePlantsContext();
+  const { plants, deletePhoto } = usePlantsContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const [subTab, setSubTab] = useState<SubTab>('timeline');
   const [sheetOpen, setSheetOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [zoomedPhoto, setZoomedPhoto] = useState<PhotoEntry | null>(null);
   const [compareBeforeId, setCompareBeforeId] = useState<string | null>(null);
   const [compareAfterId, setCompareAfterId] = useState<string | null>(null);
   const [activeSlot, setActiveSlot] = useState<'before' | 'after'>('before');
@@ -123,6 +104,12 @@ export const AlbumPage = () => {
     }
   };
 
+  const handleDeleteZoomedPhoto = () => {
+    if (zoomedPhoto) {
+      void deletePhoto(selectedPlant.id, zoomedPhoto.id);
+    }
+  };
+
   return (
     <div className="pb-20">
       <BackButton />
@@ -177,75 +164,9 @@ export const AlbumPage = () => {
         ))}
       </div>
 
-      {subTab === 'timeline' &&
-        (sortedPhotos.length === 0 ? (
-          <p className="mt-6 text-body-sm text-text-muted">У этого растения пока нет фото.</p>
-        ) : (
-          <div className="relative mt-6 pl-9">
-            <div className="absolute top-2 bottom-2 left-[15px] w-0.5 bg-surface-glass-border" />
-            <div className="flex flex-col gap-4">
-              {sortedPhotos.map((photo, index) => {
-                const isLast = index === sortedPhotos.length - 1;
-                const days = Math.round((photo.createdAt - firstPhoto.createdAt) / DAY_MS);
-                const dateLabel = new Date(photo.createdAt)
-                  .toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
-                  .toUpperCase();
-                const suffix = isLast ? 'СЕЙЧАС' : photo.type !== 'growth' ? TYPE_LABEL[photo.type].toUpperCase() : null;
-                const bucket = photo.analysis?.health.status
-                  ? healthStatusToBucket(photo.analysis.health.status)
-                  : null;
-
-                return (
-                  <div key={photo.id} className="relative">
-                    <span className="absolute top-4 -left-9 flex size-7 items-center justify-center rounded-full border-2 border-bg-primary bg-bg-elevated text-caption shadow-card">
-                      {TYPE_ICON[photo.type]}
-                    </span>
-
-                    <div className="flex gap-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-3 shadow-card backdrop-blur-xl">
-                      <div className="size-20 shrink-0 overflow-hidden rounded-xl bg-bg-tertiary">
-                        {photo.imageUrl && (
-                          <img src={photo.imageUrl} alt="" className="size-full object-cover" />
-                        )}
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <p className="text-caption font-bold text-brand-pink">
-                          {dateLabel}
-                          {suffix && ` · ${suffix}`}
-                        </p>
-                        <p className="mt-0.5 text-body-sm text-text-muted">
-                          {formatGrowthDelta(days)}
-                          {isLast && bucket === 'healthy' && ' · 🌿 Отличный рост!'}
-                        </p>
-
-                        <div className="mt-1.5 flex flex-wrap gap-1.5">
-                          {photoTags(photo).map((tag) => (
-                            <span
-                              key={tag}
-                              className="rounded-full bg-bg-tertiary px-2 py-0.5 text-caption text-text-secondary"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-
-                        {sortedPhotos.length >= 2 && (
-                          <button
-                            type="button"
-                            onClick={() => handleCompareFromTimeline(photo)}
-                            className="mt-2 rounded-full bg-brand/10 px-3 py-1.5 text-caption font-semibold text-brand-pink"
-                          >
-                            ⚖️ Сравнить
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+      {subTab === 'timeline' && (
+        <PhotoTimeline photos={sortedPhotos} onZoom={setZoomedPhoto} onCompare={handleCompareFromTimeline} />
+      )}
 
       {subTab === 'compare' &&
         (sortedPhotos.length < 2 ? (
@@ -393,10 +314,15 @@ export const AlbumPage = () => {
         ) : (
           <div className="mt-6 grid grid-cols-3 gap-2.5 tablet:grid-cols-4">
             {[...sortedPhotos].reverse().map((photo) => (
-              <div key={photo.id} className="relative aspect-square overflow-hidden rounded-2xl bg-bg-tertiary shadow-card">
+              <button
+                key={photo.id}
+                type="button"
+                onClick={() => setZoomedPhoto(photo)}
+                className="relative aspect-square cursor-pointer overflow-hidden rounded-2xl bg-bg-tertiary shadow-card"
+              >
                 {photo.imageUrl && <img src={photo.imageUrl} alt="" className="absolute inset-0 size-full object-cover" />}
                 <span className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-bg-elevated/90 text-caption shadow-card">
-                  {TYPE_ICON[photo.type]}
+                  {PHOTO_TYPE_ICON[photo.type]}
                 </span>
                 {photo.analysis?.health.status && (
                   <span
@@ -405,7 +331,7 @@ export const AlbumPage = () => {
                     )}`}
                   />
                 )}
-              </div>
+              </button>
             ))}
           </div>
         ))}
@@ -425,6 +351,14 @@ export const AlbumPage = () => {
         onClose={() => setSheetOpen(false)}
         onAdded={() => showToast('📸 Фото добавлено в альбом')}
       />
+
+      {zoomedPhoto && (
+        <PhotoLightbox
+          photo={zoomedPhoto}
+          onClose={() => setZoomedPhoto(null)}
+          onDelete={handleDeleteZoomedPhoto}
+        />
+      )}
 
       {toast && (
         <div className="fixed inset-x-0 bottom-24 z-[var(--z-toast)] flex justify-center px-4">

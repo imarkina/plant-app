@@ -34,6 +34,26 @@ export function usePlants() {
     await refreshPlants();
   };
 
+  /** Удаляя фото-«покупку», делаем покупкой следующее по хронологии — растение всегда должно иметь одну. */
+  const deletePhoto = async (plantId: string, photoId: string) => {
+    const plant = plants.find((p) => p.id === plantId);
+    const deletedPhoto = plant?.photos.find((p) => p.id === photoId);
+
+    await plantsRepository.deletePhoto(plantId, photoId);
+
+    if (plant && deletedPhoto?.type === 'purchase') {
+      const remaining = plant.photos
+        .filter((p) => p.id !== photoId)
+        .sort((a, b) => a.createdAt - b.createdAt);
+
+      if (remaining.length > 0) {
+        await plantsRepository.updatePhotoType(remaining[0].id, 'purchase');
+      }
+    }
+
+    await refreshPlants();
+  };
+
   const setAvatarPhoto = async (plantId: string, photoId: string) => {
     await plantsRepository.setAvatarPhoto(plantId, photoId);
     await refreshPlants();
@@ -59,6 +79,7 @@ export function usePlants() {
     loading,
     addPlant,
     addPhoto,
+    deletePhoto,
     setAvatarPhoto,
     updateProfile,
     archive,

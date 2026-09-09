@@ -1,6 +1,7 @@
 import type {
   ArchiveStatus,
   PhotoEntry,
+  PhotoType,
   Plant,
   PlantProfileUpdate,
   PlantsRepository,
@@ -71,8 +72,21 @@ class SupabasePlantsRepository implements PlantsRepository {
         analysis: photo.analysis,
         image_url: imageUrl,
         photo_type: photo.type,
+        note: photo.note ?? null,
       }),
     );
+  }
+
+  async deletePhoto(plantId: string, photoId: string): Promise<void> {
+    unwrap(
+      await supabase.storage.from(PLANT_PHOTOS_BUCKET).remove([buildPhotoStoragePath(plantId, photoId)]),
+    );
+
+    unwrap(await supabase.from(PHOTOS_TABLE).delete().eq('id', photoId));
+  }
+
+  async updatePhotoType(photoId: string, type: PhotoType): Promise<void> {
+    unwrap(await supabase.from(PHOTOS_TABLE).update({ photo_type: type }).eq('id', photoId));
   }
 
   private async uploadPhotoImage(plantId: string, photoId: string, image: Blob): Promise<string> {

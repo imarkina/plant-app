@@ -16,6 +16,7 @@ interface SupabasePhotoRow {
   analysis: PlantReport | null;
   is_avatar: boolean;
   photo_type: PhotoType | null;
+  note: string | null;
 }
 
 interface SupabasePlantRow {
@@ -44,6 +45,7 @@ export function mapPhotoRowToPhotoEntry(row: SupabasePhotoRow): PhotoEntry {
     analysis: row.analysis ?? undefined,
     isAvatar: row.is_avatar,
     type: row.photo_type ?? 'growth',
+    note: row.note ?? undefined,
   };
 }
 

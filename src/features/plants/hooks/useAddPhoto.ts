@@ -7,8 +7,11 @@ export function useAddPhoto(plantId: string) {
   const { addPhoto } = usePlantsContext();
   const { fetchAnalysis, loading, error } = usePlantReport();
 
-  const addPhotoFromFile = async (file: Blob, type: PhotoType = 'growth', maxSize?: number) => {
-    const resized = await resizeImage(file, maxSize);
+  const addPhotoFromFile = async (
+    file: Blob,
+    options?: { type?: PhotoType; maxSize?: number; note?: string },
+  ) => {
+    const resized = await resizeImage(file, options?.maxSize);
     const analysis = await fetchAnalysis(resized); // тот же анализ, что на главной
 
     const photo: PhotoEntry = {
@@ -16,7 +19,8 @@ export function useAddPhoto(plantId: string) {
       createdAt: Date.now(),
       image: resized,
       analysis,
-      type,
+      type: options?.type ?? 'growth',
+      note: options?.note,
     };
 
     await addPhoto(plantId, photo); // дописать к растению

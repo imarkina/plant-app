@@ -29,6 +29,7 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
   const [pendingBlob, setPendingBlob] = useState<Blob | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [sizeError, setSizeError] = useState<string | null>(null);
+  const [note, setNote] = useState('');
 
   const setPending = (blob: Blob | null) => {
     setPreviewUrl((current) => {
@@ -43,6 +44,7 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
   const handleClose = () => {
     setPending(null);
     setSizeError(null);
+    setNote('');
     onClose();
   };
 
@@ -77,8 +79,13 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
       return;
     }
 
-    await addPhotoFromFile(pendingBlob, selectedType, ADD_PHOTO_MAX_SIDE);
+    await addPhotoFromFile(pendingBlob, {
+      type: selectedType,
+      maxSize: ADD_PHOTO_MAX_SIDE,
+      note: note.trim() || undefined,
+    });
     setPending(null);
+    setNote('');
     onAdded();
     onClose();
   };
@@ -146,7 +153,15 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
             </button>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-2.5">
+          <textarea
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
+            placeholder="Заметка (необязательно) — например, что изменилось"
+            rows={2}
+            className="mt-3 w-full resize-none rounded-2xl border border-surface-glass-border bg-bg-elevated px-4 py-3 text-body-sm text-text-primary outline-none placeholder:text-text-muted focus:ring-2 focus:ring-brand-purple/40"
+          />
+
+          <div className="mt-3 grid grid-cols-2 gap-2.5">
             <button
               type="button"
               onClick={handleRetake}

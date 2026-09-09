@@ -13,6 +13,7 @@ export interface PhotoEntry {
   analysis?: PlantReport;
   isAvatar?: boolean;
   type: PhotoType;
+  note?: string;
 }
 
 export interface Plant {
@@ -67,6 +68,8 @@ export interface PlantsRepository {
   getArchived(): Promise<Plant[]>;
   save(plant: Plant): Promise<void>;
   addPhoto(plantId: string, photo: PhotoEntry): Promise<void>;
+  deletePhoto(plantId: string, photoId: string): Promise<void>;
+  updatePhotoType(photoId: string, type: PhotoType): Promise<void>;
   setAvatarPhoto(plantId: string, photoId: string): Promise<void>;
   updateProfile(plantId: string, update: PlantProfileUpdate): Promise<void>;
   archive(plantId: string, status: ArchiveStatus, reasonDetail?: string | null): Promise<void>;
