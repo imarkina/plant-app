@@ -2,6 +2,12 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
 
 import { HomePage } from '../pages/HomePage';
+import { CollectionPage } from '../pages/CollectionPage';
+import { CalendarPage } from '../pages/CalendarPage';
+import { AlbumPage } from '../pages/AlbumPage';
+import { WishlistPage } from '../pages/WishlistPage';
+import { DiagnosisPage } from '../pages/DiagnosisPage';
+import { AddPlantPage } from '../pages/AddPlantPage';
 import { PlantPage } from '../pages/PlantPage';
 import { AuthPage } from '../pages/AuthPage';
 import { ProfilePage } from '../pages/ProfilePage';
@@ -28,8 +34,13 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route element={<PlantsLayout />}>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/collection" element={<CollectionPage />} />
+                  <Route path="/calendar" element={<CalendarPage />} />
+                  <Route path="/album" element={<AlbumPage />} />
+                  <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="/diagnosis" element={<DiagnosisPage />} />
+                  <Route path="/add" element={<AddPlantPage />} />
                   <Route path="/plant/:id" element={<PlantPage />} />
-                  <Route path="/feed" element={<div>Скоро</div>} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/locations" element={<LocationsPage />} />
                 </Route>

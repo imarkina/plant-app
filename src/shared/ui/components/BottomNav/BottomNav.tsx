@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Users, User } from 'lucide-react';
+import { Calendar, Home, LayoutGrid, User } from 'lucide-react';
 
 const items = [
   { to: '/', label: 'Главная', icon: Home, end: true },
-  { to: '/feed', label: 'Лента', icon: Users, end: false },
+  { to: '/collection', label: 'Коллекция', icon: LayoutGrid, end: false },
+  { to: '/calendar', label: 'Календарь', icon: Calendar, end: false },
   { to: '/profile', label: 'Профиль', icon: User, end: false },
 ];
 

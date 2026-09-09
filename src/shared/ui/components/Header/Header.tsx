@@ -1,7 +1,11 @@
 import { useTheme } from '../../hooks/useTheme';
 import { Leaf, Moon, Sun } from 'lucide-react';
 
-export const Header = () => {
+type Props = {
+  title?: string;
+};
+
+export const Header = ({ title }: Props) => {
   const { theme, toggle } = useTheme();
 
   return (
@@ -18,7 +22,9 @@ export const Header = () => {
           {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
         </button>
       </header>
-      <h1 className="mb-6 text-hero desktop:text-hero-lg text-text-primary">Что растёт сегодня?</h1>
+      {title && (
+        <h1 className="mb-6 text-hero desktop:text-hero-lg text-text-primary">{title}</h1>
+      )}
     </>
   );
 };
