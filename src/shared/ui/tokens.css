@@ -237,6 +237,9 @@
   --color-primary-hover: var(--color-accent-hover);
   --color-on-primary: var(--color-text-inverse);
 
+  --color-scrollbar-thumb: rgba(139, 92, 246, 0.22);
+  --color-scrollbar-thumb-hover: rgba(139, 92, 246, 0.4);
+
   --color-success-bg: var(--color-accent-glow);
   --color-success-text: var(--color-accent);
   --color-danger-bg: var(--color-danger-soft);
@@ -304,4 +307,42 @@
   --shadow-glow-danger: 0 0 12px rgba(248, 113, 113, 0.3);
 
   --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  --color-scrollbar-thumb: rgba(255, 255, 255, 0.16);
+  --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+}
+
+/*
+ * Кастомный скроллбар — тонкий, скруглённый, в цвет бренд-градиента.
+ * Firefox: scrollbar-width/scrollbar-color. WebKit/Chromium: псевдоэлементы
+ * ниже (не наследуются каскадом, поэтому селектор универсальный).
+ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-scrollbar-thumb) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scrollbar-thumb-hover);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
