@@ -11,6 +11,8 @@ import { PhotoLightbox } from '../../features/plants/components/PhotoLightbox';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../../features/plants/models/report-status.mappers';
 import type { Plant, PhotoEntry } from '../../features/plants/models/plant.types';
 import { pluralizeRu } from '../../shared/helpers';
+import { useToast } from '../../shared/ui/hooks/useToast';
+import { Toast } from '../../shared/ui/components/Toast/Toast';
 
 type SubTab = 'timeline' | 'compare' | 'gallery';
 
@@ -42,7 +44,7 @@ export const AlbumPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [subTab, setSubTab] = useState<SubTab>('timeline');
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
+  const { message: toast, showToast } = useToast();
   const [zoomedPhoto, setZoomedPhoto] = useState<PhotoEntry | null>(null);
   const [compareBeforeId, setCompareBeforeId] = useState<string | null>(null);
   const [compareAfterId, setCompareAfterId] = useState<string | null>(null);
@@ -60,11 +62,6 @@ export const AlbumPage = () => {
     setSearchParams({ plant: plantId }, { replace: true });
     setCompareBeforeId(null);
     setCompareAfterId(null);
-  };
-
-  const showToast = (message: string) => {
-    setToast(message);
-    setTimeout(() => setToast(null), 2500);
   };
 
   if (activePlants.length === 0 || !selectedPlant) {
@@ -360,13 +357,7 @@ export const AlbumPage = () => {
         />
       )}
 
-      {toast && (
-        <div className="fixed inset-x-0 bottom-24 z-[var(--z-toast)] flex justify-center px-4">
-          <div className="rounded-full bg-bg-elevated px-4 py-2.5 text-body-sm font-semibold text-text-primary shadow-elevated">
-            {toast}
-          </div>
-        </div>
-      )}
+      <Toast message={toast} />
     </div>
   );
 };

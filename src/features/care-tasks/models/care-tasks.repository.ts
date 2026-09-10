@@ -51,6 +51,20 @@ class SupabaseCareTasksRepository implements CareTasksRepository {
       throw error;
     }
   }
+
+  async updateCareTask(task: CareTask): Promise<void> {
+    const { error } = await supabase
+      .from('care_tasks')
+      .update({
+        interval_days: task.intervalDays,
+        last_done_at: task.lastDoneAt ? new Date(task.lastDoneAt).toISOString() : null,
+      })
+      .eq('id', task.id);
+
+    if (error) {
+      throw error;
+    }
+  }
 }
 
 export const careTasksRepository = new SupabaseCareTasksRepository();

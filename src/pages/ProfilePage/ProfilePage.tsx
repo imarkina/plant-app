@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from 'react';
-import { ChevronRight, Download, LogOut, Moon, User } from 'lucide-react';
+import { Bell, ChevronRight, Download, LogOut, Moon, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../features/auth';
 import { usePlantsContext } from '../../features/plants/hooks/usePlantsContext';
@@ -9,6 +9,18 @@ import { useTheme } from '../../shared/ui/hooks/useTheme';
 import { Switch } from '../../shared/ui/components/Switch/Switch';
 import { BottomNav } from '../../shared/ui/components/BottomNav/BottomNav';
 import { deriveDisplayName, formatDate, pluralizeRu } from '../../shared/helpers';
+import {
+  calculatePhotoStreakWeeks,
+  PUSH_SUPPORTED,
+  usePushSubscription,
+  useReminderSettings,
+  type ReminderIntervalDays,
+} from '../../features/reminders';
+import type { PhotoEntry } from '../../features/plants/models/plant.types';
+
+function computeStreak(photos: PhotoEntry[]): number {
+  return calculatePhotoStreakWeeks(photos, Date.now());
+}
 
 function downloadJson(filename: string, data: unknown) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -55,10 +67,24 @@ export const ProfilePage = () => {
   const { plants } = usePlantsContext();
   const { locations } = useLocations();
   const { theme, toggle } = useTheme();
+  const { settings, updateSettings } = useReminderSettings();
+  const { subscribed, subscribe, unsubscribe, error: pushError } = usePushSubscription();
   const [exported, setExported] = useState(false);
 
   const activePlants = plants.filter((plant) => !plant.isArchived);
   const photosCount = activePlants.reduce((sum, plant) => sum + plant.photos.length, 0);
+  const allPhotos = activePlants.flatMap((plant) => plant.photos);
+  const streakWeeks = computeStreak(allPhotos);
+
+  const handlePushToggle = async (checked: boolean) => {
+    await updateSettings({ pushEnabled: checked });
+
+    if (checked) {
+      await subscribe();
+    } else if (subscribed) {
+      await unsubscribe();
+    }
+  };
 
   const plantsByLocation = new Map<string, number>();
   for (const plant of activePlants) {
@@ -116,6 +142,12 @@ export const ProfilePage = () => {
         <StatTile value={photosCount} label={pluralizeRu(photosCount, 'фото', 'фото', 'фото')} />
       </div>
 
+      {streakWeeks > 0 && (
+        <div className="mt-3 flex items-center justify-center gap-2 rounded-2xl bg-accent-glow px-4 py-2.5 text-body-sm font-semibold text-accent">
+          📸 Фото-архив: {streakWeeks} {pluralizeRu(streakWeeks, 'неделя подряд', 'недели подряд', 'недель подряд')}
+        </div>
+      )}
+
       <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl">
         <p className="text-label text-text-muted uppercase">Настройки</p>
         <div className="mt-1 divide-y divide-surface-glass-border">
@@ -135,6 +167,60 @@ export const ProfilePage = () => {
             </SettingsRow>
           </button>
         </div>
+      </div>
+
+      <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl">
+        <p className="text-label text-text-muted uppercase">Напоминания</p>
+        <div className="mt-1 divide-y divide-surface-glass-border">
+          <SettingsRow icon={<Bell size={18} />} title="Push-уведомления" subtitle="Напоминать сделать фото">
+            <Switch checked={settings.pushEnabled} onChange={(checked) => void handlePushToggle(checked)} label="Push-уведомления" />
+          </SettingsRow>
+
+          {settings.pushEnabled && (
+            <>
+              <SettingsRow icon="🗓" title="Интервал напоминаний" subtitle="Как часто напоминать">
+                <select
+                  value={settings.reminderIntervalDays}
+                  onChange={(e) =>
+                    void updateSettings({
+                      reminderIntervalDays: Number(e.target.value) as ReminderIntervalDays,
+                    })
+                  }
+                  className="cursor-pointer rounded-full border border-surface-glass-border bg-bg-elevated px-3 py-1.5 text-body-sm font-semibold text-text-primary"
+                >
+                  <option value={7}>7 дней</option>
+                  <option value={14}>14 дней</option>
+                  <option value={30}>30 дней</option>
+                </select>
+              </SettingsRow>
+
+              <SettingsRow icon="⏰" title="Время напоминания" subtitle="Во сколько присылать">
+                <input
+                  type="time"
+                  value={settings.reminderTime}
+                  onChange={(e) => void updateSettings({ reminderTime: e.target.value })}
+                  className="cursor-pointer rounded-full border border-surface-glass-border bg-bg-elevated px-3 py-1.5 text-body-sm font-semibold text-text-primary"
+                />
+              </SettingsRow>
+            </>
+          )}
+
+          <SettingsRow icon="🔥" title="Streak-напоминания" subtitle="Подбадривать за серию недель">
+            <Switch
+              checked={settings.streakRemindersEnabled}
+              onChange={(checked) => void updateSettings({ streakRemindersEnabled: checked })}
+              label="Streak-напоминания"
+            />
+          </SettingsRow>
+        </div>
+
+        <p className="mt-3 text-caption text-text-muted">
+          {!PUSH_SUPPORTED
+            ? 'Этот браузер не поддерживает push-уведомления — сохраним только твой выбор.'
+            : pushError
+              ? pushError
+              : 'Как это работает: мы сохраняем твои настройки и оформляем реальную push-подписку в браузере. Сама отправка уведомлений по расписанию появится, когда подключим сервер уведомлений — этого шага пока нет.'}
+        </p>
       </div>
 
       {locations.length > 0 && (

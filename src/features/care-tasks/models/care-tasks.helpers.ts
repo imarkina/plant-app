@@ -57,6 +57,23 @@ export const createDefaultTasks = async (
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
+export const PHOTO_BACKOFF_INTERVAL_DAYS = 14;
+const PHOTO_BACKOFF_MISSED_CYCLES = 2;
+
+/** US-ALBUM-5: если фото-напоминание проигнорировали 2 полных цикла подряд, увеличиваем интервал до 14 дней. */
+export const shouldApplyPhotoBackoff = (task: CareTask, now: number): boolean => {
+  if (task.type !== 'photo' || task.lastDoneAt === null) {
+    return false;
+  }
+
+  if (task.intervalDays >= PHOTO_BACKOFF_INTERVAL_DAYS) {
+    return false;
+  }
+
+  const overdueMs = now - task.lastDoneAt - daysToMs(task.intervalDays);
+  return overdueMs >= daysToMs(task.intervalDays * PHOTO_BACKOFF_MISSED_CYCLES);
+};
+
 export const formatDue = (nextDue: number): string => {
   const now = Date.now();
   const diffDays = Math.round((nextDue - now) / MS_PER_DAY);

@@ -21,7 +21,8 @@ export const CareTab = ({ plantId, onPhotoSelected }: Props) => {
       plantId,
       type: 'photo',
       intervalDays,
-      lastDoneAt: null,
+      // Первое напоминание должно прийти через полный интервал, а не сразу же.
+      lastDoneAt: Date.now(),
     });
   };
 

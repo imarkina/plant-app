@@ -10,6 +10,11 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      // US-ALBUM-5: pull in the push/notificationclick handlers so real Web Push
+      // subscriptions (see features/reminders) have a service worker to receive them.
+      workbox: {
+        importScripts: ['push-sw.js'],
+      },
       manifest: {
         name: 'Plant Care',
         short_name: 'Plants',

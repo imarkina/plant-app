@@ -1,4 +1,4 @@
-import { type ChangeEvent, useMemo } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Camera, Stethoscope } from 'lucide-react';
 import { useAuthContext } from '../../features/auth';
@@ -25,6 +25,9 @@ import { Header } from '../../shared/ui/components/Header/Header';
 import { BottomNav } from '../../shared/ui/components/BottomNav/BottomNav';
 import { FAB } from '../../shared/ui/components/FAB/FAB';
 import { ComingSoon } from '../../shared/ui/components/ComingSoon/ComingSoon';
+import { Confetti } from '../../shared/ui/components/Confetti/Confetti';
+import { Toast } from '../../shared/ui/components/Toast/Toast';
+import { useToast } from '../../shared/ui/hooks/useToast';
 
 function getGreeting(): { text: string; emoji: string } {
   const hour = new Date().getHours();
@@ -130,7 +133,19 @@ export const HomePage = () => {
 
   const activePlants = useMemo(() => plants.filter((plant) => !plant.isArchived), [plants]);
   const plantIds = useMemo(() => activePlants.map((plant) => plant.id), [activePlants]);
-  const { tasksByPlantId, markDone } = useCareTasksForPlants(plantIds);
+  const { tasksByPlantId, loading: tasksLoading, markDone, applyPhotoBackoff } = useCareTasksForPlants(plantIds);
+  const { message: toast, showToast } = useToast();
+  const [celebrate, setCelebrate] = useState(false);
+  const backoffChecked = useRef(false);
+
+  useEffect(() => {
+    if (backoffChecked.current || tasksLoading || tasksByPlantId.size === 0) {
+      return;
+    }
+    backoffChecked.current = true;
+    void applyPhotoBackoff();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tasksLoading, tasksByPlantId]);
 
   const greeting = getGreeting();
   const featuredPlant = pickFeaturedPlant(activePlants, tasksByPlantId);
@@ -170,6 +185,8 @@ export const HomePage = () => {
     if (file) {
       await addPhotoToPlant(plantId, file);
       await markDone(taskId);
+      setCelebrate(true);
+      showToast('Отлично! Таймлайн обновлён 🌿');
     }
     event.target.value = '';
   };
@@ -441,6 +458,8 @@ export const HomePage = () => {
 
       <FAB onFileSelect={handleAddPlant} loading={addingPlant} />
       <BottomNav />
+      <Confetti active={celebrate} onDone={() => setCelebrate(false)} />
+      <Toast message={toast} />
     </>
   );
 };

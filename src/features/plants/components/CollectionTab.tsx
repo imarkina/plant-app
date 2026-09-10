@@ -14,6 +14,7 @@ import { healthStatusToBucket } from '../models/report-status.mappers';
 import { useLocations } from '../../locations/hooks/useLocations';
 import { useCareTasksForPlants } from '../../care-tasks';
 import { useAddPlant } from '../hooks/useAddPlant';
+import { useReminderSettings } from '../../reminders';
 import { FAB } from '../../../shared/ui/components/FAB/FAB';
 
 type Props = {
@@ -30,6 +31,7 @@ export const CollectionTab = ({ plants }: Props) => {
   const { locations } = useLocations();
   const plantIds = useMemo(() => plants.map((plant) => plant.id), [plants]);
   const { tasksByPlantId } = useCareTasksForPlants(plantIds);
+  const { settings: reminderSettings } = useReminderSettings();
   const [filters, setFilters] = useState<CollectionFiltersValue>(INITIAL_FILTERS);
   const [view, setView] = useState<CollectionView>('grid');
   const { addPlantFromFile, loading } = useAddPlant();
@@ -118,6 +120,7 @@ export const CollectionTab = ({ plants }: Props) => {
           locationNameById={locationNameById}
           careTasksByPlantId={tasksByPlantId}
           onSelect={setOpenPlantId}
+          photoReminderBadgesEnabled={!reminderSettings.pushEnabled}
         />
       ) : (
         <PlantListView

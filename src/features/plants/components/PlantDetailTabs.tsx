@@ -9,6 +9,9 @@ import { PlantProfileTab } from './PlantProfileTab';
 import { PlantTimelineView } from './PlantTimelineView';
 import { CareTab } from '../../care-tasks';
 import type { CareTask } from '../../care-tasks';
+import { Confetti } from '../../../shared/ui/components/Confetti/Confetti';
+import { Toast } from '../../../shared/ui/components/Toast/Toast';
+import { useToast } from '../../../shared/ui/hooks/useToast';
 
 const PLANT_DETAIL_TABS = [
   { id: 'diagnosis', label: 'Диагноз' },
@@ -30,10 +33,14 @@ export const PlantDetailTabs = ({ plant, activeTab: controlledTab, onTabChange }
   const setActiveTab = onTabChange ?? setInternalTab;
 
   const careTasks = useCareTasks(plant.id);
+  const { message: toast, showToast } = useToast();
+  const [celebrate, setCelebrate] = useState(false);
 
   const handlePhotoSelected = async (task: CareTask, file: File) => {
     await addPhotoFromFile(file);
     await careTasks.markDone(task.id);
+    setCelebrate(true);
+    showToast('Отлично! Таймлайн обновлён 🌿');
   };
 
   return (
@@ -48,6 +55,8 @@ export const PlantDetailTabs = ({ plant, activeTab: controlledTab, onTabChange }
           <PlantArchiveSection plant={plant} />
         </>
       )}
+      <Confetti active={celebrate} onDone={() => setCelebrate(false)} />
+      <Toast message={toast} />
     </>
   );
 };

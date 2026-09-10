@@ -1,4 +1,4 @@
-import { Droplet } from 'lucide-react';
+import { Camera, Droplet } from 'lucide-react';
 import type { Plant } from '../models/plant.types';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../models/report-status.mappers';
 import { formatDue, getCareStatus, getNextDue, type CareTask } from '../../care-tasks';
@@ -9,9 +9,17 @@ type Props = {
   locationNameById: Map<string, string>;
   careTasksByPlantId: Map<string, CareTask[]>;
   onSelect: (plantId: string) => void;
+  /** US-ALBUM-5: показывать значок просроченного фото-напоминания, когда push отключён. */
+  photoReminderBadgesEnabled?: boolean;
 };
 
-export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId, onSelect }: Props) => {
+export const PlantGrid = ({
+  plants,
+  locationNameById,
+  careTasksByPlantId,
+  onSelect,
+  photoReminderBadgesEnabled = false,
+}: Props) => {
   if (plants.length === 0) {
     return <p className="mt-6 text-body-sm text-text-muted">Ничего не нашлось.</p>;
   }
@@ -31,6 +39,10 @@ export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId, onSele
           ?.find((task) => task.type === 'watering');
         const wateringLabel = wateringTask ? formatDue(getNextDue(wateringTask)) : null;
         const isWateringOverdue = wateringTask ? getCareStatus(wateringTask) === 'overdue' : false;
+
+        const photoTask = careTasksByPlantId.get(plant.id)?.find((task) => task.type === 'photo');
+        const showPhotoReminderBadge =
+          photoReminderBadgesEnabled && photoTask ? getCareStatus(photoTask) === 'overdue' : false;
         const dotClassName = analysis?.health.status
           ? healthBucketToDotClassName(healthStatusToBucket(analysis.health.status))
           : null;
@@ -62,16 +74,26 @@ export const PlantGrid = ({ plants, locationNameById, careTasksByPlantId, onSele
                 </span>
               )}
 
-              {wateringLabel && (
-                <span
-                  className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 rounded-full bg-bg-elevated px-2 py-1 text-caption font-medium shadow-card desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg ${
-                    isWateringOverdue ? 'text-danger' : 'text-text-primary'
-                  }`}
-                >
-                  <Droplet size={12} />
-                  {wateringLabel}
-                </span>
-              )}
+              <div className="absolute top-2.5 left-2.5 flex flex-col items-start gap-1">
+                {wateringLabel && (
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full bg-bg-elevated px-2 py-1 text-caption font-medium shadow-card desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg ${
+                      isWateringOverdue ? 'text-danger' : 'text-text-primary'
+                    }`}
+                  >
+                    <Droplet size={12} />
+                    {wateringLabel}
+                  </span>
+                )}
+                {showPhotoReminderBadge && (
+                  <span
+                    title="Пора сделать фото"
+                    className="inline-flex items-center gap-1 rounded-full bg-bg-elevated px-2 py-1 text-caption font-medium text-danger shadow-card desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg"
+                  >
+                    <Camera size={12} />
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="p-3 desktop:p-4">
