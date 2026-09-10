@@ -29,3 +29,6 @@ storybook-static
 .vercel
 .env*
 .env
+
+# Supabase CLI local cache
+supabase/.temp
