@@ -74,6 +74,11 @@ export function usePlants() {
     await refreshPlants();
   };
 
+  const deletePlant = async (plantId: string) => {
+    await plantsRepository.deletePlant(plantId);
+    await refreshPlants();
+  };
+
   return {
     plants,
     loading,
@@ -84,5 +89,6 @@ export function usePlants() {
     updateProfile,
     archive,
     restore,
+    deletePlant,
   };
 }

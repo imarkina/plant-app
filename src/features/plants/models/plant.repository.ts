@@ -150,6 +150,19 @@ class SupabasePlantsRepository implements PlantsRepository {
         .eq('id', plantId),
     );
   }
+
+  async deletePlant(plantId: string): Promise<void> {
+    const { data: photos } = await supabase.from(PHOTOS_TABLE).select('id').eq('plant_id', plantId);
+    const storagePaths = (photos ?? []).map((photo) => buildPhotoStoragePath(plantId, photo.id));
+
+    if (storagePaths.length > 0) {
+      await supabase.storage.from(PLANT_PHOTOS_BUCKET).remove(storagePaths);
+    }
+
+    unwrap(await supabase.from(PHOTOS_TABLE).delete().eq('plant_id', plantId));
+    unwrap(await supabase.from('care_tasks').delete().eq('plant_id', plantId));
+    unwrap(await supabase.from(PLANTS_TABLE).delete().eq('id', plantId));
+  }
 }
 
 export const plantsRepository = new SupabasePlantsRepository();

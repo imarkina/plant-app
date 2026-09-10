@@ -136,7 +136,6 @@ export const CollectionTab = ({ plants }: Props) => {
         <PlantBottomSheet
           plant={lastOpenPlant}
           open={openPlantId !== null}
-          locations={locations}
           onClose={() => setOpenPlantId(null)}
         />
       )}

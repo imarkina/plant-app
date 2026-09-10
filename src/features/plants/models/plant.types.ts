@@ -74,4 +74,6 @@ export interface PlantsRepository {
   updateProfile(plantId: string, update: PlantProfileUpdate): Promise<void>;
   archive(plantId: string, status: ArchiveStatus, reasonDetail?: string | null): Promise<void>;
   restore(plantId: string): Promise<void>;
+  /** Безвозвратное удаление: сами фото из Storage, строки photos/care_tasks/plants. */
+  deletePlant(plantId: string): Promise<void>;
 }

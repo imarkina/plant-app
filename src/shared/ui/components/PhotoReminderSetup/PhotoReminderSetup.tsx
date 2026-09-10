@@ -1,41 +1,51 @@
 import { Camera } from 'lucide-react';
 import { formatInterval } from '../../../helpers';
 import { useState } from 'react';
-import './PhotoReminderSetup.css';
 
 type Props = {
   onCreate: (intervalDays: number) => void;
 };
 
+const PRESETS = [7, 14, 30];
+
 export const PhotoReminderSetup = ({ onCreate }: Props) => {
   const [showForm, setShowForm] = useState(false);
   const [interval, setInterval] = useState(14);
 
-  const presets = [7, 14, 30];
-
   if (!showForm) {
     return (
-      <button className="care-add-btn" onClick={() => setShowForm(true)}>
+      <button
+        type="button"
+        onClick={() => setShowForm(true)}
+        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-secondary backdrop-blur-xl"
+      >
         <Camera size={18} /> Напоминать фотографировать
       </button>
     );
   }
 
   return (
-    <div className="photo-setup">
-      <p className="photo-setup__label">Как часто напоминать сделать фото?</p>
-      <div className="photo-setup__presets">
-        {presets.map((days) => (
+    <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl">
+      <p className="text-body-sm font-semibold text-text-primary">Как часто напоминать сделать фото?</p>
+      <div className="mt-3 flex gap-2">
+        {PRESETS.map((days) => (
           <button
             key={days}
-            className={interval === days ? 'preset preset--active' : 'preset'}
+            type="button"
             onClick={() => setInterval(days)}
+            className={`flex-1 cursor-pointer rounded-full px-3 py-2 text-body-sm font-semibold transition-colors ${
+              interval === days ? 'bg-brand text-white' : 'bg-bg-tertiary text-text-secondary'
+            }`}
           >
             {formatInterval(days)}
           </button>
         ))}
       </div>
-      <button className="photo-setup__confirm" onClick={() => onCreate(interval)}>
+      <button
+        type="button"
+        onClick={() => onCreate(interval)}
+        className="mt-3 w-full cursor-pointer rounded-full bg-brand px-4 py-2.5 text-button font-sans font-semibold text-white"
+      >
         Создать напоминание
       </button>
     </div>

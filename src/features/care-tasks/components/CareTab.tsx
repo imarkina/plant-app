@@ -1,7 +1,6 @@
 import { useCareTasks } from '../hooks/useCareTasks';
 import { CareTaskItem } from './CareTaskItem';
 import { createDefaultTasks } from '../models/care-tasks.helpers';
-import './CareTab.css';
 import type { CareTask } from '../models/care-tasks.model';
 import { PhotoReminderSetup } from '../../../shared/ui/components/PhotoReminderSetup/PhotoReminderSetup';
 
@@ -27,31 +26,41 @@ export const CareTab = ({ plantId, onPhotoSelected }: Props) => {
   };
 
   if (loading) {
-    return <p>Загрузка...</p>;
+    return <p className="mt-6 text-body-sm text-text-muted">Загрузка...</p>;
   }
 
   if (tasks.length === 0) {
     return (
-      <div className="care-empty">
-        <p>Задачи ухода ещё не настроены</p>
-        <button onClick={() => createDefaultTasks(plantId, addTask)}>Создать план ухода</button>
+      <div className="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-surface-glass-border bg-surface-glass p-8 text-center shadow-card backdrop-blur-xl">
+        <p className="text-body-sm text-text-muted">Задачи ухода ещё не настроены</p>
+        <button
+          type="button"
+          onClick={() => createDefaultTasks(plantId, addTask)}
+          className="cursor-pointer rounded-full bg-brand px-6 py-3 text-button font-sans font-semibold text-white"
+        >
+          Создать план ухода
+        </button>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="care-list">
+    <div className="mt-6">
+      <div className="flex flex-col gap-2.5">
         {tasks.map((task) => (
           <CareTaskItem
             key={task.id}
             task={task}
-            onDone={() => markDone(task.id)}
+            onDone={() => void markDone(task.id)}
             onPhotoSelected={onPhotoSelected}
           />
         ))}
       </div>
-      {!hasPhotoTask && <PhotoReminderSetup onCreate={handleCreatePhotoReminder} />}
+      {!hasPhotoTask && (
+        <div className="mt-3">
+          <PhotoReminderSetup onCreate={handleCreatePhotoReminder} />
+        </div>
+      )}
     </div>
   );
 };

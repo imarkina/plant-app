@@ -13,6 +13,7 @@ export const PlantsProvider = ({ children }: { children: React.ReactNode }) => {
     updateProfile,
     archive,
     restore,
+    deletePlant,
   } = usePlants();
 
   return (
@@ -27,6 +28,7 @@ export const PlantsProvider = ({ children }: { children: React.ReactNode }) => {
         updateProfile,
         archive,
         restore,
+        deletePlant,
       }}
     >
       {children}
