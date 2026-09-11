@@ -1,11 +1,12 @@
 @import 'tailwindcss';
 
 /*
- * Plant Parent OS — Design System v2.0 (2026-09-09).
- * Светлая "glass" тема — дефолт (пастельные blob-градиенты за контентом,
- * полупрозрачные стеклянные поверхности); тёмная — [data-theme='dark'].
- * :root ниже уже задаёт светлые значения, чтобы не было мигания темы при
- * загрузке (useTheme.ts стартует с 'light', синхронно с этим файлом).
+ * Plant Parent OS — Design System v3.0 "Dopamine Garden" (2026-09-11).
+ * Светлая "glass" тема — дефолт (mesh-градиент фон + пастельные blob-пятна за
+ * контентом, полупрозрачные стеклянные поверхности); тёмная (Neon Night) —
+ * [data-theme='dark']. :root ниже уже задаёт светлые значения, чтобы не было
+ * мигания темы при загрузке (useTheme.ts стартует с 'light', синхронно с
+ * этим файлом).
  */
 
 @theme {
@@ -15,54 +16,64 @@
   --breakpoint-wide: 1440px;
 
   /* ── Цвета — значения светлой темы, тёмная переопределяет ниже ── */
-  --color-bg-primary: #faf9fc;
+  --color-bg-primary: #f8f6f3;
   --color-bg-secondary: #ffffff;
-  --color-bg-tertiary: #f3f1f8;
+  --color-bg-tertiary: #f0ede8;
   --color-bg-elevated: #ffffff;
-  --color-surface-glass: rgba(255, 255, 255, 0.55);
-  --color-surface-glass-strong: rgba(255, 255, 255, 0.85);
-  --color-surface-glass-border: rgba(255, 255, 255, 0.6);
-  --color-text-primary: #1e1b2e;
-  --color-text-secondary: #6b6785;
-  --color-text-muted: rgba(30, 27, 46, 0.5);
+  --color-surface-glass: rgba(255, 255, 255, 0.65);
+  --color-surface-glass-strong: rgba(255, 255, 255, 0.8);
+  --color-surface-glass-border: rgba(255, 255, 255, 0.85);
+  --color-surface-glass-highlight: rgba(255, 255, 255, 0.95);
+  --color-text-primary: #0f0d1a;
+  --color-text-secondary: #4a4558;
+  --color-text-muted: #8a8498;
   --color-text-inverse: #ffffff;
-  --color-accent: #16a34a;
-  --color-accent-hover: #15803d;
-  --color-accent-glow: rgba(22, 163, 74, 0.15);
-  --color-warn: #f59e0b;
-  --color-warn-soft: rgba(245, 158, 11, 0.12);
-  --color-danger: #ef4444;
-  --color-danger-soft: rgba(239, 68, 68, 0.1);
-  --color-info: #3b82f6;
-  --color-info-soft: rgba(59, 130, 246, 0.08);
-  --color-overlay: rgba(30, 27, 46, 0.35);
+  --color-text-on-glass: #1a1625;
+  --color-accent: #2db100;
+  --color-accent-hover: #259300;
+  --color-accent-glow: rgba(57, 255, 20, 0.12);
+  --color-warn: #cc9300;
+  --color-warn-soft: rgba(255, 184, 0, 0.12);
+  --color-danger: #cc2d4a;
+  --color-danger-soft: rgba(255, 77, 106, 0.1);
+  --color-info: #0089a8;
+  --color-info-soft: rgba(0, 217, 255, 0.08);
+  --color-overlay: rgba(15, 13, 26, 0.35);
 
-  /* ── Брендовый градиент (заголовки, FAB, активные состояния новых
-     Collection-компонентов) — не заменяет семантику accent/warn/danger. ── */
-  --color-brand-pink: #ec4899;
-  --color-brand-purple: #8b5cf6;
-  --color-brand-blue: #3b82f6;
+  --color-border-subtle: rgba(15, 13, 26, 0.06);
+  --color-border-medium: rgba(15, 13, 26, 0.1);
 
-  /* ── Цвета blob-фона ── */
-  --color-blob-1-from: #f472b6;
-  --color-blob-1-to: #c084fc;
-  --color-blob-2-from: #fb923c;
-  --color-blob-2-to: #f472b6;
-  --color-blob-3-from: #a78bfa;
-  --color-blob-3-to: #60a5fa;
-  --color-blob-4-from: #34d399;
-  --color-blob-4-to: #a78bfa;
+  /* ── Брендовый градиент (заголовки, FAB, активные состояния) — не заменяет
+     семантику accent/warn/danger/info, это отдельная "dopamine" палитра. ── */
+  --color-brand-pink: #ff2d7a;
+  --color-brand-purple: #7b2dff;
+  --color-brand-blue: #00d9ff;
+  --color-brand-lime: #39ff14;
+  --color-brand-peach: #ff9f7a;
+
+  /* ── Цвета blob-фона (раздел 13: max 3 блоба) ── */
+  --color-blob-1-from: #ff2d7a;
+  --color-blob-1-to: #ff9f7a;
+  --color-blob-2-from: #7b2dff;
+  --color-blob-2-to: #ff2d7a;
+  --color-blob-3-from: #00d9ff;
+  --color-blob-3-to: #7b2dff;
 
   /* ── Градиенты ── */
-  --background-image-brand: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%);
-  --background-image-blob-1: linear-gradient(135deg, #f472b6, #c084fc);
-  --background-image-blob-2: linear-gradient(135deg, #fb923c, #f472b6);
-  --background-image-blob-3: linear-gradient(135deg, #a78bfa, #60a5fa);
-  --background-image-blob-4: linear-gradient(135deg, #34d399, #a78bfa);
-  --background-image-hero: linear-gradient(135deg, rgba(236, 72, 153, 0.08) 0%, rgba(59, 130, 246, 0.1) 100%);
+  --background-image-brand: linear-gradient(135deg, #ff2d7a 0%, #7b2dff 50%, #00d9ff 100%);
+  --background-image-success: linear-gradient(135deg, #39ff14, #00d9ff);
+  --background-image-blob-1: linear-gradient(135deg, #ff2d7a, #ff9f7a);
+  --background-image-blob-2: linear-gradient(135deg, #7b2dff, #ff2d7a);
+  --background-image-blob-3: linear-gradient(135deg, #00d9ff, #7b2dff);
+  --background-image-hero: linear-gradient(135deg, rgba(255, 45, 122, 0.08) 0%, rgba(0, 217, 255, 0.1) 100%);
   --background-image-card-overlay: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, transparent 55%);
-  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
-  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(123, 45, 255, 0.08) 0%, transparent 50%);
+  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(255, 45, 122, 0.06) 0%, transparent 50%);
+  /* Живой фон (принцип "Living Surfaces") — статичная mesh-подложка под body, см. index.css. */
+  --background-image-page:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 45, 122, 0.12), transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(123, 45, 255, 0.1), transparent 50%),
+    linear-gradient(135deg, #f8f6f3, #fff8f0, #f0f9ff);
 
   /* ── Анимация blob-фона (раздел "Ключевые техники") ── */
   --animate-blob-float: blob-float 20s ease-in-out infinite;
@@ -75,50 +86,46 @@
     Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Мобильный размер = имя токена; десктопный = имя + "-lg" (используть с variant desktop:) */
-  --text-hero: 32px;
-  --text-hero--line-height: 1.1;
+  --text-hero: 36px;
+  --text-hero--line-height: 1.05;
   --text-hero--font-weight: 800;
-  --text-hero--letter-spacing: -0.02em;
-  --text-hero-lg: 48px;
-  --text-hero-lg--line-height: 1.1;
+  --text-hero--letter-spacing: -0.03em;
+  --text-hero-lg: 52px;
+  --text-hero-lg--line-height: 1.05;
   --text-hero-lg--font-weight: 800;
-  --text-hero-lg--letter-spacing: -0.02em;
+  --text-hero-lg--letter-spacing: -0.03em;
 
-  --text-h1: 28px;
-  --text-h1--line-height: 1.15;
-  --text-h1--font-weight: 700;
+  --text-h1: 30px;
+  --text-h1--line-height: 1.1;
+  --text-h1--font-weight: 800;
   --text-h1--letter-spacing: -0.02em;
-  --text-h1-lg: 40px;
-  --text-h1-lg--line-height: 1.15;
-  --text-h1-lg--font-weight: 700;
+  --text-h1-lg: 42px;
+  --text-h1-lg--line-height: 1.1;
+  --text-h1-lg--font-weight: 800;
   --text-h1-lg--letter-spacing: -0.02em;
 
-  --text-h2: 22px;
-  --text-h2--line-height: 1.2;
+  --text-h2: 24px;
+  --text-h2--line-height: 1.15;
   --text-h2--font-weight: 700;
   --text-h2--letter-spacing: -0.02em;
   --text-h2-lg: 32px;
-  --text-h2-lg--line-height: 1.2;
+  --text-h2-lg--line-height: 1.15;
   --text-h2-lg--font-weight: 700;
   --text-h2-lg--letter-spacing: -0.02em;
 
-  --text-h3: 18px;
-  --text-h3--line-height: 1.25;
-  --text-h3--font-weight: 600;
-  --text-h3--letter-spacing: -0.02em;
+  --text-h3: 20px;
+  --text-h3--line-height: 1.2;
+  --text-h3--font-weight: 700;
   --text-h3-lg: 24px;
-  --text-h3-lg--line-height: 1.25;
-  --text-h3-lg--font-weight: 600;
-  --text-h3-lg--letter-spacing: -0.02em;
+  --text-h3-lg--line-height: 1.2;
+  --text-h3-lg--font-weight: 700;
 
-  --text-h4: 16px;
-  --text-h4--line-height: 1.3;
+  --text-h4: 17px;
+  --text-h4--line-height: 1.25;
   --text-h4--font-weight: 600;
-  --text-h4--letter-spacing: -0.02em;
   --text-h4-lg: 18px;
-  --text-h4-lg--line-height: 1.3;
+  --text-h4-lg--line-height: 1.25;
   --text-h4-lg--font-weight: 600;
-  --text-h4-lg--letter-spacing: -0.02em;
 
   --text-body: 15px;
   --text-body--line-height: 1.6;
@@ -134,29 +141,32 @@
   --text-body-sm-lg--line-height: 1.5;
   --text-body-sm-lg--font-weight: 400;
 
-  --text-caption: 11px;
+  --text-caption: 12px;
   --text-caption--line-height: 1.4;
-  --text-caption--font-weight: 500;
+  --text-caption--font-weight: 600;
   --text-caption-lg: 12px;
   --text-caption-lg--line-height: 1.4;
-  --text-caption-lg--font-weight: 500;
+  --text-caption-lg--font-weight: 600;
 
-  --text-label: 10px;
+  --text-label: 11px;
   --text-label--line-height: 1.2;
-  --text-label--font-weight: 600;
+  --text-label--font-weight: 700;
   --text-label--letter-spacing: 0.05em;
   --text-label-lg: 11px;
   --text-label-lg--line-height: 1.2;
-  --text-label-lg--font-weight: 600;
+  --text-label-lg--font-weight: 700;
   --text-label-lg--letter-spacing: 0.05em;
 
   --text-button: 14px;
   --text-button--line-height: 1;
-  --text-button--font-weight: 600;
+  --text-button--font-weight: 700;
+  --text-button-lg: 15px;
+  --text-button-lg--line-height: 1;
+  --text-button-lg--font-weight: 700;
 
   --text-nav: 12px;
   --text-nav--line-height: 1;
-  --text-nav--font-weight: 500;
+  --text-nav--font-weight: 600;
 
   --tracking-tight: -0.02em;
   --tracking-normal: 0em;
@@ -173,14 +183,19 @@
   --radius-4xl: 32px;
 
   /* ── Тени и glow (раздел 7) — светлая тема, glass-формула ── */
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.08);
-  --shadow-fab: 0 8px 32px rgba(139, 92, 246, 0.35), 0 0 0 4px rgba(255, 255, 255, 0.3);
-  --shadow-glow-accent: 0 0 16px rgba(22, 163, 74, 0.2);
-  --shadow-glow-warn: 0 0 12px rgba(245, 158, 11, 0.25);
-  --shadow-glow-danger: 0 0 12px rgba(239, 68, 68, 0.25);
+  --shadow-sm: 0 1px 3px rgba(15, 13, 26, 0.04);
+  --shadow-md: 0 4px 16px rgba(15, 13, 26, 0.06);
+  --shadow-card: 0 8px 32px rgba(15, 13, 26, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-elevated: 0 12px 40px rgba(15, 13, 26, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-xl: 0 16px 48px rgba(15, 13, 26, 0.1);
+  --shadow-fab: 0 0 30px rgba(255, 45, 122, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.3);
+  --shadow-glow-rose: 0 0 30px rgba(255, 45, 122, 0.2);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 217, 255, 0.25);
+  --shadow-glow-accent: 0 0 20px rgba(57, 255, 20, 0.25);
+  --shadow-glow-warn: 0 0 20px rgba(255, 184, 0, 0.2);
+  --shadow-glow-danger: 0 0 20px rgba(255, 77, 106, 0.2);
 
-  /* ── Motion (раздел 13) ── */
+  /* ── Motion (раздел 10) ── */
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
@@ -246,14 +261,14 @@
   --color-surface: var(--color-bg-secondary);
   --color-text: var(--color-text-primary);
   --color-border: var(--color-surface-glass-border);
-  --color-border-strong: rgba(30, 27, 46, 0.12);
+  --color-border-strong: rgba(15, 13, 26, 0.15);
 
   --color-primary: var(--color-accent);
   --color-primary-hover: var(--color-accent-hover);
   --color-on-primary: var(--color-text-inverse);
 
-  --color-scrollbar-thumb: rgba(139, 92, 246, 0.22);
-  --color-scrollbar-thumb-hover: rgba(139, 92, 246, 0.4);
+  --color-scrollbar-thumb: rgba(123, 45, 255, 0.22);
+  --color-scrollbar-thumb-hover: rgba(123, 45, 255, 0.4);
 
   --color-success-bg: var(--color-accent-glow);
   --color-success-text: var(--color-accent);
@@ -285,43 +300,57 @@
   --font-family: var(--font-sans);
 }
 
-/* ── Тёмная тема — переопределение (прежний дефолт v1.0), теперь alt-тема ── */
+/* ── Тёмная тема "Neon Night" — переопределение ── */
 [data-theme='dark'] {
-  --color-bg-primary: #0b120f;
-  --color-bg-secondary: #121c18;
-  --color-bg-tertiary: #1a2620;
-  --color-bg-elevated: #1f2e27;
-  --color-surface-glass: rgba(255, 255, 255, 0.04);
-  --color-surface-glass-strong: rgba(31, 46, 39, 0.9);
+  --color-bg-primary: #0b0d12;
+  --color-bg-secondary: #151a21;
+  --color-bg-tertiary: #1e2530;
+  --color-bg-elevated: #1e2530;
+  --color-surface-glass: rgba(30, 37, 48, 0.6);
+  --color-surface-glass-strong: rgba(30, 37, 48, 0.75);
   --color-surface-glass-border: rgba(255, 255, 255, 0.08);
-  --color-text-primary: #f0fdf4;
-  --color-text-secondary: #a7f3d0;
-  --color-text-muted: rgba(167, 243, 208, 0.5);
-  --color-text-inverse: #064e3b;
-  --color-accent: #4ade80;
-  --color-accent-hover: #22c55e;
-  --color-accent-glow: rgba(74, 222, 128, 0.25);
-  --color-warn: #fbbf24;
-  --color-warn-soft: rgba(251, 191, 36, 0.12);
-  --color-danger: #f87171;
-  --color-danger-soft: rgba(248, 113, 113, 0.1);
-  --color-info: #60a5fa;
-  --color-info-soft: rgba(96, 165, 250, 0.1);
+  --color-surface-glass-highlight: rgba(255, 255, 255, 0.15);
+  --color-text-primary: #f0f2f5;
+  --color-text-secondary: #a8b0bc;
+  --color-text-muted: #5a6370;
+  --color-text-inverse: #0b0d12;
+  --color-text-on-glass: #f0f2f5;
+  --color-accent: #39ff14;
+  --color-accent-hover: #2fe010;
+  --color-accent-glow: rgba(57, 255, 20, 0.1);
+  --color-warn: #ffb800;
+  --color-warn-soft: rgba(255, 184, 0, 0.1);
+  --color-danger: #ff4d6a;
+  --color-danger-soft: rgba(255, 77, 106, 0.08);
+  --color-info: #00d9ff;
+  --color-info-soft: rgba(0, 217, 255, 0.1);
   --color-overlay: rgba(0, 0, 0, 0.6);
 
-  --background-image-hero: linear-gradient(135deg, rgba(21, 128, 61, 0.3) 0%, rgba(6, 78, 59, 0.4) 100%);
-  --background-image-card-overlay: linear-gradient(to top, rgba(11, 18, 15, 0.9) 0%, transparent 60%);
-  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(74, 222, 128, 0.12) 0%, transparent 50%);
-  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-medium: rgba(255, 255, 255, 0.1);
 
+  --background-image-hero: linear-gradient(135deg, rgba(255, 45, 122, 0.15) 0%, rgba(0, 217, 255, 0.12) 100%);
+  --background-image-card-overlay: linear-gradient(to top, rgba(11, 13, 18, 0.9) 0%, transparent 60%);
+  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(255, 45, 122, 0.1) 0%, transparent 50%);
+  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+  --background-image-page:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 45, 122, 0.08), transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(123, 45, 255, 0.06), transparent 50%),
+    linear-gradient(135deg, #0b0d12, #0f0d1a, #151a21);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-fab: 0 4px 24px rgba(74, 222, 128, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.06);
-  --shadow-glow-accent: 0 0 20px rgba(74, 222, 128, 0.25);
-  --shadow-glow-warn: 0 0 12px rgba(251, 191, 36, 0.3);
-  --shadow-glow-danger: 0 0 12px rgba(248, 113, 113, 0.3);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-fab: 0 0 30px rgba(255, 45, 122, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.06);
+  --shadow-glow-rose: 0 0 30px rgba(255, 45, 122, 0.3);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 217, 255, 0.3);
+  --shadow-glow-accent: 0 0 20px rgba(57, 255, 20, 0.3);
+  --shadow-glow-warn: 0 0 20px rgba(255, 184, 0, 0.3);
+  --shadow-glow-danger: 0 0 20px rgba(255, 77, 106, 0.3);
 
-  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-border-strong: rgba(255, 255, 255, 0.18);
 
   --color-scrollbar-thumb: rgba(255, 255, 255, 0.16);
   --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
@@ -360,4 +389,28 @@
 
 *::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+/* ── Иконография (раздел 8): дефолтный stroke-width для всех Lucide-иконок. ── */
+svg.lucide {
+  stroke-width: 1.5px;
+}
+
+/* ── Accessibility (раздел 12): фокус-кольцо в акцентном цвете + glow. ── */
+:focus-visible {
+  outline: 2px solid var(--color-brand-pink);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-glow-rose);
+}
+
+/* ── Accessibility (раздел 12): уважаем prefers-reduced-motion. ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

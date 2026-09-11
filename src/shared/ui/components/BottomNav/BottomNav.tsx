@@ -18,7 +18,7 @@ export const BottomNav = () => {
           end={end}
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 rounded-2xl px-4 py-2 text-text-muted transition-colors duration-100 ${
-              isActive ? 'bg-accent/15 text-accent' : ''
+              isActive ? 'bg-brand-pink/15 text-brand-pink' : ''
             }`
           }
         >
