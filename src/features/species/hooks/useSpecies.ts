@@ -1,24 +1,11 @@
-import { useEffect, useState } from 'react';
-import type { Species } from '../models/species.types';
+import { useQuery } from '@tanstack/react-query';
 import { speciesRepository } from '../models/species.repository';
 
 export function useSpecies() {
-  const [species, setSpecies] = useState<Species[]>([]);
-  const [loading, setLoading] = useState(true);
+  const query = useQuery({
+    queryKey: ['species'],
+    queryFn: () => speciesRepository.getAll(),
+  });
 
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-
-      try {
-        const loadedSpecies = await speciesRepository.getAll();
-        setSpecies(loadedSpecies);
-      } finally {
-        setLoading(false);
-      }
-    };
-    void load();
-  }, []);
-
-  return { species, loading };
+  return { species: query.data ?? [], loading: query.isPending };
 }

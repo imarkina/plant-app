@@ -1,49 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthContext } from '../../auth';
 import { remindersRepository } from '../models/reminders.repository';
 import { DEFAULT_USER_SETTINGS, type UserSettings } from '../models/reminders.types';
 
+const reminderSettingsKey = (userId: string) => ['reminder-settings', userId] as const;
+
 export function useReminderSettings() {
   const { user } = useAuthContext();
-  const [settings, setSettings] = useState<UserSettings>(DEFAULT_USER_SETTINGS);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (!user) {
-      queueMicrotask(() => setLoading(false));
-      return;
-    }
+  const settingsQuery = useQuery({
+    queryKey: reminderSettingsKey(user?.id ?? 'anonymous'),
+    queryFn: () => remindersRepository.getSettings(user!.id),
+    enabled: user !== null,
+  });
 
-    let cancelled = false;
+  const settings = settingsQuery.data ?? DEFAULT_USER_SETTINGS;
 
-    const load = async () => {
-      setLoading(true);
-      try {
-        const loaded = await remindersRepository.getSettings(user.id);
-        if (!cancelled) {
-          setSettings(loaded);
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
-    void load();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [user]);
+  const updateSettingsMutation = useMutation({
+    mutationFn: (update: Partial<UserSettings>) => remindersRepository.updateSettings(user!.id, update),
+    onSuccess: (next) => {
+      queryClient.setQueryData(reminderSettingsKey(user!.id), next);
+    },
+  });
 
   const updateSettings = async (update: Partial<UserSettings>) => {
     if (!user) {
       return;
     }
-    const next = await remindersRepository.updateSettings(user.id, update);
-    setSettings(next);
+    await updateSettingsMutation.mutateAsync(update);
   };
 
-  return { settings, loading, updateSettings };
+  return { settings, loading: user !== null && settingsQuery.isPending, updateSettings };
 }
