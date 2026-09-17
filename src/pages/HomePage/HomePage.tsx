@@ -304,14 +304,14 @@ export const HomePage = () => {
         <label className="cursor-pointer rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-center text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]">
           <input type="file" accept="image/*" onChange={handleFeaturedPhoto} className="hidden" />
           <span className="inline-flex items-center gap-1.5">
-            <Camera size={16} /> Фото
+            <Camera size={16} className="text-brand-purple" /> Фото
           </span>
         </label>
         <Link
           to={`/plant/${featuredPlant.id}`}
           className="flex items-center justify-center gap-1.5 rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]"
         >
-          <Stethoscope size={16} /> Диагноз
+          <Stethoscope size={16} className="text-danger" /> Диагноз
         </Link>
       </div>
 

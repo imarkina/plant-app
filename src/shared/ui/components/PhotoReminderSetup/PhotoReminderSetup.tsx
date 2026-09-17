@@ -19,7 +19,7 @@ export const PhotoReminderSetup = ({ onCreate }: Props) => {
         onClick={() => setShowForm(true)}
         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-secondary backdrop-blur-xl backdrop-saturate-150"
       >
-        <Camera size={18} /> Напоминать фотографировать
+        <Camera size={18} className="text-brand-purple" /> Напоминать фотографировать
       </button>
     );
   }

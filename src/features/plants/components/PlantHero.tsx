@@ -126,14 +126,14 @@ export const PlantHero = ({
         </button>
         <label className="flex cursor-pointer items-center justify-center gap-1.5 rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]">
           <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
-          <Camera size={16} /> Фото
+          <Camera size={16} className="text-brand-purple" /> Фото
         </label>
         <button
           type="button"
           onClick={onDiagnosis}
           className="flex cursor-pointer items-center justify-center gap-1.5 rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]"
         >
-          <Stethoscope size={16} /> Диагноз
+          <Stethoscope size={16} className="text-danger" /> Диагноз
         </button>
       </div>
     </div>

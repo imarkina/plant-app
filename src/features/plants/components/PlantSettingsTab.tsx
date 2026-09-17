@@ -243,7 +243,7 @@ export const PlantSettingsTab = ({ plant }: Props) => {
           onClick={() => setEditOpen(true)}
           className="flex cursor-pointer items-center gap-2 rounded-2xl border border-surface-glass-border bg-bg-elevated px-4 py-3 text-body-sm font-semibold text-text-primary shadow-card"
         >
-          <Pencil size={16} /> Редактировать профиль
+          <Pencil size={16} className="text-text-secondary" /> Редактировать профиль
         </button>
         <button
           type="button"

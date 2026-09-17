@@ -9,17 +9,17 @@ type Props = {
   onPhotoSelected: (task: CareTask, file: File) => void;
 };
 
-const TASK_META: Record<CareTaskType, { label: string; Icon: typeof Droplet }> = {
-  watering: { label: 'Полив', Icon: Droplet },
-  feeding: { label: 'Подкормка', Icon: FlaskConical },
-  misting: { label: 'Опрыскивание', Icon: CloudRain },
-  photo: { label: 'Сделать фото', Icon: Camera },
+const TASK_META: Record<CareTaskType, { label: string; Icon: typeof Droplet; iconClassName: string }> = {
+  watering: { label: 'Полив', Icon: Droplet, iconClassName: 'text-info' },
+  feeding: { label: 'Подкормка', Icon: FlaskConical, iconClassName: 'text-text-secondary' },
+  misting: { label: 'Опрыскивание', Icon: CloudRain, iconClassName: 'text-text-secondary' },
+  photo: { label: 'Сделать фото', Icon: Camera, iconClassName: 'text-brand-purple' },
 };
 
 export const CareTaskItem = ({ task, onDone, onPhotoSelected }: Props) => {
   const status = getCareStatus(task);
   const nextDue = getNextDue(task);
-  const { label, Icon } = TASK_META[task.type];
+  const { label, Icon, iconClassName } = TASK_META[task.type];
 
   const borderClass =
     status === 'overdue' ? 'border-danger' : status === 'soon' ? 'border-warn' : 'border-accent';
@@ -37,7 +37,7 @@ export const CareTaskItem = ({ task, onDone, onPhotoSelected }: Props) => {
     <div
       className={`flex items-center gap-3 rounded-2xl border-l-4 bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150 ${borderClass}`}
     >
-      <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-secondary">
+      <div className={`flex size-11 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary ${iconClassName}`}>
         <Icon size={20} />
       </div>
       <div className="min-w-0 flex-1">
