@@ -22,7 +22,6 @@ import { useAddPlant } from '../../features/plants/hooks/useAddPlant';
 import { resizeImage } from '../../shared/image/resize';
 import { deriveDisplayName, pluralizeRu } from '../../shared/helpers';
 import { Header } from '../../shared/ui/components/Header/Header';
-import { BottomNav } from '../../shared/ui/components/BottomNav/BottomNav';
 import { FAB } from '../../shared/ui/components/FAB/FAB';
 import { ComingSoon } from '../../shared/ui/components/ComingSoon/ComingSoon';
 import { Confetti } from '../../shared/ui/components/Confetti/Confetti';
@@ -117,11 +116,6 @@ function createPhotoEntry(image: Blob, analysis: PlantReport | undefined): Photo
   return { id: crypto.randomUUID(), createdAt: Date.now(), image, analysis, type: 'growth' };
 }
 
-const QUICK_ACCESS = [
-  { to: '/wishlist', emoji: '💚', title: 'Вишлист' },
-  { to: '/album', emoji: '📸', title: 'Альбом' },
-];
-
 export const HomePage = () => {
   const { user } = useAuthContext();
   const { plants, loading, addPhoto } = usePlantsContext();
@@ -149,7 +143,6 @@ export const HomePage = () => {
   const greeting = getGreeting();
   const featuredPlant = pickFeaturedPlant(activePlants, tasksByPlantId);
   const todayItems = buildTodayItems(activePlants, tasksByPlantId);
-  const photosCount = activePlants.reduce((sum, plant) => sum + plant.photos.length, 0);
 
   const addPhotoToPlant = async (plantId: string, file: File) => {
     const resized = await resizeImage(file);
@@ -206,7 +199,6 @@ export const HomePage = () => {
       <>
         <Header title={`${greeting.text}, ${deriveDisplayName(user?.email ?? null)} ${greeting.emoji}`} />
         <p className="text-body-sm text-text-muted">Загрузка...</p>
-        <BottomNav />
       </>
     );
   }
@@ -221,7 +213,6 @@ export const HomePage = () => {
           description="Добавь первое растение — здесь появится дашборд с задачами на сегодня и растением дня."
         />
         <FAB onFileSelect={handleAddPlant} loading={addingPlant} />
-        <BottomNav />
       </>
     );
   }
@@ -445,27 +436,7 @@ export const HomePage = () => {
         })}
       </div>
 
-      <p className="mt-7 text-h3 text-text-primary">⚡ Быстрый доступ</p>
-      <div className="mt-3 grid grid-cols-2 gap-3">
-        {QUICK_ACCESS.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className="flex flex-col items-center gap-2 rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150"
-          >
-            <span className="text-2xl">{item.emoji}</span>
-            <span className="text-body-sm font-semibold text-text-primary">{item.title}</span>
-            <span className="text-caption text-text-muted">
-              {item.to === '/album'
-                ? `${photosCount} ${pluralizeRu(photosCount, 'фото', 'фото', 'фото')}`
-                : 'Скоро'}
-            </span>
-          </Link>
-        ))}
-      </div>
-
       <FAB onFileSelect={handleAddPlant} loading={addingPlant} />
-      <BottomNav />
       <Confetti active={celebrate} onDone={() => setCelebrate(false)} />
       <Toast message={toast} />
     </>

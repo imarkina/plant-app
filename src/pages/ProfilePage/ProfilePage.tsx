@@ -7,7 +7,6 @@ import { useLocations } from '../../features/locations/hooks/useLocations';
 import { lightLevelLabel, roomIcon } from '../../features/locations';
 import { useTheme } from '../../shared/ui/hooks/useTheme';
 import { Switch } from '../../shared/ui/components/Switch/Switch';
-import { BottomNav } from '../../shared/ui/components/BottomNav/BottomNav';
 import { deriveDisplayName, formatDate, pluralizeRu } from '../../shared/helpers';
 import {
   calculatePhotoStreakWeeks,
@@ -260,8 +259,6 @@ export const ProfilePage = () => {
         <LogOut size={18} />
         Выйти из аккаунта
       </button>
-
-      <BottomNav />
     </div>
   );
 };

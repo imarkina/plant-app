@@ -1,5 +1,4 @@
 import PlantForm from '../../features/plants';
-import { BottomNav } from '../../shared/ui/components/BottomNav/BottomNav';
 import { Header } from '../../shared/ui/components/Header/Header';
 
 export const CollectionPage = () => {
@@ -7,7 +6,6 @@ export const CollectionPage = () => {
     <>
       <Header />
       <PlantForm />
-      <BottomNav />
     </>
   );
 };

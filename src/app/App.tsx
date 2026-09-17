@@ -4,7 +4,6 @@ import './App.css';
 import { HomePage } from '../pages/HomePage';
 import { CollectionPage } from '../pages/CollectionPage';
 import { CalendarPage } from '../pages/CalendarPage';
-import { AlbumPage } from '../pages/AlbumPage';
 import { WishlistPage } from '../pages/WishlistPage';
 import { DiagnosisPage } from '../pages/DiagnosisPage';
 import { AddPlantPage } from '../pages/AddPlantPage';
@@ -15,10 +14,12 @@ import { LocationsPage } from '../pages/LocationsPage';
 import { PlantsProvider } from '../features/plants';
 import { AuthProvider, ProtectedRoute } from '../features/auth';
 import { BlobBackground } from '../shared/ui/components/BlobBackground/BlobBackground';
+import { BottomNav } from '../shared/ui/components/BottomNav/BottomNav';
 
 const PlantsLayout = () => (
   <PlantsProvider>
     <Outlet />
+    <BottomNav />
   </PlantsProvider>
 );
 
@@ -26,7 +27,7 @@ function App() {
   return (
     <>
       <BlobBackground />
-      <div className="relative mx-auto max-w-full pb-20 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
+      <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
         <BrowserRouter>
           <AuthProvider>
             <Routes>
@@ -36,7 +37,6 @@ function App() {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/collection" element={<CollectionPage />} />
                   <Route path="/calendar" element={<CalendarPage />} />
-                  <Route path="/album" element={<AlbumPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
                   <Route path="/diagnosis" element={<DiagnosisPage />} />
                   <Route path="/add" element={<AddPlantPage />} />
