@@ -120,8 +120,6 @@ function createPhotoEntry(image: Blob, analysis: PlantReport | undefined): Photo
 const QUICK_ACCESS = [
   { to: '/wishlist', emoji: '💚', title: 'Вишлист' },
   { to: '/album', emoji: '📸', title: 'Альбом' },
-  { to: '/calendar', emoji: '🗓', title: 'Календарь' },
-  { to: '/diagnosis', emoji: '🩺', title: 'Диагноз', subtitle: 'Gemini чат' },
 ];
 
 export const HomePage = () => {
@@ -136,6 +134,7 @@ export const HomePage = () => {
   const { tasksByPlantId, loading: tasksLoading, markDone, applyPhotoBackoff } = useCareTasksForPlants(plantIds);
   const { message: toast, showToast } = useToast();
   const [celebrate, setCelebrate] = useState(false);
+  const [todayExpanded, setTodayExpanded] = useState(false);
   const backoffChecked = useRef(false);
 
   useEffect(() => {
@@ -326,7 +325,7 @@ export const HomePage = () => {
         <p className="mt-3 text-body-sm text-text-muted">Дел на сегодня нет — можно выдохнуть 🌿</p>
       ) : (
         <div className="mt-3 flex flex-col gap-2.5">
-          {todayItems.map((item) => {
+          {(todayExpanded ? todayItems : todayItems.slice(0, 3)).map((item) => {
             const name = item.plant.photos[0]?.analysis?.identification.commonName ?? item.plant.name;
 
             if (item.kind === 'alert') {
@@ -395,6 +394,15 @@ export const HomePage = () => {
               </div>
             );
           })}
+          {!todayExpanded && todayItems.length > 3 && (
+            <button
+              type="button"
+              onClick={() => setTodayExpanded(true)}
+              className="cursor-pointer rounded-2xl border border-dashed border-surface-glass-border py-2.5 text-body-sm font-semibold text-text-secondary"
+            >
+              Показать ещё {todayItems.length - 3}
+            </button>
+          )}
         </div>
       )}
 
@@ -450,7 +458,7 @@ export const HomePage = () => {
             <span className="text-caption text-text-muted">
               {item.to === '/album'
                 ? `${photosCount} ${pluralizeRu(photosCount, 'фото', 'фото', 'фото')}`
-                : (item.subtitle ?? 'Скоро')}
+                : 'Скоро'}
             </span>
           </Link>
         ))}

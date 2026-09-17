@@ -1,10 +1,9 @@
-import { createElement, type ChangeEvent } from 'react';
-import { ArrowLeft, Camera, Droplet, MoreHorizontal, Stethoscope } from 'lucide-react';
+import { createElement } from 'react';
+import { ArrowLeft, MoreHorizontal } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { Plant } from '../models/plant.types';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../models/report-status.mappers';
 import { roomIcon } from '../../locations';
-import type { CareTask } from '../../care-tasks';
 
 const HEALTH_LABEL = { healthy: 'Здорова', warning: 'Внимание', sick: 'Болеет' } as const;
 
@@ -22,10 +21,6 @@ type Props = {
   plant: Plant;
   roomName: string | null;
   lightLabel: string | null;
-  wateringTask: CareTask | null;
-  onWater: () => void;
-  onPhotoSelected: (file: File) => void;
-  onDiagnosis: () => void;
   onOpenSettings: () => void;
   /** По умолчанию navigate(-1); переопределяется, когда герой встроен в bottom sheet (там "назад" = закрыть лист). */
   onBack?: () => void;
@@ -38,10 +33,6 @@ export const PlantHero = ({
   plant,
   roomName,
   lightLabel,
-  wateringTask,
-  onWater,
-  onPhotoSelected,
-  onDiagnosis,
   onOpenSettings,
   onBack,
   bleedClassName = '-mx-6',
@@ -53,14 +44,6 @@ export const PlantHero = ({
   const name = analysis?.identification.commonName ?? plant.name;
   const botanicalName = analysis?.identification.botanicalName;
   const bucket = analysis?.health.status ? healthStatusToBucket(analysis.health.status) : null;
-
-  const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      onPhotoSelected(file);
-    }
-    event.target.value = '';
-  };
 
   return (
     <div>
@@ -113,28 +96,6 @@ export const PlantHero = ({
             {plant.potDiameterCm != null && <span>· 🪴 Ø {plant.potDiameterCm} см</span>}
           </p>
         </div>
-      </div>
-
-      <div className="mt-3 grid grid-cols-3 gap-2">
-        <button
-          type="button"
-          onClick={onWater}
-          disabled={!wateringTask}
-          className="flex cursor-pointer items-center justify-center gap-1.5 rounded-2xl bg-brand px-3 py-3 text-body-sm font-semibold text-white shadow-card active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40"
-        >
-          <Droplet size={16} /> Полить
-        </button>
-        <label className="flex cursor-pointer items-center justify-center gap-1.5 rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]">
-          <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
-          <Camera size={16} className="text-brand-purple" /> Фото
-        </label>
-        <button
-          type="button"
-          onClick={onDiagnosis}
-          className="flex cursor-pointer items-center justify-center gap-1.5 rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]"
-        >
-          <Stethoscope size={16} className="text-danger" /> Диагноз
-        </button>
       </div>
     </div>
   );

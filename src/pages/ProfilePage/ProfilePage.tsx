@@ -155,10 +155,6 @@ export const ProfilePage = () => {
             <Switch checked={theme === 'dark'} onChange={toggle} label="Тёмная тема" />
           </SettingsRow>
 
-          <SettingsRow icon="📡" title="Офлайн-режим" subtitle="Работа без интернета">
-            <span className="text-body-sm font-semibold text-accent">Активен</span>
-          </SettingsRow>
-
           <button type="button" onClick={handleExport} className="w-full cursor-pointer text-left">
             <SettingsRow icon={<Download size={18} />} title="Экспорт данных" subtitle="Скачать коллекцию в JSON">
               <span className="text-body-sm font-semibold text-text-secondary">
