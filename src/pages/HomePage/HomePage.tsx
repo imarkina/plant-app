@@ -271,7 +271,7 @@ export const HomePage = () => {
           )}
           <div className="absolute inset-0 bg-card-overlay" />
 
-          <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-bg-elevated/90 px-2.5 py-1 text-caption font-semibold text-text-primary shadow-card backdrop-blur-xl">
+          <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-bg-elevated/90 px-2.5 py-1 text-caption font-semibold text-text-primary shadow-card backdrop-blur-xl backdrop-saturate-150">
             ⭐ Растение дня
           </span>
 
@@ -336,7 +336,7 @@ export const HomePage = () => {
                 <Link
                   key={item.key}
                   to={`/plant/${item.plant.id}`}
-                  className="flex items-center gap-3 rounded-2xl border-l-4 border-danger bg-surface-glass p-3 shadow-card backdrop-blur-xl"
+                  className="flex items-center gap-3 rounded-2xl border-l-4 border-danger bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150"
                 >
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-danger-soft text-lg">
                     🚨
@@ -358,7 +358,7 @@ export const HomePage = () => {
             return (
               <div
                 key={item.key}
-                className={`flex items-center gap-3 rounded-2xl border-l-4 bg-surface-glass p-3 shadow-card backdrop-blur-xl ${
+                className={`flex items-center gap-3 rounded-2xl border-l-4 bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150 ${
                   isOverdue ? 'border-danger' : 'border-info'
                 }`}
               >
@@ -443,7 +443,7 @@ export const HomePage = () => {
           <Link
             key={item.to}
             to={item.to}
-            className="flex flex-col items-center gap-2 rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl"
+            className="flex flex-col items-center gap-2 rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150"
           >
             <span className="text-2xl">{item.emoji}</span>
             <span className="text-body-sm font-semibold text-text-primary">{item.title}</span>

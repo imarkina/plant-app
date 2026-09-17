@@ -31,7 +31,7 @@ export const CareTab = ({ plantId, onPhotoSelected }: Props) => {
 
   if (tasks.length === 0) {
     return (
-      <div className="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-surface-glass-border bg-surface-glass p-8 text-center shadow-card backdrop-blur-xl">
+      <div className="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-surface-glass-border bg-surface-glass p-8 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
         <p className="text-body-sm text-text-muted">Задачи ухода ещё не настроены</p>
         <button
           type="button"

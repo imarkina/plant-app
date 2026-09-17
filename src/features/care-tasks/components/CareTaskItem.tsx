@@ -35,7 +35,7 @@ export const CareTaskItem = ({ task, onDone, onPhotoSelected }: Props) => {
 
   return (
     <div
-      className={`flex items-center gap-3 rounded-2xl border-l-4 bg-surface-glass p-3 shadow-card backdrop-blur-xl ${borderClass}`}
+      className={`flex items-center gap-3 rounded-2xl border-l-4 bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150 ${borderClass}`}
     >
       <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-secondary">
         <Icon size={20} />

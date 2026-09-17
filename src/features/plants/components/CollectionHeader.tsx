@@ -39,7 +39,7 @@ export const CollectionHeader = ({
         {stats.join(' · ')}
       </p>
 
-      <div className="mt-4 inline-flex gap-1 rounded-full border border-surface-glass-border bg-surface-glass p-1 backdrop-blur-xl">
+      <div className="mt-4 inline-flex gap-1 rounded-full border border-surface-glass-border bg-surface-glass p-1 backdrop-blur-xl backdrop-saturate-150">
         {VIEW_OPTIONS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}

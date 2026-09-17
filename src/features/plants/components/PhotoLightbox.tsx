@@ -57,7 +57,7 @@ export const PhotoLightbox = ({ photo, onClose, onDelete }: Props) => {
         type="button"
         onClick={onClose}
         aria-label="Закрыть"
-        className="absolute top-4 right-4 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-xl"
+        className="absolute top-4 right-4 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-xl backdrop-saturate-150"
       >
         <X size={20} />
       </button>

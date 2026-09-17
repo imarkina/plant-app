@@ -17,7 +17,7 @@ export const PhotoReminderSetup = ({ onCreate }: Props) => {
       <button
         type="button"
         onClick={() => setShowForm(true)}
-        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-secondary backdrop-blur-xl"
+        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-secondary backdrop-blur-xl backdrop-saturate-150"
       >
         <Camera size={18} /> Напоминать фотографировать
       </button>
@@ -25,7 +25,7 @@ export const PhotoReminderSetup = ({ onCreate }: Props) => {
   }
 
   return (
-    <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl">
+    <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
       <p className="text-body-sm font-semibold text-text-primary">Как часто напоминать сделать фото?</p>
       <div className="mt-3 flex gap-2">
         {PRESETS.map((days) => (

@@ -33,7 +33,7 @@ function downloadJson(filename: string, data: unknown) {
 }
 
 const StatTile = ({ value, label }: { value: number; label: string }) => (
-  <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl">
+  <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
     <p className="text-h2 text-text-primary">{value}</p>
     <p className="mt-1 text-caption text-text-muted">{label}</p>
   </div>
@@ -148,7 +148,7 @@ export const ProfilePage = () => {
         </div>
       )}
 
-      <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl">
+      <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
         <p className="text-label text-text-muted uppercase">Настройки</p>
         <div className="mt-1 divide-y divide-surface-glass-border">
           <SettingsRow icon={<Moon size={18} />} title="Тёмная тема" subtitle="Переключить оформление">
@@ -169,7 +169,7 @@ export const ProfilePage = () => {
         </div>
       </div>
 
-      <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl">
+      <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
         <p className="text-label text-text-muted uppercase">Напоминания</p>
         <div className="mt-1 divide-y divide-surface-glass-border">
           <SettingsRow icon={<Bell size={18} />} title="Push-уведомления" subtitle="Напоминать сделать фото">
@@ -224,7 +224,7 @@ export const ProfilePage = () => {
       </div>
 
       {locations.length > 0 && (
-        <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl">
+        <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
           <p className="text-label text-text-muted uppercase">Локации</p>
           <div className="mt-1 divide-y divide-surface-glass-border">
             {locations.map((location) => {

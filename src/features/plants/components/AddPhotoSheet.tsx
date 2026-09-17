@@ -147,7 +147,7 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
               type="button"
               onClick={handleRotate}
               aria-label="Повернуть на 90°"
-              className="absolute top-2 right-2 flex size-9 cursor-pointer items-center justify-center rounded-full bg-bg-elevated/90 text-text-primary shadow-card backdrop-blur-xl"
+              className="absolute top-2 right-2 flex size-9 cursor-pointer items-center justify-center rounded-full bg-bg-elevated/90 text-text-primary shadow-card backdrop-blur-xl backdrop-saturate-150"
             >
               <RotateCw size={16} />
             </button>

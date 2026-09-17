@@ -93,7 +93,7 @@ export const PlantHero = ({
 
         <div className="absolute inset-x-4 bottom-4">
           {bucket && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-bg-elevated/90 px-3 py-1 text-caption font-semibold text-text-primary shadow-card backdrop-blur-xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-bg-elevated/90 px-3 py-1 text-caption font-semibold text-text-primary shadow-card backdrop-blur-xl backdrop-saturate-150">
               <span className="relative flex size-2">
                 <span
                   className={`absolute inline-flex size-full animate-ping rounded-full opacity-60 ${healthBucketToDotClassName(bucket)}`}

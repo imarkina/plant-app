@@ -228,7 +228,7 @@ export const PlantSettingsTab = ({ plant }: Props) => {
   return (
     <div className="mt-6">
       <p className="text-label text-text-muted uppercase">Основное</p>
-      <div className="mt-1 rounded-3xl border border-surface-glass-border bg-surface-glass px-4 shadow-card backdrop-blur-xl">
+      <div className="mt-1 rounded-3xl border border-surface-glass-border bg-surface-glass px-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
         <div className="divide-y divide-surface-glass-border">
           <SettingsRow label="Имя растения" value={plant.name} />
           <SettingsRow label="Комната" value={roomName} />

@@ -99,7 +99,7 @@ export const PhotoTimeline = ({ photos, onZoom, onCompare }: Props) => {
                   {PHOTO_TYPE_ICON[photo.type]}
                 </span>
 
-                <div className="flex gap-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-3 shadow-card backdrop-blur-xl">
+                <div className="flex gap-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150">
                   <button
                     type="button"
                     onClick={() => onZoom(photo)}
