@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import './App.css';
 
+import { queryClient } from '../shared/query/queryClient';
 import { HomePage } from '../pages/HomePage';
 import { CollectionPage } from '../pages/CollectionPage';
 import { CalendarPage } from '../pages/CalendarPage';
@@ -25,7 +28,7 @@ const PlantsLayout = () => (
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <BlobBackground />
       <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
         <BrowserRouter>
@@ -49,7 +52,8 @@ function App() {
           </AuthProvider>
         </BrowserRouter>
       </div>
-    </>
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+    </QueryClientProvider>
   );
 }
 

@@ -1,94 +1,182 @@
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ArchiveStatus, PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
 import { plantsRepository } from '../models/plant.repository';
 
+export const plantsQueryKey = ['plants'] as const;
+
 export function usePlants() {
-  const [plants, setPlants] = useState<Plant[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  const refreshPlants = async () => {
-    const updatedPlants = await plantsRepository.getAll();
-    setPlants(updatedPlants);
+  const plantsQuery = useQuery({
+    queryKey: plantsQueryKey,
+    queryFn: () => plantsRepository.getAll(),
+  });
+
+  const plants = plantsQuery.data ?? [];
+
+  /**
+   * Каждая мутация уже знает, что именно изменилось (мы сами составляли payload),
+   * поэтому чиним список растений в кэше на месте — вместо повторного getAll(),
+   * который перекачивал бы фото и AI-анализ вообще всей коллекции ради одного поля.
+   */
+  const patchPlants = (updater: (plants: Plant[]) => Plant[]) => {
+    queryClient.setQueryData<Plant[]>(plantsQueryKey, (current) => updater(current ?? []));
   };
 
-  useEffect(() => {
-    const loadInitialPlants = async () => {
-      setLoading(true);
+  const addPlantMutation = useMutation({
+    mutationFn: (plant: Plant) => plantsRepository.save(plant),
+    onSuccess: (savedPlant) => {
+      patchPlants((current) => [...current, savedPlant]);
+    },
+  });
 
-      try {
-        await refreshPlants();
-      } finally {
-        setLoading(false);
-      }
-    };
-    void loadInitialPlants();
-  }, []);
-
-  const addPlant = async (plant: Plant) => {
-    await plantsRepository.save(plant);
-    await refreshPlants();
-  };
-
-  const addPhoto = async (plantId: string, photo: PhotoEntry) => {
-    await plantsRepository.addPhoto(plantId, photo);
-    await refreshPlants();
-  };
+  const addPhotoMutation = useMutation({
+    mutationFn: async ({ plantId, photo }: { plantId: string; photo: PhotoEntry }) => ({
+      plantId,
+      savedPhoto: await plantsRepository.addPhoto(plantId, photo),
+    }),
+    onSuccess: ({ plantId, savedPhoto }) => {
+      patchPlants((current) =>
+        current.map((plant) =>
+          plant.id === plantId ? { ...plant, photos: [...plant.photos, savedPhoto] } : plant,
+        ),
+      );
+    },
+  });
 
   /** Удаляя фото-«покупку», делаем покупкой следующее по хронологии — растение всегда должно иметь одну. */
-  const deletePhoto = async (plantId: string, photoId: string) => {
-    const plant = plants.find((p) => p.id === plantId);
-    const deletedPhoto = plant?.photos.find((p) => p.id === photoId);
+  const deletePhotoMutation = useMutation({
+    mutationFn: async ({ plantId, photoId }: { plantId: string; photoId: string }) => {
+      const plant = plants.find((p) => p.id === plantId);
+      const deletedPhoto = plant?.photos.find((p) => p.id === photoId);
 
-    await plantsRepository.deletePhoto(plantId, photoId);
+      await plantsRepository.deletePhoto(plantId, photoId);
 
-    if (plant && deletedPhoto?.type === 'purchase') {
-      const remaining = plant.photos
-        .filter((p) => p.id !== photoId)
-        .sort((a, b) => a.createdAt - b.createdAt);
+      let reassignedPurchaseId: string | null = null;
+      if (plant && deletedPhoto?.type === 'purchase') {
+        const remaining = plant.photos
+          .filter((p) => p.id !== photoId)
+          .sort((a, b) => a.createdAt - b.createdAt);
 
-      if (remaining.length > 0) {
-        await plantsRepository.updatePhotoType(remaining[0].id, 'purchase');
+        if (remaining.length > 0) {
+          await plantsRepository.updatePhotoType(remaining[0].id, 'purchase');
+          reassignedPurchaseId = remaining[0].id;
+        }
       }
-    }
 
-    await refreshPlants();
-  };
+      return { plantId, photoId, reassignedPurchaseId };
+    },
+    onSuccess: ({ plantId, photoId, reassignedPurchaseId }) => {
+      patchPlants((current) =>
+        current.map((plant) => {
+          if (plant.id !== plantId) {
+            return plant;
+          }
 
-  const setAvatarPhoto = async (plantId: string, photoId: string) => {
-    await plantsRepository.setAvatarPhoto(plantId, photoId);
-    await refreshPlants();
-  };
+          return {
+            ...plant,
+            photos: plant.photos
+              .filter((photo) => photo.id !== photoId)
+              .map((photo) =>
+                photo.id === reassignedPurchaseId ? { ...photo, type: 'purchase' } : photo,
+              ),
+          };
+        }),
+      );
+    },
+  });
 
-  const updateProfile = async (plantId: string, update: PlantProfileUpdate) => {
-    await plantsRepository.updateProfile(plantId, update);
-    await refreshPlants();
-  };
+  const setAvatarPhotoMutation = useMutation({
+    mutationFn: async ({ plantId, photoId }: { plantId: string; photoId: string }) => {
+      await plantsRepository.setAvatarPhoto(plantId, photoId);
+      return { plantId, photoId };
+    },
+    onSuccess: ({ plantId, photoId }) => {
+      patchPlants((current) =>
+        current.map((plant) =>
+          plant.id === plantId
+            ? { ...plant, photos: plant.photos.map((photo) => ({ ...photo, isAvatar: photo.id === photoId })) }
+            : plant,
+        ),
+      );
+    },
+  });
 
-  const archive = async (plantId: string, status: ArchiveStatus, reasonDetail?: string | null) => {
-    await plantsRepository.archive(plantId, status, reasonDetail);
-    await refreshPlants();
-  };
+  const updateProfileMutation = useMutation({
+    mutationFn: async ({ plantId, update }: { plantId: string; update: PlantProfileUpdate }) => {
+      await plantsRepository.updateProfile(plantId, update);
+      return { plantId, update };
+    },
+    onSuccess: ({ plantId, update }) => {
+      patchPlants((current) =>
+        current.map((plant) => (plant.id === plantId ? { ...plant, ...update } : plant)),
+      );
+    },
+  });
 
-  const restore = async (plantId: string) => {
-    await plantsRepository.restore(plantId);
-    await refreshPlants();
-  };
+  const archiveMutation = useMutation({
+    mutationFn: async (args: { plantId: string; status: ArchiveStatus; reasonDetail?: string | null }) => {
+      await plantsRepository.archive(args.plantId, args.status, args.reasonDetail);
+      return { ...args, archivedAt: new Date().toISOString() };
+    },
+    onSuccess: ({ plantId, status, reasonDetail, archivedAt }) => {
+      patchPlants((current) =>
+        current.map((plant) =>
+          plant.id === plantId
+            ? {
+                ...plant,
+                isArchived: true,
+                archiveStatus: status,
+                archiveReasonDetail: reasonDetail ?? null,
+                archivedAt,
+              }
+            : plant,
+        ),
+      );
+    },
+  });
 
-  const deletePlant = async (plantId: string) => {
-    await plantsRepository.deletePlant(plantId);
-    await refreshPlants();
-  };
+  const restoreMutation = useMutation({
+    mutationFn: async (plantId: string) => {
+      await plantsRepository.restore(plantId);
+      return plantId;
+    },
+    onSuccess: (plantId) => {
+      patchPlants((current) =>
+        current.map((plant) =>
+          plant.id === plantId
+            ? { ...plant, isArchived: false, archiveStatus: null, archiveReasonDetail: null, archivedAt: null }
+            : plant,
+        ),
+      );
+    },
+  });
+
+  const deletePlantMutation = useMutation({
+    mutationFn: async (plantId: string) => {
+      await plantsRepository.deletePlant(plantId);
+      return plantId;
+    },
+    onSuccess: (deletedPlantId) => {
+      patchPlants((current) => current.filter((plant) => plant.id !== deletedPlantId));
+    },
+  });
 
   return {
     plants,
-    loading,
-    addPlant,
-    addPhoto,
-    deletePhoto,
-    setAvatarPhoto,
-    updateProfile,
-    archive,
-    restore,
-    deletePlant,
+    loading: plantsQuery.isPending,
+    addPlant: (plant: Plant) => addPlantMutation.mutateAsync(plant).then(() => undefined),
+    addPhoto: (plantId: string, photo: PhotoEntry) =>
+      addPhotoMutation.mutateAsync({ plantId, photo }).then(() => undefined),
+    deletePhoto: (plantId: string, photoId: string) =>
+      deletePhotoMutation.mutateAsync({ plantId, photoId }).then(() => undefined),
+    setAvatarPhoto: (plantId: string, photoId: string) =>
+      setAvatarPhotoMutation.mutateAsync({ plantId, photoId }).then(() => undefined),
+    updateProfile: (plantId: string, update: PlantProfileUpdate) =>
+      updateProfileMutation.mutateAsync({ plantId, update }).then(() => undefined),
+    archive: (plantId: string, status: ArchiveStatus, reasonDetail?: string | null) =>
+      archiveMutation.mutateAsync({ plantId, status, reasonDetail }).then(() => undefined),
+    restore: (plantId: string) => restoreMutation.mutateAsync(plantId).then(() => undefined),
+    deletePlant: (plantId: string) => deletePlantMutation.mutateAsync(plantId).then(() => undefined),
   };
 }

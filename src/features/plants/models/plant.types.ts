@@ -66,8 +66,10 @@ export interface PlantsRepository {
   getAll(): Promise<Plant[]>;
   getActive(): Promise<Plant[]>;
   getArchived(): Promise<Plant[]>;
-  save(plant: Plant): Promise<void>;
-  addPhoto(plantId: string, photo: PhotoEntry): Promise<void>;
+  /** Возвращает сохранённое растение с разрешёнными imageUrl у фото — чтобы вызывающий код мог обновить кэш без повторного getAll(). */
+  save(plant: Plant): Promise<Plant>;
+  /** Возвращает сохранённое фото с разрешённым imageUrl — по той же причине. */
+  addPhoto(plantId: string, photo: PhotoEntry): Promise<PhotoEntry>;
   deletePhoto(plantId: string, photoId: string): Promise<void>;
   updatePhotoType(photoId: string, type: PhotoType): Promise<void>;
   setAvatarPhoto(plantId: string, photoId: string): Promise<void>;

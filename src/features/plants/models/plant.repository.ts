@@ -51,15 +51,18 @@ class SupabasePlantsRepository implements PlantsRepository {
     return rows.map(mapPlantRowToPlant);
   }
 
-  async save(plant: Plant): Promise<void> {
+  async save(plant: Plant): Promise<Plant> {
     unwrap(await supabase.from(PLANTS_TABLE).insert({ id: plant.id, name: plant.name }));
 
+    const savedPhotos: PhotoEntry[] = [];
     for (const photo of plant.photos) {
-      await this.addPhoto(plant.id, photo);
+      savedPhotos.push(await this.addPhoto(plant.id, photo));
     }
+
+    return { ...plant, photos: savedPhotos };
   }
 
-  async addPhoto(plantId: string, photo: PhotoEntry): Promise<void> {
+  async addPhoto(plantId: string, photo: PhotoEntry): Promise<PhotoEntry> {
     const imageUrl = photo.image
       ? await this.uploadPhotoImage(plantId, photo.id, photo.image)
       : undefined;
@@ -75,6 +78,8 @@ class SupabasePlantsRepository implements PlantsRepository {
         note: photo.note ?? null,
       }),
     );
+
+    return { ...photo, imageUrl };
   }
 
   async deletePhoto(plantId: string, photoId: string): Promise<void> {
