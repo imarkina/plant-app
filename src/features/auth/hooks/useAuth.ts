@@ -17,10 +17,13 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(toAuthUser(data.session?.user));
-      setLoading(false);
-    });
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        setUser(toAuthUser(data.session?.user));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
 
     const {
       data: { subscription },

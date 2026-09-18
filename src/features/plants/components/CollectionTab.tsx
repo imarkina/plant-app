@@ -130,7 +130,7 @@ export const CollectionTab = ({ plants }: Props) => {
           onSelect={setOpenPlantId}
         />
       )}
-      <FAB onFileSelect={handleFileSelect} loading={loading} />
+      <FAB onFileSelect={(event) => void handleFileSelect(event)} loading={loading} />
 
       {lastOpenPlant && (
         <PlantBottomSheet

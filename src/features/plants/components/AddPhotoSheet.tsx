@@ -135,7 +135,7 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
           {sizeError && <p className="mt-3 text-body-sm text-danger">{sizeError}</p>}
 
           <label className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-brand px-5 py-3.5 text-button font-sans text-white shadow-fab active:scale-[0.98]">
-            <input type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
+            <input type="file" accept="image/*" onChange={(event) => void handleFileSelect(event)} className="hidden" />
             📷 Сделать фото
           </label>
         </>
@@ -145,7 +145,7 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
             {previewUrl && <img src={previewUrl} alt="" className="max-h-80 w-full object-contain" />}
             <button
               type="button"
-              onClick={handleRotate}
+              onClick={() => void handleRotate()}
               aria-label="Повернуть на 90°"
               className="absolute top-2 right-2 flex size-9 cursor-pointer items-center justify-center rounded-full bg-bg-elevated/90 text-text-primary shadow-card backdrop-blur-xl backdrop-saturate-150"
             >

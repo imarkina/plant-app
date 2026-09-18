@@ -1,4 +1,5 @@
 import { supabase } from '../../../shared/supabase/client';
+import { unwrap } from '../../../shared/supabase/unwrap';
 import type {
   Location,
   LocationsRepository,
@@ -8,15 +9,6 @@ import type {
 import { mapLocationRowToLocation, mapLocationUpdateToRow } from './location.mappers';
 
 const LOCATIONS_TABLE = 'locations';
-
-/** Throws on a Supabase error, otherwise returns the (guaranteed non-null) data. */
-function unwrap<T>({ data, error }: { data: T | null; error: unknown }): T {
-  if (error) {
-    throw error;
-  }
-
-  return data as T;
-}
 
 class SupabaseLocationsRepository implements LocationsRepository {
   async getAll(): Promise<Location[]> {

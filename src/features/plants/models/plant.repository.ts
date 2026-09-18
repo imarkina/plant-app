@@ -8,21 +8,13 @@ import type {
 } from './plant.types';
 
 import { supabase } from '../../../shared/supabase/client';
+import { unwrap } from '../../../shared/supabase/unwrap';
 import { mapPlantProfileUpdateToRow, mapPlantRowToPlant } from './plant.mappers';
 
 const PLANTS_TABLE = 'plants';
 const PHOTOS_TABLE = 'photos';
 const PLANT_PHOTOS_BUCKET = 'plant-photos';
 const PHOTO_FILE_EXTENSION = 'jpg';
-
-/** Throws on a Supabase error, otherwise returns the (guaranteed non-null) data. */
-function unwrap<T>({ data, error }: { data: T | null; error: unknown }): T {
-  if (error) {
-    throw error;
-  }
-
-  return data as T;
-}
 
 function buildPhotoStoragePath(plantId: string, photoId: string): string {
   return `${plantId}/${photoId}.${PHOTO_FILE_EXTENSION}`;
@@ -158,7 +150,9 @@ class SupabasePlantsRepository implements PlantsRepository {
 
   async deletePlant(plantId: string): Promise<void> {
     const { data: photos } = await supabase.from(PHOTOS_TABLE).select('id').eq('plant_id', plantId);
-    const storagePaths = (photos ?? []).map((photo) => buildPhotoStoragePath(plantId, photo.id));
+    const storagePaths = (photos ?? []).map((photo: { id: string }) =>
+      buildPhotoStoragePath(plantId, photo.id),
+    );
 
     if (storagePaths.length > 0) {
       await supabase.storage.from(PLANT_PHOTOS_BUCKET).remove(storagePaths);

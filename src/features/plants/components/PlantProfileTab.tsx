@@ -91,7 +91,7 @@ export const PlantProfileTab = ({ plant }: Props) => {
   };
 
   return (
-    <form className="plant-profile" onSubmit={handleSubmit}>
+    <form className="plant-profile" onSubmit={(event) => void handleSubmit(event)}>
       <label className="plant-profile__field">
         <span>Кличка</span>
         <input

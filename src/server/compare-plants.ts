@@ -68,7 +68,7 @@ export const comparePlants = async ({
   });
 
   if (response && response.text) {
-    const raw = JSON.parse(response.text);
+    const raw: unknown = JSON.parse(response.text);
 
     return plantComparisonSchema.parse(raw);
   }

@@ -66,7 +66,12 @@ export const PlantDetailTabs = ({ plant, onBack, embedded = false, titleId }: Pr
       {activeTab === 'overview' && (
         <PlantOverviewTab plant={plant} wateringTask={wateringTask} onOpenAlbum={() => setActiveTab('album')} />
       )}
-      {activeTab === 'care' && <CareTab plantId={plant.id} onPhotoSelected={handlePhotoSelected} />}
+      {activeTab === 'care' && (
+        <CareTab
+          plantId={plant.id}
+          onPhotoSelected={(task, file) => void handlePhotoSelected(task, file)}
+        />
+      )}
       {activeTab === 'album' && (
         <div className="mt-6">
           <PlantTimelineView plant={plant} />

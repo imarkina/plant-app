@@ -144,7 +144,7 @@ const DeletePlantSheet = ({
     try {
       await deletePlant(plant.id);
       handleClose();
-      navigate('/collection');
+      void navigate('/collection');
     } finally {
       setBusy(false);
     }

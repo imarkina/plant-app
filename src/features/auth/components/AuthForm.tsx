@@ -64,7 +64,7 @@ export const AuthForm = () => {
     try {
       if (mode === 'signIn') {
         await signIn(email, password);
-        navigate(redirectTo, { replace: true });
+        void navigate(redirectTo, { replace: true });
       } else {
         await signUp(email, password);
         setInfoMessage('Проверьте почту и подтвердите email, чтобы завершить регистрацию.');
@@ -95,7 +95,7 @@ export const AuthForm = () => {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-5">
+      <form onSubmit={(event) => void handleSubmit(event)} noValidate className="mt-5">
         <label className="mb-4 flex flex-col gap-1.5">
           <span className="text-body-sm font-semibold text-text-secondary">Email</span>
           <input

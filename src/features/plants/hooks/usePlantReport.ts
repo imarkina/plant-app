@@ -30,7 +30,7 @@ export const usePlantReport = () => {
         throw new Error(ANALYSIS_FAILED_MESSAGE);
       }
 
-      const responseBody: AnalyzeResponseBody = await response.json();
+      const responseBody = (await response.json()) as AnalyzeResponseBody;
       return responseBody.result;
     } catch {
       setError(ANALYSIS_FAILED_MESSAGE);

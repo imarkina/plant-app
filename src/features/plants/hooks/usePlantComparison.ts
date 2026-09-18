@@ -36,7 +36,7 @@ export const usePlantComparison = () => {
           mimeType: COMPARE_IMAGE_MIME_TYPE,
         }),
       });
-      const responseBody: CompareResponseBody = await response.json();
+      const responseBody = (await response.json()) as CompareResponseBody;
       setResult(responseBody.result);
     } catch {
       setError(COMPARISON_FAILED_MESSAGE);

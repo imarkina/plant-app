@@ -65,7 +65,7 @@ export function usePushSubscription() {
       return false;
     }
 
-    const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY as string | undefined;
+    const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
     if (!vapidKey) {
       setError('Push пока не настроен на сервере (нет VAPID-ключа) — сохранили только твой выбор.');
       return false;

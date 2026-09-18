@@ -190,7 +190,7 @@ export const HomePage = () => {
     }
     const plantId = await addPlantFromFile(file);
     if (plantId) {
-      navigate(`/plant/${plantId}`);
+      void navigate(`/plant/${plantId}`);
     }
   };
 
@@ -212,7 +212,7 @@ export const HomePage = () => {
           title="Пока пусто"
           description="Добавь первое растение — здесь появится дашборд с задачами на сегодня и растением дня."
         />
-        <FAB onFileSelect={handleAddPlant} loading={addingPlant} />
+        <FAB onFileSelect={(event) => void handleAddPlant(event)} loading={addingPlant} />
       </>
     );
   }
@@ -292,7 +292,7 @@ export const HomePage = () => {
           💧 Полить
         </button>
         <label className="cursor-pointer rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-center text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]">
-          <input type="file" accept="image/*" onChange={handleFeaturedPhoto} className="hidden" />
+          <input type="file" accept="image/*" onChange={(event) => void handleFeaturedPhoto(event)} className="hidden" />
           <span className="inline-flex items-center gap-1.5">
             <Camera size={16} className="text-brand-purple" /> Фото
           </span>
@@ -436,7 +436,7 @@ export const HomePage = () => {
         })}
       </div>
 
-      <FAB onFileSelect={handleAddPlant} loading={addingPlant} />
+      <FAB onFileSelect={(event) => void handleAddPlant(event)} loading={addingPlant} />
       <Confetti active={celebrate} onDone={() => setCelebrate(false)} />
       <Toast message={toast} />
     </>

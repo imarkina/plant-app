@@ -27,7 +27,7 @@ export const PlantComparison = ({ first, last }: Props) => {
   return (
     <div className="comparison">
       {!result && (
-        <button onClick={handleCompare} disabled={loading} className="comparison__btn">
+        <button onClick={() => void handleCompare()} disabled={loading} className="comparison__btn">
           {loading ? 'Анализируем динамику...' : 'Оценить динамику'}
         </button>
       )}

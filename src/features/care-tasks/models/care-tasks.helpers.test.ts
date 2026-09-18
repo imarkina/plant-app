@@ -65,8 +65,9 @@ describe('createDefaultTasks', () => {
   it('creates watering/feeding/misting tasks for the plant', async () => {
     const added: CareTask[] = [];
 
-    await createDefaultTasks('p1', async (task) => {
+    await createDefaultTasks('p1', (task) => {
       added.push(task);
+      return Promise.resolve();
     });
 
     expect(added.map((task) => task.type)).toEqual(['watering', 'feeding', 'misting']);

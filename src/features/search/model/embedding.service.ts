@@ -17,6 +17,6 @@ export async function getEmbedding(text: string): Promise<number[]> {
     throw new Error(EMBED_FAILED_MESSAGE);
   }
 
-  const responseBody: EmbedResponseBody = await response.json();
+  const responseBody = (await response.json()) as EmbedResponseBody;
   return responseBody.embedding;
 }

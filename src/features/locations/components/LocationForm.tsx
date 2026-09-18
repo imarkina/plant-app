@@ -52,7 +52,7 @@ export const LocationForm = ({ onCreated }: Props) => {
   };
 
   return (
-    <form className="location-form" onSubmit={handleSubmit}>
+    <form className="location-form" onSubmit={(event) => void handleSubmit(event)}>
       <label className="location-form__field">
         <span>Название комнаты</span>
         <input

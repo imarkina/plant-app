@@ -58,7 +58,7 @@ export const PlantHero = ({
         <div className="absolute inset-x-4 top-4 flex items-center justify-between">
           <button
             type="button"
-            onClick={() => (onBack ? onBack() : navigate(-1))}
+            onClick={() => void (onBack ? onBack() : navigate(-1))}
             aria-label="Назад"
             className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-md transition-transform active:scale-90"
           >
