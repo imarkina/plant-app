@@ -18,6 +18,8 @@ import { PlantsProvider } from '../features/plants';
 import { AuthProvider, ProtectedRoute } from '../features/auth';
 import { BlobBackground } from '../shared/ui/components/BlobBackground/BlobBackground';
 import { BottomNav } from '../shared/ui/components/BottomNav/BottomNav';
+import { ErrorBoundary } from '../shared/ui/components/ErrorBoundary/ErrorBoundary';
+import { GlobalToast } from '../shared/ui/components/GlobalToast/GlobalToast';
 
 const PlantsLayout = () => (
   <PlantsProvider>
@@ -28,32 +30,35 @@ const PlantsLayout = () => (
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BlobBackground />
-      <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
-        <BrowserRouter>
-          <AuthProvider>
-            <Routes>
-              <Route path="/login" element={<AuthPage />} />
-              <Route element={<ProtectedRoute />}>
-                <Route element={<PlantsLayout />}>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/collection" element={<CollectionPage />} />
-                  <Route path="/calendar" element={<CalendarPage />} />
-                  <Route path="/wishlist" element={<WishlistPage />} />
-                  <Route path="/diagnosis" element={<DiagnosisPage />} />
-                  <Route path="/add" element={<AddPlantPage />} />
-                  <Route path="/plant/:id" element={<PlantPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/locations" element={<LocationsPage />} />
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <BlobBackground />
+        <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
+          <BrowserRouter>
+            <AuthProvider>
+              <Routes>
+                <Route path="/login" element={<AuthPage />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<PlantsLayout />}>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/collection" element={<CollectionPage />} />
+                    <Route path="/calendar" element={<CalendarPage />} />
+                    <Route path="/wishlist" element={<WishlistPage />} />
+                    <Route path="/diagnosis" element={<DiagnosisPage />} />
+                    <Route path="/add" element={<AddPlantPage />} />
+                    <Route path="/plant/:id" element={<PlantPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/locations" element={<LocationsPage />} />
+                  </Route>
                 </Route>
-              </Route>
-            </Routes>
-          </AuthProvider>
-        </BrowserRouter>
-      </div>
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
-    </QueryClientProvider>
+              </Routes>
+            </AuthProvider>
+          </BrowserRouter>
+        </div>
+        <GlobalToast />
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

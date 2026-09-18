@@ -1,6 +1,14 @@
-import type { CareTask } from './care-tasks.model';
+import type { CareTask, CareTaskType } from './care-tasks.model';
 
-export function supabaseRowToCareTask(row: any): CareTask {
+interface SupabaseCareTaskRow {
+  id: string;
+  plant_id: string;
+  interval_days: number;
+  last_done_at: string | null;
+  type: CareTaskType;
+}
+
+export function supabaseRowToCareTask(row: SupabaseCareTaskRow): CareTask {
   return {
     id: row.id,
     plantId: row.plant_id,

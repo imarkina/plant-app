@@ -1,4 +1,5 @@
 import { type ReactNode, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { Bell, ChevronRight, Download, LogOut, Moon, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../features/auth';
@@ -69,6 +70,7 @@ export const ProfilePage = () => {
   const { settings, updateSettings } = useReminderSettings();
   const { subscribed, subscribe, unsubscribe, error: pushError } = usePushSubscription();
   const [exported, setExported] = useState(false);
+  const signOutMutation = useMutation({ mutationFn: signOut });
 
   const activePlants = plants.filter((plant) => !plant.isArchived);
   const photosCount = activePlants.reduce((sum, plant) => sum + plant.photos.length, 0);
@@ -253,7 +255,7 @@ export const ProfilePage = () => {
 
       <button
         type="button"
-        onClick={() => void signOut()}
+        onClick={() => signOutMutation.mutate()}
         className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-danger-soft bg-danger-soft px-5 py-3.5 text-button font-sans font-semibold text-danger"
       >
         <LogOut size={18} />
