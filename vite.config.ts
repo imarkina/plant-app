@@ -19,8 +19,10 @@ export default defineConfig({
         name: 'Plant Care',
         short_name: 'Plants',
         description: 'Уход за растениями с AI-диагностикой',
-        theme_color: '#0b120f',
-        background_color: '#0b120f',
+        // Совпадает со светлой темой по умолчанию (tokens.css --color-bg-primary) —
+        // это цвет сплэш-скрина и статус-бара при первом запуске PWA.
+        theme_color: '#f8f6f3',
+        background_color: '#f8f6f3',
         display: 'standalone',
         icons: [
           {

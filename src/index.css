@@ -3,7 +3,13 @@ body {
   background: var(--background-image-page), var(--color-bg-primary);
   color: var(--color-text);
   margin: 0;
-  padding: 24px;
+  /* max() — на обычных устройствах env() = 0, остаётся привычный отступ; на устройствах
+     с чёлкой/вырезом контент отодвигается ровно настолько, чтобы не залезать под неё, а
+     сам фон (см. выше) всё равно продолжает закрашивать всю область под ней. */
+  padding-top: max(24px, env(safe-area-inset-top));
+  padding-right: max(24px, env(safe-area-inset-right));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  padding-left: max(24px, env(safe-area-inset-left));
   line-height: 1.5;
   transition:
     background-color 0.5s,
