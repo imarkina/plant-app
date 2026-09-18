@@ -81,6 +81,10 @@
   /* ── Анимация конфетти (US-ALBUM-5) ── */
   --animate-confetti-fall: confetti-fall 1.8s ease-in forwards;
 
+  /* ── Смена месяца в календаре (US-CAL-1): направление зависит от свайпа/стрелки ── */
+  --animate-calendar-slide-right: calendar-slide-from-right 0.28s cubic-bezier(0, 0, 0.2, 1);
+  --animate-calendar-slide-left: calendar-slide-from-left 0.28s cubic-bezier(0, 0, 0.2, 1);
+
   /* ── Типографика (раздел 4) ── */
   --font-sans:
     Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -227,6 +231,29 @@
   100% {
     transform: translateY(100vh) rotate(360deg);
     opacity: 0;
+  }
+}
+
+/* Keyframes для --animate-calendar-slide-right/left. */
+@keyframes calendar-slide-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes calendar-slide-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
