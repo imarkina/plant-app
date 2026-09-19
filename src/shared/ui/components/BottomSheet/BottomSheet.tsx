@@ -159,8 +159,9 @@ export const BottomSheet = ({ open, onClose, children, labelledBy }: Props) => {
         }`}
       />
 
+      {/* pointer-events-none — иначе этот на весь экран растянутый враппер перехватывал клики по оверлею в пустой области вокруг панели, и закрытие тапом мимо листа не работало. Возвращаем события самой панели ниже. */}
       <div
-        className={`absolute inset-0 flex ${
+        className={`pointer-events-none absolute inset-0 flex ${
           isDesktop ? 'items-center justify-center p-4' : 'items-end justify-center'
         }`}
       >
@@ -175,10 +176,10 @@ export const BottomSheet = ({ open, onClose, children, labelledBy }: Props) => {
           }
           className={
             isDesktop
-              ? `flex max-h-[85vh] w-full max-w-[560px] flex-col overflow-hidden rounded-3xl bg-bg-primary shadow-elevated outline-none transition-all duration-normal ease-decelerate ${
+              ? `pointer-events-auto flex max-h-[85vh] w-full max-w-[560px] flex-col overflow-hidden rounded-3xl bg-bg-primary shadow-elevated outline-none transition-all duration-normal ease-decelerate ${
                   visible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
                 }`
-              : `flex max-h-[88vh] w-full max-w-[440px] flex-col overflow-hidden rounded-t-3xl bg-bg-primary shadow-elevated outline-none transition-transform duration-normal ease-decelerate ${
+              : `pointer-events-auto flex max-h-[88vh] w-full max-w-[440px] flex-col overflow-hidden rounded-t-3xl bg-bg-primary shadow-elevated outline-none transition-transform duration-normal ease-decelerate ${
                   visible ? 'translate-y-0' : 'translate-y-full'
                 }`
           }
