@@ -22,6 +22,10 @@
   --color-bg-tertiary: #ece8f7;
   --color-bg-elevated: #ffffff;
   --color-surface-glass: rgba(255, 255, 255, 0.45);
+  /* glass/2 (раздел 2.4) — вторичные панели/чипы/icon-кнопки на карточках
+     (раздел 6.5: "рядом круглые icon-кнопки 44 px из glass/2"). Раньше не
+     было отдельного токена под это конкретное значение. */
+  --color-surface-glass-2: rgba(255, 255, 255, 0.28);
   --color-surface-glass-strong: rgba(255, 255, 255, 0.85);
   --color-surface-glass-border: rgba(255, 255, 255, 0.7);
   --color-surface-glass-highlight: rgba(255, 255, 255, 0.95);
@@ -375,6 +379,7 @@
   --color-bg-tertiary: #34304f;
   --color-bg-elevated: #2e2a47;
   --color-surface-glass: rgba(255, 255, 255, 0.14);
+  --color-surface-glass-2: rgba(255, 255, 255, 0.2);
   --color-surface-glass-strong: rgba(255, 255, 255, 0.2);
   --color-surface-glass-border: rgba(255, 255, 255, 0.25);
   --color-surface-glass-highlight: rgba(255, 255, 255, 0.3);

@@ -1,5 +1,4 @@
 import type { PlantReport } from '../models/plant-report.types';
-import './PlantReportView.css';
 import { IdentificationHeader } from './report/IdentificationHeader';
 import { HealthSection } from './report/HealthSection';
 import { ActionPlanSection } from './report/ActionPlanSection';
@@ -14,7 +13,7 @@ export const PlantReportView = ({ analysis }: Props) => {
   }
 
   return (
-    <div className="report-container">
+    <div className="mx-auto flex max-w-[800px] flex-col gap-6">
       <IdentificationHeader identification={analysis.identification} />
       <HealthSection title="Диагностика здоровья" health={analysis.health} />
       <ActionPlanSection title="План действий" actionPlan={analysis.actionPlan} />

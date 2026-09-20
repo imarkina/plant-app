@@ -5,7 +5,6 @@ import {
   LocationsProvider,
   useLocationsContext,
 } from '../../features/locations';
-import './LocationsPage.css';
 
 const LocationsPageContent = () => {
   const { loading } = useLocationsContext();
@@ -14,7 +13,7 @@ const LocationsPageContent = () => {
     return (
       <div>
         <BackButton />
-        <p>Загрузка...</p>
+        <p className="text-body-sm text-text-muted">Загрузка...</p>
       </div>
     );
   }
@@ -22,9 +21,9 @@ const LocationsPageContent = () => {
   return (
     <div>
       <BackButton />
-      <h1 className="locations-page__title">Локации</h1>
+      <h1 className="text-h1 desktop:text-h1-lg text-text-primary">Локации</h1>
       <LocationList />
-      <h2 className="locations-page__subtitle">Добавить локацию</h2>
+      <h2 className="mt-8 mb-4 text-h3 desktop:text-h3-lg text-text-primary">Добавить локацию</h2>
       <LocationForm />
     </div>
   );

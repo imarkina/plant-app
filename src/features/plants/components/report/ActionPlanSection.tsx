@@ -1,6 +1,5 @@
 import { Card } from '../../../../shared/ui/components/Card/Card';
 import type { PlantReport } from '../../models/plant-report.types';
-import './ActionPlanSection.css';
 
 type Props = {
   title: string;
@@ -10,24 +9,20 @@ type Props = {
 export const ActionPlanSection = ({ actionPlan, title }: Props) => {
   return (
     <Card title={title}>
-      <div style={{ marginBottom: '16px' }}>
-        <h3 style={{ fontSize: '1rem', color: 'var(--color-accent)', marginBottom: '8px' }}>
-          Сделать прямо сейчас:
-        </h3>
-        <ul className="actions-list">
+      <div className="mb-4">
+        <h3 className="mb-2 text-body font-semibold text-warn">Сделать прямо сейчас:</h3>
+        <ul className="list-disc space-y-2 pl-6 text-body-sm text-text-primary">
           {actionPlan.urgentActions.map((action) => (
             <li key={action}>{action}</li>
           ))}
         </ul>
       </div>
 
-      <hr />
+      <hr className="border-surface-glass-border" />
 
-      <div>
-        <h3 style={{ fontSize: '1rem', color: 'var(--color-danger-text)', marginBottom: '8px' }}>
-          Категорически запрещено:
-        </h3>
-        <ul className="prohibitions-list">
+      <div className="mt-4">
+        <h3 className="mb-2 text-body font-semibold text-danger">Категорически запрещено:</h3>
+        <ul className="list-disc space-y-2 pl-6 text-body-sm text-text-primary">
           {actionPlan.prohibitions.map((prohibition) => (
             <li key={prohibition}>{prohibition}</li>
           ))}

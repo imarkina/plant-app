@@ -4,7 +4,6 @@ import { Button } from '../../../shared/ui/components/Button/Button';
 import { useLocationsContext } from '../hooks/useLocationsContext';
 import type { LightLevel } from '../models/location.types';
 import { LIGHT_LEVEL_OPTIONS } from '../models/location-options';
-import './LocationForm.css';
 
 const SAVE_FAILED_MESSAGE = 'Не удалось сохранить локацию';
 
@@ -52,24 +51,25 @@ export const LocationForm = ({ onCreated }: Props) => {
   };
 
   return (
-    <form className="location-form" onSubmit={(event) => void handleSubmit(event)}>
-      <label className="location-form__field">
-        <span>Название комнаты</span>
+    <form className="flex flex-col gap-4" onSubmit={(event) => void handleSubmit(event)}>
+      <label className="flex flex-col gap-1.5">
+        <span className="text-body-sm font-semibold text-text-secondary">Название комнаты</span>
         <input
           type="text"
           value={name}
           onChange={(event) => setName(event.target.value)}
           placeholder="Кухня, подоконник"
           disabled={submitting}
+          className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:ring-2 focus:ring-accent/40"
         />
       </label>
 
-      <div className="location-form__field">
-        <span>Освещённость</span>
+      <div className="flex flex-col gap-1.5">
+        <span className="text-body-sm font-semibold text-text-secondary">Освещённость</span>
         <ChipSelect options={LIGHT_LEVEL_OPTIONS} value={lightLevel} onChange={setLightLevel} />
       </div>
 
-      {error && <div className="location-form__error">{error}</div>}
+      {error && <p className="text-caption text-danger">{error}</p>}
 
       <Button type="submit" variant="primary" disabled={submitting}>
         {submitting ? 'Сохраняем...' : 'Создать локацию'}

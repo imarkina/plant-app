@@ -1,5 +1,4 @@
 import React from 'react';
-import './AdjustmentCard.css';
 
 type AdjustmentCardProps = {
   variant: 'keep' | 'urgent' | 'watch';
@@ -8,12 +7,18 @@ type AdjustmentCardProps = {
   items: string[];
 };
 
+const VARIANT_CLASSES: Record<AdjustmentCardProps['variant'], string> = {
+  keep: 'bg-brand-lime/12 text-brand-lime',
+  urgent: 'bg-danger-soft text-danger',
+  watch: 'bg-bg-tertiary text-text-muted',
+};
+
 export const AdjustmentCard = ({ variant, icon, title, items }: AdjustmentCardProps) => (
-  <div className={`action-card action-card--${variant}`}>
-    <div className="action-card__header">
-      <span className="action-card__icon">{icon}</span>
-      <span className="action-card__title">{title}</span>
+  <div className={`rounded-xl p-3 ${VARIANT_CLASSES[variant]}`}>
+    <div className="mb-1.5 flex items-center gap-1.5">
+      <span className="flex items-center">{icon}</span>
+      <span className="text-body-sm font-semibold">{title}</span>
     </div>
-    <p className="action-card__text">{items.join(' · ')}</p>
+    <p className="text-body-sm leading-relaxed">{items.join(' · ')}</p>
   </div>
 );

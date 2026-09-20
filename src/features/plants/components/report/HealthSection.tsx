@@ -11,7 +11,7 @@ type Props = {
 export const HealthSection = ({ health, title }: Props) => {
   return (
     <Card title={title}>
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+      <div className="mb-3 flex gap-2">
         {health.status && (
           <Badge variant={statusToVariant(health.status)}>Статус: {health.status}</Badge>
         )}
@@ -19,10 +19,10 @@ export const HealthSection = ({ health, title }: Props) => {
           <Badge variant={threatToVariant(health.threatLevel)}>Угроза: {health.threatLevel}</Badge>
         )}
       </div>
-      <p>
-        <strong>Диагноз:</strong> <span>{health.diagnosis}</span>
+      <p className="text-body-sm text-text-primary">
+        <strong>Диагноз:</strong> {health.diagnosis}
       </p>
-      <p>{health.description}</p>
+      <p className="mt-1 text-body-sm text-text-secondary">{health.description}</p>
     </Card>
   );
 };
