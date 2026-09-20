@@ -30,7 +30,7 @@ export const PlantTimelineView = ({ plant }: Props) => {
         <button
           type="button"
           onClick={() => setSheetOpen(true)}
-          className="cursor-pointer rounded-full bg-brand px-3 py-1.5 text-caption font-semibold text-white shadow-card active:scale-[0.97]"
+          className="cursor-pointer rounded-full bg-brand px-3 py-1.5 text-caption font-semibold text-white shadow-fab active:scale-[0.97]"
         >
           📷 Добавить
         </button>

@@ -36,7 +36,7 @@ export const CareTab = ({ plantId, onPhotoSelected }: Props) => {
         <button
           type="button"
           onClick={() => void createDefaultTasks(plantId, addTask)}
-          className="cursor-pointer rounded-full bg-brand px-6 py-3 text-button font-sans font-semibold text-white"
+          className="cursor-pointer rounded-full bg-brand px-6 py-3 text-button font-sans font-semibold text-white shadow-fab"
         >
           Создать план ухода
         </button>

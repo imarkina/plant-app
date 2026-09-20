@@ -189,7 +189,7 @@ const DeletePlantSheet = ({
               type="button"
               onClick={() => void handleArchiveInstead()}
               disabled={busy}
-              className="cursor-pointer rounded-2xl bg-brand px-4 py-3 text-button font-sans font-semibold text-white disabled:opacity-50"
+              className="cursor-pointer rounded-2xl bg-brand px-4 py-3 text-button font-sans font-semibold text-white shadow-fab disabled:opacity-50"
             >
               {busy ? 'Сохраняем...' : 'Да, сохранить в архив'}
             </button>

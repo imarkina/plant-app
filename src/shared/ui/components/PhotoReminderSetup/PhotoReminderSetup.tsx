@@ -44,7 +44,7 @@ export const PhotoReminderSetup = ({ onCreate }: Props) => {
       <button
         type="button"
         onClick={() => onCreate(interval)}
-        className="mt-3 w-full cursor-pointer rounded-full bg-brand px-4 py-2.5 text-button font-sans font-semibold text-white"
+        className="mt-3 w-full cursor-pointer rounded-full bg-brand px-4 py-2.5 text-button font-sans font-semibold text-white shadow-fab"
       >
         Создать напоминание
       </button>

@@ -23,7 +23,7 @@ export const CalendarHeader = ({ year, month, isCurrentMonth, onPrevMonth, onNex
           <button
             type="button"
             onClick={onToday}
-            className="cursor-pointer rounded-full bg-brand px-3.5 py-2 text-caption font-semibold text-white shadow-card active:scale-[0.97]"
+            className="cursor-pointer rounded-full bg-brand px-3.5 py-2 text-caption font-semibold text-white shadow-fab active:scale-[0.97]"
           >
             Сегодня
           </button>

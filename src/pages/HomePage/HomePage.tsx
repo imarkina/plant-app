@@ -287,7 +287,7 @@ export const HomePage = () => {
           type="button"
           onClick={handleFeaturedWater}
           disabled={!featuredWateringTask}
-          className="cursor-pointer rounded-2xl bg-brand px-3 py-3 text-body-sm font-semibold text-white shadow-card active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40"
+          className="cursor-pointer rounded-2xl bg-brand px-3 py-3 text-body-sm font-semibold text-white shadow-fab active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40"
         >
           💧 Полить
         </button>
