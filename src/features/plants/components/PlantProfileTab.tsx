@@ -25,7 +25,7 @@ const NO_SPECIES_OPTION = '';
 const SAVE_FAILED_MESSAGE = 'Не удалось сохранить профиль';
 
 const FIELD_INPUT_CLASSES =
-  'rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:ring-2 focus:ring-accent/40';
+  'rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]';
 
 type Props = {
   plant: Plant;

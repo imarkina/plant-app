@@ -19,7 +19,7 @@ export const PlantSearch = ({ plants }: Props) => {
 
   return (
     <div className="mt-6 flex flex-col gap-3">
-      <div className="flex items-center gap-2 rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 backdrop-blur-xl backdrop-saturate-150 shadow-card">
+      <div className="flex items-center gap-2 rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 backdrop-blur-xl backdrop-saturate-150 shadow-card transition-shadow duration-100 focus-within:shadow-[var(--shadow-focus)]">
         <Search size={18} className="shrink-0 text-text-muted" />
         <input
           value={query}

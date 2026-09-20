@@ -60,7 +60,7 @@ export const LocationForm = ({ onCreated }: Props) => {
           onChange={(event) => setName(event.target.value)}
           placeholder="Кухня, подоконник"
           disabled={submitting}
-          className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:ring-2 focus:ring-accent/40"
+          className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
         />
       </label>
 

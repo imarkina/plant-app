@@ -69,7 +69,7 @@ export const PhotoLightbox = ({ photo, onClose, onDelete }: Props) => {
             event.stopPropagation();
             handleDelete();
           }}
-          className="absolute bottom-6 flex items-center gap-2 rounded-full bg-danger px-4 py-2.5 text-body-sm font-semibold text-white shadow-elevated"
+          className="absolute bottom-6 flex items-center gap-2 rounded-full bg-danger/20 px-4 py-2.5 text-body-sm font-semibold text-white shadow-elevated backdrop-blur-xl backdrop-saturate-150"
         >
           <Trash2 size={16} />
           Удалить фото

@@ -158,14 +158,14 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
             onChange={(event) => setNote(event.target.value)}
             placeholder="Заметка (необязательно) — например, что изменилось"
             rows={2}
-            className="mt-3 w-full resize-none rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 placeholder:text-text-muted focus:ring-2 focus:ring-accent/40"
+            className="mt-3 w-full resize-none rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 placeholder:text-text-muted focus:shadow-[var(--shadow-focus)]"
           />
 
           <div className="mt-3 grid grid-cols-2 gap-2.5">
             <button
               type="button"
               onClick={handleRetake}
-              className="cursor-pointer rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-primary backdrop-blur-xl backdrop-saturate-150"
+              className="cursor-pointer rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-primary shadow-md backdrop-blur-xl backdrop-saturate-150"
             >
               Переснять
             </button>

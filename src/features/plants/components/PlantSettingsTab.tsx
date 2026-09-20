@@ -165,14 +165,14 @@ const DeletePlantSheet = ({
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 cursor-pointer rounded-2xl border border-surface-glass-border bg-bg-elevated px-4 py-3 text-button font-sans font-semibold text-text-primary"
+              className="flex-1 cursor-pointer rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-button font-sans font-semibold text-text-primary shadow-md backdrop-blur-xl backdrop-saturate-150"
             >
               Отмена
             </button>
             <button
               type="button"
               onClick={() => setStep('choose-archive')}
-              className="flex-1 cursor-pointer rounded-2xl bg-danger px-4 py-3 text-button font-sans font-semibold text-white"
+              className="flex-1 cursor-pointer rounded-2xl border border-danger/25 bg-danger-soft px-4 py-3 text-button font-sans font-semibold text-danger"
             >
               Удалить
             </button>
@@ -197,7 +197,7 @@ const DeletePlantSheet = ({
               type="button"
               onClick={() => void handleHardDelete()}
               disabled={busy}
-              className="cursor-pointer rounded-2xl border border-danger-soft bg-danger-soft px-4 py-3 text-button font-sans font-semibold text-danger disabled:opacity-50"
+              className="cursor-pointer rounded-2xl border border-danger/25 bg-danger-soft px-4 py-3 text-button font-sans font-semibold text-danger disabled:opacity-50"
             >
               {busy ? 'Удаляем...' : 'Нет, удалить всё безвозвратно'}
             </button>

@@ -44,7 +44,7 @@ export const ArchivedPlantList = ({ plants }: Props) => {
             <button
               type="button"
               onClick={() => void restore(plant.id)}
-              className="shrink-0 cursor-pointer rounded-full border border-surface-glass-border bg-surface-glass px-3 py-2 text-body-sm font-semibold text-text-primary backdrop-blur-xl backdrop-saturate-150"
+              className="shrink-0 cursor-pointer rounded-full border border-surface-glass-border bg-surface-glass px-3 py-2 text-body-sm font-semibold text-text-primary shadow-md backdrop-blur-xl backdrop-saturate-150"
             >
               Восстановить
             </button>

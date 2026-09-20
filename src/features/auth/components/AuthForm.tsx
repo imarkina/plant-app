@@ -104,7 +104,7 @@ export const AuthForm = () => {
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             disabled={submitting}
-            className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:ring-2 focus:ring-accent/40"
+            className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
           />
           {fieldErrors.email && <span className="text-caption text-danger">{fieldErrors.email}</span>}
         </label>
@@ -117,7 +117,7 @@ export const AuthForm = () => {
             onChange={(event) => setPassword(event.target.value)}
             autoComplete={mode === 'signIn' ? 'current-password' : 'new-password'}
             disabled={submitting}
-            className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:ring-2 focus:ring-accent/40"
+            className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
           />
           {fieldErrors.password && (
             <span className="text-caption text-danger">{fieldErrors.password}</span>
@@ -133,7 +133,7 @@ export const AuthForm = () => {
               onChange={(event) => setConfirmPassword(event.target.value)}
               autoComplete="new-password"
               disabled={submitting}
-              className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:ring-2 focus:ring-accent/40"
+              className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
             />
             {fieldErrors.confirmPassword && (
               <span className="text-caption text-danger">{fieldErrors.confirmPassword}</span>

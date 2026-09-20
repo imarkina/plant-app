@@ -17,7 +17,7 @@ export const PhotoReminderSetup = ({ onCreate }: Props) => {
       <button
         type="button"
         onClick={() => setShowForm(true)}
-        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-secondary backdrop-blur-xl backdrop-saturate-150"
+        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-secondary shadow-md backdrop-blur-xl backdrop-saturate-150"
       >
         <Camera size={18} className="text-brand-purple" /> Напоминать фотографировать
       </button>
@@ -33,8 +33,10 @@ export const PhotoReminderSetup = ({ onCreate }: Props) => {
             key={days}
             type="button"
             onClick={() => setInterval(days)}
-            className={`flex-1 cursor-pointer rounded-full px-3 py-2 text-body-sm font-semibold transition-colors ${
-              interval === days ? 'bg-brand text-white' : 'bg-bg-tertiary text-text-secondary'
+            className={`flex-1 cursor-pointer rounded-full px-3 py-2 text-body-sm font-semibold backdrop-blur-xl backdrop-saturate-150 transition-colors ${
+              interval === days
+                ? 'bg-bg-elevated text-accent shadow-card'
+                : 'border border-surface-glass-border bg-surface-glass text-text-secondary hover:text-text-primary'
             }`}
           >
             {formatInterval(days)}
