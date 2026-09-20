@@ -25,6 +25,9 @@
   --color-surface-glass-strong: rgba(255, 255, 255, 0.85);
   --color-surface-glass-border: rgba(255, 255, 255, 0.7);
   --color-surface-glass-highlight: rgba(255, 255, 255, 0.95);
+  /* Таб-бар (раздел 7): отдельная альфа от glass/1 — спека даёт мобильному
+     таб-бару свои значения (55% светлая / 8% тёмная), не общие 45%/14%. */
+  --color-tab-bar: rgba(255, 255, 255, 0.55);
   --color-text-primary: #26233b;
   --color-text-secondary: #63617e;
   --color-text-muted: #a5a3bc;
@@ -223,8 +226,8 @@
   /* Карточки (раздел 6.5: "Панель glass/1 ... shadow/float") — то же значение,
      что и у shadow-elevated: спека не заводит отдельного, более слабого тона
      специально для карточек, это один и тот же shadow/float. */
-  --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.2);
+  --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.2);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.18);
   --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.3);
   --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.25);
@@ -375,6 +378,7 @@
   --color-surface-glass-strong: rgba(255, 255, 255, 0.2);
   --color-surface-glass-border: rgba(255, 255, 255, 0.25);
   --color-surface-glass-highlight: rgba(255, 255, 255, 0.3);
+  --color-tab-bar: rgba(255, 255, 255, 0.08);
   --color-text-primary: #ffffff;
   --color-text-secondary: rgba(255, 255, 255, 0.7);
   --color-text-muted: rgba(255, 255, 255, 0.5);
@@ -411,8 +415,8 @@
   /* Раздел 1.4: "тень в цвет — амбиентные тени берут оттенок акцента, а не
      нейтральный чёрный" — было чистым чёрным, поправлено на iris, как и в
      светлой теме (см. shadow-card/elevated выше). */
-  --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.35);
+  --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.35);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.28);
   --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.4);
   --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.35);

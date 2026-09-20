@@ -106,10 +106,10 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
               key={option.value}
               type="button"
               onClick={() => setSelectedType(option.value)}
-              className={`flex flex-col items-center gap-1.5 rounded-2xl border-2 p-4 text-center transition-colors duration-100 ${
+              className={`flex flex-col items-center gap-1.5 rounded-2xl border-2 p-4 text-center backdrop-blur-xl backdrop-saturate-150 transition-colors duration-100 ${
                 isActive
-                  ? 'border-brand-pink bg-surface-glass'
-                  : 'border-surface-glass-border bg-bg-elevated'
+                  ? 'border-accent bg-accent-glow'
+                  : 'border-surface-glass-border bg-surface-glass'
               }`}
             >
               <span className="text-2xl">{option.emoji}</span>
@@ -122,13 +122,13 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
 
       {!pendingBlob ? (
         <>
-          <label className="mt-4 flex items-center justify-between rounded-2xl border border-surface-glass-border bg-bg-elevated px-4 py-3">
+          <label className="mt-4 flex items-center justify-between rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 backdrop-blur-xl backdrop-saturate-150">
             <span className="text-body-sm font-medium text-text-primary">Обрезать до квадрата</span>
             <input
               type="checkbox"
               checked={squareCrop}
               onChange={(event) => setSquareCrop(event.target.checked)}
-              className="size-5 accent-brand-pink"
+              className="size-5 accent-brand-purple"
             />
           </label>
 
@@ -158,14 +158,14 @@ export const AddPhotoSheet = ({ plant, open, onClose, onAdded }: Props) => {
             onChange={(event) => setNote(event.target.value)}
             placeholder="Заметка (необязательно) — например, что изменилось"
             rows={2}
-            className="mt-3 w-full resize-none rounded-2xl border border-surface-glass-border bg-bg-elevated px-4 py-3 text-body-sm text-text-primary outline-none placeholder:text-text-muted focus:ring-2 focus:ring-brand-purple/40"
+            className="mt-3 w-full resize-none rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 placeholder:text-text-muted focus:ring-2 focus:ring-accent/40"
           />
 
           <div className="mt-3 grid grid-cols-2 gap-2.5">
             <button
               type="button"
               onClick={handleRetake}
-              className="cursor-pointer rounded-2xl border border-surface-glass-border bg-bg-elevated px-4 py-3 text-body-sm font-semibold text-text-primary"
+              className="cursor-pointer rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm font-semibold text-text-primary backdrop-blur-xl backdrop-saturate-150"
             >
               Переснять
             </button>
