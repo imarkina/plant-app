@@ -76,7 +76,7 @@ export const PlantOverviewTab = ({ plant, wateringTask, onOpenAlbum }: Props) =>
         <button
           type="button"
           onClick={onOpenAlbum}
-          className="cursor-pointer text-body-sm font-semibold text-brand-pink"
+          className="cursor-pointer text-body-sm font-semibold text-info"
         >
           Все {plant.photos.length} →
         </button>

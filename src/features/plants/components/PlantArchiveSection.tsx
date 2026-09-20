@@ -52,7 +52,7 @@ export const PlantArchiveSection = ({ plant }: Props) => {
         {error && <div className="plant-archive__error">{error}</div>}
         <Button
           type="button"
-          variant="secondary"
+          variant="glass"
           onClick={() => void handleRestore()}
           disabled={submitting}
         >
@@ -112,7 +112,7 @@ export const PlantArchiveSection = ({ plant }: Props) => {
       <div className="plant-archive__actions">
         <Button
           type="button"
-          variant="secondary"
+          variant="glass"
           onClick={() => setShowForm(false)}
           disabled={submitting}
         >

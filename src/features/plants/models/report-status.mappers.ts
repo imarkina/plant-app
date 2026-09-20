@@ -65,7 +65,7 @@ export function healthStatusToBucket(status: HealthStatus): HealthBucket {
 }
 
 const HEALTH_BUCKET_DOT_CLASSES: Record<HealthBucket, string> = {
-  healthy: 'bg-accent',
+  healthy: 'bg-brand-lime',
   warning: 'bg-warn',
   sick: 'bg-danger',
 };

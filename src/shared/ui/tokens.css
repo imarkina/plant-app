@@ -62,8 +62,15 @@
   --color-blob-3-from: #35c2a2;
   --color-blob-3-to: #5fa8ee;
 
-  /* ── Градиенты ── */
-  --background-image-brand: linear-gradient(135deg, #7c6ff0 0%, #f06fa8 50%, #ff9a6e 100%);
+  /* ── Градиенты (раздел 6.1) — `--background-image-brand` = Sunset (Bloom→Peach,
+     25°), буквально по спеке: это де-факто заливка всех primary-CTA в приложении
+     (Button primary, FAB, активные чипы календаря и т.д.), поэтому правим сам
+     токен, а не 30+ мест использования. Остальные варианты из спеки — Twilight/
+     Aurora/Lagoon/Ink/Bloom — добавлены аддитивно, пока нигде не применяются. ── */
+  --background-image-brand: linear-gradient(25deg, #f06fa8 0%, #ff9a6e 100%);
+  --background-image-twilight: linear-gradient(25deg, #7c6ff0 0%, #f06fa8 100%);
+  --background-image-aurora-btn: linear-gradient(25deg, #7c6ff0 0%, #5fa8ee 100%);
+  --background-image-lagoon: linear-gradient(25deg, #35c2a2 0%, #5fa8ee 100%);
   --background-image-success: linear-gradient(135deg, #35c2a2, #5fa8ee);
   --background-image-blob-1: linear-gradient(135deg, #f06fa8, #ff9a6e);
   --background-image-blob-2: linear-gradient(135deg, #7c6ff0, #f06fa8);

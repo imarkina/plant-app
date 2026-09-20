@@ -148,7 +148,7 @@ export const PhotoTimeline = ({ photos, onZoom, onCompare }: Props) => {
                         <button
                           type="button"
                           onClick={() => onCompare(photo)}
-                          className="rounded-full bg-brand/10 px-3 py-1.5 text-caption font-semibold text-brand-pink"
+                          className="rounded-full bg-info/10 px-3 py-1.5 text-caption font-semibold text-info"
                         >
                           ⚖️ Сравнить
                         </button>

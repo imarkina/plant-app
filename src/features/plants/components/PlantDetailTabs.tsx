@@ -36,7 +36,7 @@ export const PlantDetailTabs = ({ plant, onBack, embedded = false, titleId }: Pr
   const { addPhotoFromFile } = useAddPhoto(plant.id);
   const { tasks, markDone } = useCareTasks(plant.id);
   const { locations } = useLocations();
-  const { message: toast, showToast } = useToast();
+  const { message: toast, type: toastType, showToast } = useToast();
   const [celebrate, setCelebrate] = useState(false);
 
   const wateringTask = tasks.find((task) => task.type === 'watering') ?? null;
@@ -80,7 +80,7 @@ export const PlantDetailTabs = ({ plant, onBack, embedded = false, titleId }: Pr
       {activeTab === 'settings' && <PlantSettingsTab plant={plant} />}
 
       <Confetti active={celebrate} onDone={() => setCelebrate(false)} />
-      <Toast message={toast} />
+      <Toast message={toast} type={toastType} />
     </>
   );
 };

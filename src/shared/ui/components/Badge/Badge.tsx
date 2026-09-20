@@ -6,8 +6,10 @@ export type BadgeProps = {
   variant?: BadgeVariant;
 };
 
+/* success = accent/mint (раздел 2.1: "эко/здоровье"), отдельно от accent/iris —
+   у этого бейджа только статусы здоровья растения/уверенность диагностики. */
 const VARIANT_CLASSES: Record<BadgeVariant, string> = {
-  success: 'bg-accent-glow text-accent',
+  success: 'bg-brand-lime/15 text-brand-lime',
   danger: 'bg-danger-soft text-danger',
   neutral: 'bg-bg-tertiary text-text-secondary',
 };

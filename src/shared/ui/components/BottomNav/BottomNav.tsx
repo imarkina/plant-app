@@ -16,14 +16,21 @@ export const BottomNav = () => {
           key={to}
           to={to}
           end={end}
-          className={({ isActive }) =>
-            `flex flex-col items-center gap-1 rounded-2xl px-4 py-2 text-text-muted transition-colors duration-100 ${
-              isActive ? 'bg-brand-pink/15 text-brand-pink' : ''
-            }`
-          }
+          className="flex flex-col items-center gap-1 rounded-2xl px-4 py-2 text-text-muted transition-colors duration-100"
         >
-          <Icon size={20} strokeWidth={2} />
-          <span className="sr-only">{label}</span>
+          {({ isActive }) => (
+            <>
+              {/* Активная иконка в круглом градиентном фоне (раздел 7: мобильный таб-бар). */}
+              <span
+                className={`flex size-9 items-center justify-center rounded-full transition-colors duration-200 ${
+                  isActive ? 'bg-brand text-white' : ''
+                }`}
+              >
+                <Icon size={20} strokeWidth={2} />
+              </span>
+              <span className="sr-only">{label}</span>
+            </>
+          )}
         </NavLink>
       ))}
     </nav>

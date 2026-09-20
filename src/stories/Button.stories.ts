@@ -23,7 +23,7 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'glass',
     children: 'Отмена',
   },
 };

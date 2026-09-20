@@ -22,7 +22,7 @@ export function ChipSelect<T extends string>({ options, value, onChange }: Props
             onClick={() => onChange(isActive ? null : option.value)}
             className={`cursor-pointer rounded-full px-3.5 py-2 text-body-sm font-sans font-medium transition-all duration-100 active:scale-[0.97] ${
               isActive
-                ? 'bg-bg-elevated text-brand-pink shadow-card'
+                ? 'bg-bg-elevated text-accent shadow-card'
                 : 'border border-surface-glass-border bg-surface-glass text-text-secondary hover:text-text-primary'
             }`}
           >

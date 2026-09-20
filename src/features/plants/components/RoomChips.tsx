@@ -11,7 +11,7 @@ type Props = {
 
 const CHIP_BASE =
   'flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-2 text-body-sm font-sans font-medium transition-all duration-100 active:scale-[0.97]';
-const CHIP_ACTIVE = 'bg-bg-elevated text-brand-pink shadow-card';
+const CHIP_ACTIVE = 'bg-bg-elevated text-accent shadow-card';
 const CHIP_INACTIVE =
   'border border-surface-glass-border bg-surface-glass text-text-secondary hover:text-text-primary';
 

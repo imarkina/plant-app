@@ -126,7 +126,7 @@ export const HomePage = () => {
   const activePlants = useMemo(() => plants.filter((plant) => !plant.isArchived), [plants]);
   const plantIds = useMemo(() => activePlants.map((plant) => plant.id), [activePlants]);
   const { tasksByPlantId, loading: tasksLoading, markDone, applyPhotoBackoff } = useCareTasksForPlants(plantIds);
-  const { message: toast, showToast } = useToast();
+  const { message: toast, type: toastType, showToast } = useToast();
   const [celebrate, setCelebrate] = useState(false);
   const [todayExpanded, setTodayExpanded] = useState(false);
   const backoffChecked = useRef(false);
@@ -307,7 +307,7 @@ export const HomePage = () => {
 
       <div className="mt-7 flex items-center justify-between">
         <p className="text-h3 text-text-primary">🔔 Сегодня</p>
-        <Link to="/calendar" className="text-body-sm font-semibold text-brand-pink">
+        <Link to="/calendar" className="text-body-sm font-semibold text-info">
           Календарь →
         </Link>
       </div>
@@ -399,7 +399,7 @@ export const HomePage = () => {
 
       <div className="mt-7 flex items-center justify-between">
         <p className="text-h3 text-text-primary">🌿 Коллекция</p>
-        <Link to="/collection" className="text-body-sm font-semibold text-brand-pink">
+        <Link to="/collection" className="text-body-sm font-semibold text-info">
           Все {activePlants.length} →
         </Link>
       </div>
@@ -438,7 +438,7 @@ export const HomePage = () => {
 
       <FAB onFileSelect={(event) => void handleAddPlant(event)} loading={addingPlant} />
       <Confetti active={celebrate} onDone={() => setCelebrate(false)} />
-      <Toast message={toast} />
+      <Toast message={toast} type={toastType} />
     </>
   );
 };

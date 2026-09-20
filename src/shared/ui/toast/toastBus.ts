@@ -3,12 +3,14 @@
  * например, из queryClient.mutationCache (модульный синглтон, создаётся до
  * рендера приложения и не имеет доступа к контексту/состоянию компонентов).
  */
-type Listener = (message: string) => void;
+export type ToastType = 'success' | 'error';
+
+type Listener = (message: string, type: ToastType) => void;
 
 const listeners = new Set<Listener>();
 
-export function emitToast(message: string) {
-  listeners.forEach((listener) => listener(message));
+export function emitToast(message: string, type: ToastType = 'error') {
+  listeners.forEach((listener) => listener(message, type));
 }
 
 export function subscribeToast(listener: Listener): () => void {

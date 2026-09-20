@@ -76,7 +76,7 @@ const MoveToRoomSheet = ({
           type="button"
           onClick={() => setLocationId('')}
           className={`cursor-pointer rounded-2xl border px-4 py-3 text-left text-body-sm font-semibold ${
-            locationId === '' ? 'border-brand bg-brand/10 text-brand-pink' : 'border-surface-glass-border text-text-primary'
+            locationId === '' ? 'border-accent bg-accent-glow text-accent' : 'border-surface-glass-border text-text-primary'
           }`}
         >
           Без комнаты
@@ -88,7 +88,7 @@ const MoveToRoomSheet = ({
             onClick={() => setLocationId(location.id)}
             className={`cursor-pointer rounded-2xl border px-4 py-3 text-left text-body-sm font-semibold ${
               locationId === location.id
-                ? 'border-brand bg-brand/10 text-brand-pink'
+                ? 'border-accent bg-accent-glow text-accent'
                 : 'border-surface-glass-border text-text-primary'
             }`}
           >
