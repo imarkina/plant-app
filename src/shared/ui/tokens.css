@@ -1,12 +1,13 @@
 @import 'tailwindcss';
 
 /*
- * Plant Parent OS — Design System v3.0 "Dopamine Garden" (2026-09-11).
- * Светлая "glass" тема — дефолт (mesh-градиент фон + пастельные blob-пятна за
- * контентом, полупрозрачные стеклянные поверхности); тёмная (Neon Night) —
- * [data-theme='dark']. :root ниже уже задаёт светлые значения, чтобы не было
- * мигания темы при загрузке (useTheme.ts стартует с 'light', синхронно с
- * этим файлом).
+ * Plant Parent OS — Design System v4.0 "Aurora Glass" (2026-09-20).
+ * Переход с "Dopamine Garden" v3.0: та же архитектура токенов (семантические
+ * имена, которые уже используют компоненты — --color-accent, --shadow-card,
+ * --background-image-blob-1 и т.д.), но новая палитра/стекло/тени/шрифты по
+ * спеке Aurora Glass. Имена токенов не менялись специально — чтобы не трогать
+ * компоненты, только их значения (как в переходах v2.0 → v2.1 → v3.0 ранее).
+ * Светлая "Aurora" тема — дефолт (:root), тёмная "Dusk" — [data-theme='dark'].
  */
 
 @theme {
@@ -15,65 +16,79 @@
   --breakpoint-desktop: 1024px;
   --breakpoint-wide: 1440px;
 
-  /* ── Цвета — значения светлой темы, тёмная переопределяет ниже ── */
-  --color-bg-primary: #f8f6f3;
+  /* ── Цвета — значения светлой темы "Aurora", тёмная "Dusk" переопределяет ниже ── */
+  --color-bg-primary: #f6f4fb;
   --color-bg-secondary: #ffffff;
-  --color-bg-tertiary: #f0ede8;
+  --color-bg-tertiary: #ece8f7;
   --color-bg-elevated: #ffffff;
-  --color-surface-glass: rgba(255, 255, 255, 0.65);
-  --color-surface-glass-strong: rgba(255, 255, 255, 0.8);
-  --color-surface-glass-border: rgba(255, 255, 255, 0.85);
+  --color-surface-glass: rgba(255, 255, 255, 0.45);
+  --color-surface-glass-strong: rgba(255, 255, 255, 0.85);
+  --color-surface-glass-border: rgba(255, 255, 255, 0.7);
   --color-surface-glass-highlight: rgba(255, 255, 255, 0.95);
-  --color-text-primary: #0f0d1a;
-  --color-text-secondary: #4a4558;
-  --color-text-muted: #8a8498;
+  --color-text-primary: #26233b;
+  --color-text-secondary: #63617e;
+  --color-text-muted: #a5a3bc;
   --color-text-inverse: #ffffff;
-  --color-text-on-glass: #1a1625;
-  --color-accent: #2db100;
-  --color-accent-hover: #259300;
-  --color-accent-glow: rgba(57, 255, 20, 0.12);
-  --color-warn: #cc9300;
-  --color-warn-soft: rgba(255, 184, 0, 0.12);
-  --color-danger: #cc2d4a;
-  --color-danger-soft: rgba(255, 77, 106, 0.1);
-  --color-info: #0089a8;
-  --color-info-soft: rgba(0, 217, 255, 0.08);
-  --color-overlay: rgba(15, 13, 26, 0.35);
+  --color-text-on-glass: #26233b;
+  --color-accent: #7c6ff0;
+  --color-accent-hover: #6a5ce0;
+  --color-accent-glow: rgba(124, 111, 240, 0.15);
+  --color-warn: #e08a2e;
+  --color-warn-soft: rgba(255, 174, 77, 0.14);
+  --color-danger: #e0466a;
+  --color-danger-soft: rgba(242, 96, 124, 0.1);
+  --color-info: #3a86d6;
+  --color-info-soft: rgba(95, 168, 238, 0.1);
+  --color-overlay: rgba(38, 35, 59, 0.35);
 
-  --color-border-subtle: rgba(15, 13, 26, 0.06);
-  --color-border-medium: rgba(15, 13, 26, 0.1);
+  --color-border-subtle: rgba(38, 35, 59, 0.06);
+  --color-border-medium: rgba(38, 35, 59, 0.1);
 
-  /* ── Брендовый градиент (заголовки, FAB, активные состояния) — не заменяет
-     семантику accent/warn/danger/info, это отдельная "dopamine" палитра. ── */
-  --color-brand-pink: #ff2d7a;
-  --color-brand-purple: #7b2dff;
-  --color-brand-blue: #00d9ff;
-  --color-brand-lime: #39ff14;
-  --color-brand-peach: #ff9f7a;
+  /* ── Брендовые акценты Aurora Glass (раздел 2.1) — та же роль, что раньше
+     у brand-pink/purple/blue/lime/peach, только новая палитра. Lemon — новый,
+     аддитивный токен (хайлайты/бейджи, только светлая тема, спека 2.1). ── */
+  --color-brand-pink: #f06fa8;
+  --color-brand-purple: #7c6ff0;
+  --color-brand-blue: #5fa8ee;
+  --color-brand-lime: #35c2a2;
+  --color-brand-peach: #ff9a6e;
+  --color-brand-lemon: #f2ce5c;
 
-  /* ── Цвета blob-фона (раздел 13: max 3 блоба) ── */
-  --color-blob-1-from: #ff2d7a;
-  --color-blob-1-to: #ff9f7a;
-  --color-blob-2-from: #7b2dff;
-  --color-blob-2-to: #ff2d7a;
-  --color-blob-3-from: #00d9ff;
-  --color-blob-3-to: #7b2dff;
+  /* ── Цвета blob-фона (раздел 13: max 3 блоба) — Sunset / Twilight / Lagoon ── */
+  --color-blob-1-from: #f06fa8;
+  --color-blob-1-to: #ff9a6e;
+  --color-blob-2-from: #7c6ff0;
+  --color-blob-2-to: #f06fa8;
+  --color-blob-3-from: #35c2a2;
+  --color-blob-3-to: #5fa8ee;
 
   /* ── Градиенты ── */
-  --background-image-brand: linear-gradient(135deg, #ff2d7a 0%, #7b2dff 50%, #00d9ff 100%);
-  --background-image-success: linear-gradient(135deg, #39ff14, #00d9ff);
-  --background-image-blob-1: linear-gradient(135deg, #ff2d7a, #ff9f7a);
-  --background-image-blob-2: linear-gradient(135deg, #7b2dff, #ff2d7a);
-  --background-image-blob-3: linear-gradient(135deg, #00d9ff, #7b2dff);
-  --background-image-hero: linear-gradient(135deg, rgba(255, 45, 122, 0.08) 0%, rgba(0, 217, 255, 0.1) 100%);
+  --background-image-brand: linear-gradient(135deg, #7c6ff0 0%, #f06fa8 50%, #ff9a6e 100%);
+  --background-image-success: linear-gradient(135deg, #35c2a2, #5fa8ee);
+  --background-image-blob-1: linear-gradient(135deg, #f06fa8, #ff9a6e);
+  --background-image-blob-2: linear-gradient(135deg, #7c6ff0, #f06fa8);
+  --background-image-blob-3: linear-gradient(135deg, #35c2a2, #5fa8ee);
+  --background-image-hero: linear-gradient(135deg, rgba(124, 111, 240, 0.08) 0%, rgba(255, 154, 110, 0.1) 100%);
   --background-image-card-overlay: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, transparent 55%);
-  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(123, 45, 255, 0.08) 0%, transparent 50%);
-  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(255, 45, 122, 0.06) 0%, transparent 50%);
-  /* Живой фон (принцип "Living Surfaces") — статичная mesh-подложка под body, см. index.css. */
+  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(124, 111, 240, 0.1) 0%, transparent 50%);
+  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(240, 111, 168, 0.08) 0%, transparent 50%);
+  /* Живой фон (раздел 3, bg/aurora) — 5 мягких радиальных пятен + линейная подложка
+     в остановках спеки, см. index.css для плёночного зерна поверх. */
   --background-image-page:
-    radial-gradient(ellipse at 20% 30%, rgba(255, 45, 122, 0.12), transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(123, 45, 255, 0.1), transparent 50%),
-    linear-gradient(135deg, #f8f6f3, #fff8f0, #f0f9ff);
+    radial-gradient(ellipse at 15% 15%, rgba(196, 176, 247, 0.55), transparent 55%),
+    radial-gradient(ellipse at 85% 10%, rgba(166, 210, 245, 0.5), transparent 55%),
+    radial-gradient(ellipse at 90% 80%, rgba(255, 184, 148, 0.45), transparent 55%),
+    radial-gradient(ellipse at 10% 85%, rgba(147, 224, 196, 0.45), transparent 55%),
+    radial-gradient(ellipse at 55% 50%, rgba(245, 162, 203, 0.32), transparent 60%),
+    linear-gradient(135deg, #c4b0f7 0%, #a6d2f5 25%, #ffb894 50%, #93e0c4 75%, #f5a2cb 100%);
+  /* bg/bloom (раздел 3) — акцентный градиент промо-экранов, аддитивный токен. */
+  --background-image-bloom:
+    radial-gradient(ellipse at 20% 20%, rgba(247, 155, 192, 0.5), transparent 55%),
+    radial-gradient(ellipse at 85% 75%, rgba(226, 159, 242, 0.4), transparent 55%),
+    linear-gradient(135deg, #f79bc0 0%, #ffad85 33%, #f2c96d 66%, #e29ff2 100%);
+  /* Плёночное зерно (раздел 3: 3-4%) — SVG feTurbulence, накладывается поверх
+     фона в index.css через ::after с mix-blend-mode: overlay. */
+  --background-image-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* ── Анимация blob-фона (раздел "Ключевые техники") ── */
   --animate-blob-float: blob-float 20s ease-in-out infinite;
@@ -86,43 +101,48 @@
   --animate-calendar-slide-left: calendar-slide-from-left 0.28s cubic-bezier(0, 0, 0.2, 1);
 
   /* ── Типографика (раздел 4) ── */
+  /* Body/Caption/Label — интерфейсный шрифт (Manrope). Display/Title (hero/h1/h2/h3)
+     переключаются на --font-display точечным правилом ниже, вне @theme, по имени
+     сгенерированных Tailwind-классов text-hero/text-h1/... — без правки компонентов. */
   --font-sans:
-    Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    Manrope, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: Unbounded, var(--font-sans);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Мобильный размер = имя токена; десктопный = имя + "-lg" (используть с variant desktop:) */
   --text-hero: 36px;
   --text-hero--line-height: 1.05;
-  --text-hero--font-weight: 800;
-  --text-hero--letter-spacing: -0.03em;
+  --text-hero--font-weight: 700;
+  --text-hero--letter-spacing: -0.01em;
   --text-hero-lg: 52px;
   --text-hero-lg--line-height: 1.05;
-  --text-hero-lg--font-weight: 800;
-  --text-hero-lg--letter-spacing: -0.03em;
+  --text-hero-lg--font-weight: 700;
+  --text-hero-lg--letter-spacing: -0.01em;
 
   --text-h1: 30px;
   --text-h1--line-height: 1.1;
-  --text-h1--font-weight: 800;
-  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 700;
+  --text-h1--letter-spacing: -0.01em;
   --text-h1-lg: 42px;
   --text-h1-lg--line-height: 1.1;
-  --text-h1-lg--font-weight: 800;
-  --text-h1-lg--letter-spacing: -0.02em;
+  --text-h1-lg--font-weight: 700;
+  --text-h1-lg--letter-spacing: -0.01em;
 
   --text-h2: 24px;
   --text-h2--line-height: 1.15;
-  --text-h2--font-weight: 700;
-  --text-h2--letter-spacing: -0.02em;
+  --text-h2--font-weight: 600;
+  --text-h2--letter-spacing: 0em;
   --text-h2-lg: 32px;
   --text-h2-lg--line-height: 1.15;
-  --text-h2-lg--font-weight: 700;
-  --text-h2-lg--letter-spacing: -0.02em;
+  --text-h2-lg--font-weight: 600;
+  --text-h2-lg--letter-spacing: 0em;
 
   --text-h3: 20px;
   --text-h3--line-height: 1.2;
-  --text-h3--font-weight: 700;
+  --text-h3--font-weight: 600;
   --text-h3-lg: 24px;
   --text-h3-lg--line-height: 1.2;
-  --text-h3-lg--font-weight: 700;
+  --text-h3-lg--font-weight: 600;
 
   --text-h4: 17px;
   --text-h4--line-height: 1.25;
@@ -176,7 +196,10 @@
   --tracking-normal: 0em;
   --tracking-wide: 0.05em;
 
-  /* ── Радиусы (раздел 6, значения компонентов) ── */
+  /* ── Радиусы (раздел 5) — уже совпадают со спекой Aurora Glass:
+     sm=10 (свотчи/чипы), md-эквивалент — xl=16 (карточки/инпуты, формула
+     "rounded-2xl/3xl" в компонентах смотрит на 2xl/3xl), lg-эквивалент —
+     3xl=24 (панели/модалки), pill — radius-pill=999 ниже. Значения не трогаем. ── */
   --radius-xs: 8px;
   --radius-sm: 10px;
   --radius-md: 12px;
@@ -186,19 +209,20 @@
   --radius-3xl: 24px;
   --radius-4xl: 32px;
 
-  /* ── Тени и glow (раздел 7) — светлая тема, glass-формула ── */
-  --shadow-sm: 0 1px 3px rgba(15, 13, 26, 0.04);
-  --shadow-md: 0 4px 16px rgba(15, 13, 26, 0.06);
-  --shadow-card: 0 8px 32px rgba(15, 13, 26, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --shadow-elevated: 0 12px 40px rgba(15, 13, 26, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
-  --shadow-xl: 0 16px 48px rgba(15, 13, 26, 0.1);
-  --shadow-fab: 0 0 30px rgba(255, 45, 122, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.3);
-  --shadow-glow-rose: 0 0 30px rgba(255, 45, 122, 0.2);
-  --shadow-glow-cyan: 0 0 20px rgba(0, 217, 255, 0.25);
-  --shadow-glow-accent: 0 0 20px rgba(57, 255, 20, 0.25);
-  --shadow-glow-warn: 0 0 20px rgba(255, 184, 0, 0.2);
-  --shadow-glow-danger: 0 0 20px rgba(255, 77, 106, 0.2);
-  --shadow-glow-violet: 0 0 30px rgba(123, 45, 255, 0.2);
+  /* ── Тени (раздел 5) — амбиентные, в цвет: iris для карточек/панелей,
+     bloom для парящих элементов/тостов/CTA, как в спеке Aurora Glass. ── */
+  --shadow-sm: 0 1px 3px rgba(38, 35, 59, 0.05);
+  --shadow-md: 0 6px 16px rgba(124, 111, 240, 0.15);
+  --shadow-card: 0 8px 24px rgba(124, 111, 240, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.18);
+  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.3);
+  --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.25);
+  --shadow-glow-cyan: 0 0 20px rgba(95, 168, 238, 0.25);
+  --shadow-glow-accent: 0 0 20px rgba(53, 194, 162, 0.25);
+  --shadow-glow-warn: 0 0 20px rgba(255, 174, 77, 0.25);
+  --shadow-glow-danger: 0 0 20px rgba(242, 96, 124, 0.25);
+  --shadow-glow-violet: 0 0 20px rgba(124, 111, 240, 0.3);
 
   /* ── Motion (раздел 10) ── */
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
@@ -282,6 +306,9 @@
   --duration-slow: 500ms;
   --duration-slower: 700ms;
 
+  /* Зерно (раздел 3): 3% на светлой теме, 4% на тёмной — см. [data-theme='dark']. */
+  --grain-opacity: 0.035;
+
   /* ── Алиасы старых токенов (совместимость с существующими *.css) ──
      Новая система не отличает "primary"/"secondary" акцент и success
      от accent — оба старых токена смотрят на новый --color-accent. */
@@ -289,14 +316,14 @@
   --color-surface: var(--color-bg-secondary);
   --color-text: var(--color-text-primary);
   --color-border: var(--color-surface-glass-border);
-  --color-border-strong: rgba(15, 13, 26, 0.15);
+  --color-border-strong: rgba(38, 35, 59, 0.16);
 
   --color-primary: var(--color-accent);
   --color-primary-hover: var(--color-accent-hover);
   --color-on-primary: var(--color-text-inverse);
 
-  --color-scrollbar-thumb: rgba(123, 45, 255, 0.22);
-  --color-scrollbar-thumb-hover: rgba(123, 45, 255, 0.4);
+  --color-scrollbar-thumb: rgba(124, 111, 240, 0.22);
+  --color-scrollbar-thumb-hover: rgba(124, 111, 240, 0.4);
 
   --color-success-bg: var(--color-accent-glow);
   --color-success-text: var(--color-accent);
@@ -328,61 +355,66 @@
   --font-family: var(--font-sans);
 }
 
-/* ── Тёмная тема "Neon Night" — переопределение ── */
+/* ── Тёмная тема "Dusk" — переопределение (раздел 3, bg/dusk + раздел 7) ── */
 [data-theme='dark'] {
-  --color-bg-primary: #0b0d12;
-  --color-bg-secondary: #151a21;
-  --color-bg-tertiary: #1e2530;
-  --color-bg-elevated: #1e2530;
-  --color-surface-glass: rgba(30, 37, 48, 0.6);
-  --color-surface-glass-strong: rgba(30, 37, 48, 0.75);
-  --color-surface-glass-border: rgba(255, 255, 255, 0.08);
-  --color-surface-glass-highlight: rgba(255, 255, 255, 0.15);
-  --color-text-primary: #f0f2f5;
-  --color-text-secondary: #a8b0bc;
-  --color-text-muted: #5a6370;
-  --color-text-inverse: #0b0d12;
-  --color-text-on-glass: #f0f2f5;
-  --color-accent: #39ff14;
-  --color-accent-hover: #2fe010;
-  --color-accent-glow: rgba(57, 255, 20, 0.1);
-  --color-warn: #ffb800;
-  --color-warn-soft: rgba(255, 184, 0, 0.1);
-  --color-danger: #ff4d6a;
-  --color-danger-soft: rgba(255, 77, 106, 0.08);
-  --color-info: #00d9ff;
-  --color-info-soft: rgba(0, 217, 255, 0.1);
+  --color-bg-primary: #26233b;
+  --color-bg-secondary: #2e2a47;
+  --color-bg-tertiary: #34304f;
+  --color-bg-elevated: #2e2a47;
+  --color-surface-glass: rgba(255, 255, 255, 0.14);
+  --color-surface-glass-strong: rgba(255, 255, 255, 0.2);
+  --color-surface-glass-border: rgba(255, 255, 255, 0.25);
+  --color-surface-glass-highlight: rgba(255, 255, 255, 0.3);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+  --color-text-inverse: #26233b;
+  --color-text-on-glass: #ffffff;
+  --color-accent: #9b8fff;
+  --color-accent-hover: #b0a6ff;
+  --color-accent-glow: rgba(155, 143, 255, 0.22);
+  --color-warn: #ffae4d;
+  --color-warn-soft: rgba(255, 174, 77, 0.18);
+  --color-danger: #ff8ea6;
+  --color-danger-soft: rgba(255, 142, 166, 0.16);
+  --color-info: #5fa8ee;
+  --color-info-soft: rgba(95, 168, 238, 0.16);
   --color-overlay: rgba(0, 0, 0, 0.6);
 
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
-  --color-border-medium: rgba(255, 255, 255, 0.1);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-medium: rgba(255, 255, 255, 0.14);
 
-  --background-image-hero: linear-gradient(135deg, rgba(255, 45, 122, 0.15) 0%, rgba(0, 217, 255, 0.12) 100%);
-  --background-image-card-overlay: linear-gradient(to top, rgba(11, 13, 18, 0.9) 0%, transparent 60%);
-  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(255, 45, 122, 0.1) 0%, transparent 50%);
-  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+  --background-image-hero: linear-gradient(135deg, rgba(124, 111, 240, 0.2) 0%, rgba(95, 168, 238, 0.14) 100%);
+  --background-image-card-overlay: linear-gradient(to top, rgba(38, 35, 59, 0.9) 0%, transparent 60%);
+  --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(240, 111, 168, 0.14) 0%, transparent 50%);
+  --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(63, 158, 222, 0.12) 0%, transparent 50%);
+  /* bg/dusk (раздел 3): база + 4 пятна акцентов, зерно 4% (--grain-opacity ниже). */
   --background-image-page:
-    radial-gradient(ellipse at 20% 30%, rgba(255, 45, 122, 0.08), transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(123, 45, 255, 0.06), transparent 50%),
-    linear-gradient(135deg, #0b0d12, #0f0d1a, #151a21);
+    radial-gradient(ellipse at 20% 20%, rgba(124, 111, 240, 0.35), transparent 50%),
+    radial-gradient(ellipse at 80% 10%, rgba(240, 111, 168, 0.28), transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(255, 142, 94, 0.22), transparent 50%),
+    radial-gradient(ellipse at 15% 85%, rgba(63, 158, 222, 0.28), transparent 50%),
+    linear-gradient(135deg, #26233b, #201d33);
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 6px 16px rgba(124, 111, 240, 0.25);
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
-  --shadow-fab: 0 0 30px rgba(255, 45, 122, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.06);
-  --shadow-glow-rose: 0 0 30px rgba(255, 45, 122, 0.3);
-  --shadow-glow-cyan: 0 0 20px rgba(0, 217, 255, 0.3);
-  --shadow-glow-accent: 0 0 20px rgba(57, 255, 20, 0.3);
-  --shadow-glow-warn: 0 0 20px rgba(255, 184, 0, 0.3);
-  --shadow-glow-danger: 0 0 20px rgba(255, 77, 106, 0.3);
-  --shadow-glow-violet: 0 0 30px rgba(123, 45, 255, 0.3);
+  --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.28);
+  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.08);
+  --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.35);
+  --shadow-glow-cyan: 0 0 20px rgba(95, 168, 238, 0.35);
+  --shadow-glow-accent: 0 0 20px rgba(53, 194, 162, 0.35);
+  --shadow-glow-warn: 0 0 20px rgba(255, 174, 77, 0.35);
+  --shadow-glow-danger: 0 0 20px rgba(255, 142, 166, 0.35);
+  --shadow-glow-violet: 0 0 30px rgba(155, 143, 255, 0.35);
 
-  --color-border-strong: rgba(255, 255, 255, 0.18);
+  --color-border-strong: rgba(255, 255, 255, 0.22);
 
   --color-scrollbar-thumb: rgba(255, 255, 255, 0.16);
   --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+
+  --grain-opacity: 0.045;
 }
 
 /*
@@ -420,6 +452,20 @@
   background: transparent;
 }
 
+/* ── Типографика (раздел 4): Display/Title экрана — Unbounded, у остального —
+   интерфейсный Manrope по умолчанию (font-family на body). Хук по имени уже
+   сгенерированных Tailwind-классов text-hero/text-h1/h2/h3 — без правки JSX. ── */
+.text-hero,
+.text-hero-lg,
+.text-h1,
+.text-h1-lg,
+.text-h2,
+.text-h2-lg,
+.text-h3,
+.text-h3-lg {
+  font-family: var(--font-display);
+}
+
 /* ── Иконография (раздел 8): дефолтный stroke-width 1.5px НЕ задаём глобальным
    CSS-правилом — presentation-атрибут stroke-width, который лукайд рисует из
    пропа strokeWidth, всегда проигрывает даже классовому селектору в внешней
@@ -427,13 +473,17 @@
    все точечные strokeWidth (FAB=2.5, активный таб BottomNav=2, тренд в
    PlantsComparison=2.5). Раз это ломало то, что уже было явно задано, убрали
    глобальное правило — иконки без явного strokeWidth остаются на дефолте
-   библиотеки (2px), а не на спековских 1.5px. ── */
+   библиотеки (2px), а не на спековских 1.5px.
+   Спека Aurora Glass называет Font Awesome — сознательно не переходим на неё:
+   в проекте уже везде lucide-react (та же роль, 16-18px, цвет из токенов),
+   замена библиотеки во всех местах использования не даёт визуальной разницы,
+   которую оправдывал бы риск такой замены. ── */
 
-/* ── Accessibility (раздел 12): фокус-кольцо в акцентном цвете + glow. ── */
+/* ── Accessibility (раздел 12): фокус-кольцо в акцентном цвете (Iris) + glow. ── */
 :focus-visible {
-  outline: 2px solid var(--color-brand-pink);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-  box-shadow: var(--shadow-glow-rose);
+  box-shadow: var(--shadow-glow-violet);
 }
 
 /* ── Accessibility (раздел 12): уважаем prefers-reduced-motion. ── */

@@ -4,8 +4,8 @@ type Theme = 'light' | 'dark';
 
 /** Совпадают с --color-bg-primary в tokens.css — держим статус-бар/чёлку в цвет темы. */
 const THEME_COLOR: Record<Theme, string> = {
-  light: '#f8f6f3',
-  dark: '#0b0d12',
+  light: '#f6f4fb',
+  dark: '#26233b',
 };
 
 export function useTheme() {

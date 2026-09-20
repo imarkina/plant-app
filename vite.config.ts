@@ -21,8 +21,8 @@ export default defineConfig({
         description: 'Уход за растениями с AI-диагностикой',
         // Совпадает со светлой темой по умолчанию (tokens.css --color-bg-primary) —
         // это цвет сплэш-скрина и статус-бара при первом запуске PWA.
-        theme_color: '#f8f6f3',
-        background_color: '#f8f6f3',
+        theme_color: '#f6f4fb',
+        background_color: '#f6f4fb',
         display: 'standalone',
         icons: [
           {
