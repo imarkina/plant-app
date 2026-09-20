@@ -223,7 +223,7 @@
   --shadow-card: 0 8px 24px rgba(124, 111, 240, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.18);
-  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.3);
+  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.3);
   --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.25);
   --shadow-glow-cyan: 0 0 20px rgba(95, 168, 238, 0.25);
   --shadow-glow-accent: 0 0 20px rgba(53, 194, 162, 0.25);
@@ -408,7 +408,7 @@
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.28);
-  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.08);
+  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.4);
   --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.35);
   --shadow-glow-cyan: 0 0 20px rgba(95, 168, 238, 0.35);
   --shadow-glow-accent: 0 0 20px rgba(53, 194, 162, 0.35);
