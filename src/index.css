@@ -24,7 +24,7 @@ body::after {
   inset: 0;
   z-index: var(--z-base);
   background-image: var(--background-image-grain);
-  background-size: 140px 140px;
+  background-size: 200px 200px;
   opacity: var(--grain-opacity);
   mix-blend-mode: overlay;
   pointer-events: none;

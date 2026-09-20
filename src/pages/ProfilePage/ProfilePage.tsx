@@ -33,7 +33,7 @@ function downloadJson(filename: string, data: unknown) {
 }
 
 const StatTile = ({ value, label }: { value: number; label: string }) => (
-  <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
+  <div className="rounded-xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
     <p className="text-h2 text-text-primary">{value}</p>
     <p className="mt-1 text-caption text-text-muted">{label}</p>
   </div>

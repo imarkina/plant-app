@@ -38,26 +38,26 @@ export const PlantOverviewTab = ({ plant, wateringTask, onOpenAlbum }: Props) =>
 
       <p className="mt-7 text-h3 text-text-primary">🌿 Параметры ухода</p>
       <div className="mt-3 grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
+        <div className="rounded-xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
           <Droplet className="mx-auto text-info" size={20} />
           <p className="mt-2 text-h4 text-text-primary">
             {wateringTask ? formatInterval(wateringTask.intervalDays) : '—'}
           </p>
           <p className="text-caption text-text-muted uppercase">Полив</p>
         </div>
-        <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
+        <div className="rounded-xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
           <Sun className="mx-auto text-warn" size={20} />
           <p className="mt-2 line-clamp-2 text-h4 text-text-primary">
             {carePassport?.lighting.summary ?? '—'}
           </p>
           <p className="text-caption text-text-muted uppercase">Свет</p>
         </div>
-        <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
+        <div className="rounded-xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
           <Wind className="mx-auto text-brand-purple" size={20} />
           <p className="mt-2 text-h4 text-text-primary">{carePassport?.environment.humidity ?? '—'}</p>
           <p className="text-caption text-text-muted uppercase">Влажность</p>
         </div>
-        <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
+        <div className="rounded-xl border border-surface-glass-border bg-surface-glass p-4 text-center shadow-card backdrop-blur-xl backdrop-saturate-150">
           <Thermometer className="mx-auto text-brand-peach" size={20} />
           <p className="mt-2 line-clamp-2 text-h4 text-text-primary">
             {carePassport?.environment.temperatureOptimal ?? '—'}

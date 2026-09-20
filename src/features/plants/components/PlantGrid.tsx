@@ -77,18 +77,16 @@ export const PlantGrid = ({
               <div className="absolute top-2.5 left-2.5 flex flex-col items-start gap-1">
                 {wateringLabel && (
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full bg-bg-elevated px-2 py-1 text-caption font-medium shadow-card desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg ${
-                      isWateringOverdue ? 'text-danger' : 'text-text-primary'
-                    }`}
+                    className="inline-flex items-center gap-1 rounded-full border border-[var(--color-photo-overlay-border)] bg-[var(--color-photo-overlay)] px-2 py-1 text-caption font-medium text-white backdrop-blur-xl backdrop-saturate-150 desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg"
                   >
-                    <Droplet size={12} />
+                    <Droplet size={12} className={isWateringOverdue ? 'text-danger' : 'text-white'} />
                     {wateringLabel}
                   </span>
                 )}
                 {showPhotoReminderBadge && (
                   <span
                     title="Пора сделать фото"
-                    className="inline-flex items-center gap-1 rounded-full bg-bg-elevated px-2 py-1 text-caption font-medium text-danger shadow-card desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg"
+                    className="inline-flex items-center gap-1 rounded-full border border-[var(--color-photo-overlay-border)] bg-[var(--color-photo-overlay)] px-2 py-1 text-caption font-medium text-danger backdrop-blur-xl backdrop-saturate-150 desktop:px-2.5 desktop:py-1.5 desktop:text-caption-lg"
                   >
                     <Camera size={12} />
                   </span>

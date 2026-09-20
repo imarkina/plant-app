@@ -261,7 +261,7 @@ export const HomePage = () => {
           )}
           <div className="absolute inset-0 bg-card-overlay" />
 
-          <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-bg-elevated/90 px-2.5 py-1 text-caption font-semibold text-text-primary shadow-card backdrop-blur-xl backdrop-saturate-150">
+          <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full border border-[var(--color-photo-overlay-border)] bg-[var(--color-photo-overlay)] px-2.5 py-1 text-caption font-semibold text-white backdrop-blur-xl backdrop-saturate-150">
             ⭐ Растение дня
           </span>
 

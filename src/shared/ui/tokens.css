@@ -32,6 +32,14 @@
   /* Таб-бар (раздел 7): отдельная альфа от glass/1 — спека даёт мобильному
      таб-бару свои значения (55% светлая / 8% тёмная), не общие 45%/14%. */
   --color-tab-bar: rgba(255, 255, 255, 0.55);
+  /* Раздел 8 "Карточка с пользовательским фото": бейджи/пилюли ПРЯМО НА
+     фото — не glass/1 (светлое непредсказуемо на произвольном фото, съедает
+     контраст), а тёмный glass/dark + белый текст. Значение из буквального
+     примера спеки (#26233B α60%), не из таблицы §2.4 (там α40% — общее
+     стекло тёмной темы, другая роль). Не меняется по теме — фото остаётся
+     фото независимо от темы приложения. */
+  --color-photo-overlay: rgba(38, 35, 59, 0.6);
+  --color-photo-overlay-border: rgba(255, 255, 255, 0.25);
   --color-text-primary: #26233b;
   --color-text-secondary: #63617e;
   --color-text-muted: #a5a3bc;
@@ -86,23 +94,28 @@
   --background-image-card-overlay: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, transparent 55%);
   --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(124, 111, 240, 0.1) 0%, transparent 50%);
   --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(240, 111, 168, 0.08) 0%, transparent 50%);
-  /* Живой фон (раздел 3, bg/aurora) — 5 мягких радиальных пятен + линейная подложка
-     в остановках спеки, см. index.css для плёночного зерна поверх. */
+  /* Живой фон (раздел 3, bg/aurora) — буквально CSS-реализация из спеки: 6
+     радиальных пятен на пастельной подложке, без линейной "диагонали". Пятна
+     уезжают за transparent 70% — так нет жёстких границ. */
   --background-image-page:
-    radial-gradient(ellipse at 15% 15%, rgba(196, 176, 247, 0.55), transparent 55%),
-    radial-gradient(ellipse at 85% 10%, rgba(166, 210, 245, 0.5), transparent 55%),
-    radial-gradient(ellipse at 90% 80%, rgba(255, 184, 148, 0.45), transparent 55%),
-    radial-gradient(ellipse at 10% 85%, rgba(147, 224, 196, 0.45), transparent 55%),
-    radial-gradient(ellipse at 55% 50%, rgba(245, 162, 203, 0.32), transparent 60%),
-    linear-gradient(135deg, #c4b0f7 0%, #a6d2f5 25%, #ffb894 50%, #93e0c4 75%, #f5a2cb 100%);
-  /* bg/bloom (раздел 3) — акцентный градиент промо-экранов, аддитивный токен. */
+    radial-gradient(42% 55% at 18% 24%, rgba(196, 176, 247, 0.85), transparent 70%),
+    radial-gradient(44% 55% at 78% 16%, rgba(166, 210, 245, 0.8), transparent 70%),
+    radial-gradient(40% 52% at 92% 70%, rgba(255, 184, 148, 0.85), transparent 70%),
+    radial-gradient(46% 58% at 33% 85%, rgba(147, 224, 196, 0.85), transparent 70%),
+    radial-gradient(34% 42% at 53% 46%, rgba(245, 162, 203, 0.75), transparent 70%),
+    radial-gradient(30% 38% at 6% 93%, rgba(242, 222, 150, 0.7), transparent 70%);
+  /* bg/bloom (раздел 3) — акцентный градиент промо-экранов, аддитивный токен,
+     та же техника спеки. */
   --background-image-bloom:
-    radial-gradient(ellipse at 20% 20%, rgba(247, 155, 192, 0.5), transparent 55%),
-    radial-gradient(ellipse at 85% 75%, rgba(226, 159, 242, 0.4), transparent 55%),
-    linear-gradient(135deg, #f79bc0 0%, #ffad85 33%, #f2c96d 66%, #e29ff2 100%);
-  /* Плёночное зерно (раздел 3: 3-4%) — SVG feTurbulence, накладывается поверх
-     фона в index.css через ::after с mix-blend-mode: overlay. */
-  --background-image-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    radial-gradient(60% 60% at 22% 24%, rgba(247, 155, 192, 0.9), transparent 70%),
+    radial-gradient(55% 55% at 78% 19%, rgba(255, 173, 133, 0.9), transparent 70%),
+    radial-gradient(58% 58% at 78% 77%, rgba(242, 201, 109, 0.85), transparent 70%),
+    radial-gradient(55% 55% at 21% 78%, rgba(226, 159, 242, 0.8), transparent 70%),
+    radial-gradient(40% 40% at 51% 49%, rgba(245, 118, 168, 0.5), transparent 70%);
+  /* Плёночное зерно (раздел 3: 3-4%) — buквально SVG из спеки (feTurbulence
+     baseFrequency 0.9, 200×200), накладывается поверх фона в index.css через
+     ::after. */
+  --background-image-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* ── Анимация blob-фона (раздел "Ключевые техники") ── */
   --animate-blob-float: blob-float 20s ease-in-out infinite;
@@ -237,7 +250,13 @@
   --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.2);
   --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.2);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.18);
-  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.3);
+  /* Primary-кнопка (раздел 6.1, буквальный CSS из спеки): тень в покое —
+     peach (цвет конца Sunset-градиента), при hover уходит глубже и в bloom;
+     плюс несъёмный inset-блик сверху ("край стекла"), общий для всех трёх
+     состояний. */
+  --shadow-fab: 0 8px 18px rgba(255, 154, 110, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --shadow-fab-hover: 0 12px 28px rgba(240, 111, 168, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --shadow-fab-active: 0 4px 10px rgba(255, 154, 110, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.25);
   --shadow-glow-cyan: 0 0 20px rgba(95, 168, 238, 0.25);
   --shadow-glow-accent: 0 0 20px rgba(53, 194, 162, 0.25);
@@ -327,8 +346,9 @@
   --duration-slow: 500ms;
   --duration-slower: 700ms;
 
-  /* Зерно (раздел 3): 3% на светлой теме, 4% на тёмной — см. [data-theme='dark']. */
-  --grain-opacity: 0.035;
+  /* Зерно (раздел 3): 3% на светлой теме, 4% на тёмной — буквально по спеке
+     (opacity: 0.03 / 0.04), см. [data-theme='dark']. */
+  --grain-opacity: 0.03;
 
   /* ── Алиасы старых токенов (совместимость с существующими *.css) ──
      Новая система не отличает "primary"/"secondary" акцент и success
@@ -411,13 +431,14 @@
   --background-image-card-overlay: linear-gradient(to top, rgba(38, 35, 59, 0.9) 0%, transparent 60%);
   --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(240, 111, 168, 0.14) 0%, transparent 50%);
   --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(63, 158, 222, 0.12) 0%, transparent 50%);
-  /* bg/dusk (раздел 3): база + 4 пятна акцентов, зерно 4% (--grain-opacity ниже). */
+  /* bg/dusk (раздел 3) — та же буквальная техника: радиальные пятна на тёмной
+     базе, без линейной подложки, зерно 4% (--grain-opacity ниже). */
   --background-image-page:
-    radial-gradient(ellipse at 20% 20%, rgba(124, 111, 240, 0.35), transparent 50%),
-    radial-gradient(ellipse at 80% 10%, rgba(240, 111, 168, 0.28), transparent 50%),
-    radial-gradient(ellipse at 85% 80%, rgba(255, 142, 94, 0.22), transparent 50%),
-    radial-gradient(ellipse at 15% 85%, rgba(63, 158, 222, 0.28), transparent 50%),
-    linear-gradient(135deg, #26233b, #201d33);
+    radial-gradient(60% 60% at 25% 26%, rgba(124, 111, 240, 0.75), transparent 70%),
+    radial-gradient(55% 55% at 78% 23%, rgba(240, 111, 168, 0.6), transparent 70%),
+    radial-gradient(60% 60% at 75% 75%, rgba(255, 142, 94, 0.6), transparent 70%),
+    radial-gradient(55% 55% at 21% 77%, rgba(63, 158, 222, 0.6), transparent 70%),
+    radial-gradient(42% 42% at 52% 50%, rgba(53, 194, 162, 0.35), transparent 70%);
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 6px 16px rgba(124, 111, 240, 0.25);
@@ -428,7 +449,9 @@
   --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.35);
   --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.35);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.28);
-  --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.4);
+  --shadow-fab: 0 8px 18px rgba(255, 154, 110, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --shadow-fab-hover: 0 12px 28px rgba(240, 111, 168, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --shadow-fab-active: 0 4px 10px rgba(255, 154, 110, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.35);
   --shadow-glow-cyan: 0 0 20px rgba(95, 168, 238, 0.35);
   --shadow-glow-accent: 0 0 20px rgba(53, 194, 162, 0.35);
@@ -441,7 +464,7 @@
   --color-scrollbar-thumb: rgba(255, 255, 255, 0.16);
   --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
 
-  --grain-opacity: 0.045;
+  --grain-opacity: 0.04;
 }
 
 /*
@@ -475,6 +498,17 @@
 }
 .shadow-fab {
   box-shadow: var(--shadow-fab);
+  transition: box-shadow 180ms ease;
+}
+/* Раздел 6.1: "тень всегда в цвет градиента (peach в покое, bloom при hover),
+   never нейтрально-серая" — hover уходит глубже и в bloom, active сжимается.
+   Не конфликтует с active:scale-* на самих кнопках — та часть про transform,
+   эта про box-shadow, разные свойства. */
+.shadow-fab:hover {
+  box-shadow: var(--shadow-fab-hover);
+}
+.shadow-fab:active {
+  box-shadow: var(--shadow-fab-active);
 }
 .shadow-glow-rose {
   box-shadow: var(--shadow-glow-rose);
@@ -530,9 +564,12 @@
   background: transparent;
 }
 
-/* ── Типографика (раздел 4): Display/Title экрана — Unbounded, у остального —
-   интерфейсный Manrope по умолчанию (font-family на body). Хук по имени уже
-   сгенерированных Tailwind-классов text-hero/text-h1/h2/h3 — без правки JSX. ── */
+/* ── Типографика (раздел 4): Display (28-60, заголовки экранов/цифры-акценты)
+   и Title (18-20, заголовки карточек и секций) — Unbounded, у остального —
+   интерфейсный Manrope по умолчанию (font-family на body). h4 (17/18px)
+   попадает в нижнюю границу Title — это ровно "заголовки карточек" (имя
+   растения в PlantGrid/PlantListView) и "цифры-акценты" (карточки статистики
+   §7). Хук по имени уже сгенерированных Tailwind-классов — без правки JSX. ── */
 .text-hero,
 .text-hero-lg,
 .text-h1,
@@ -540,7 +577,9 @@
 .text-h2,
 .text-h2-lg,
 .text-h3,
-.text-h3-lg {
+.text-h3-lg,
+.text-h4,
+.text-h4-lg {
   font-family: var(--font-display);
 }
 
