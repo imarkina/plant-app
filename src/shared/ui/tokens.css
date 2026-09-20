@@ -220,7 +220,10 @@
      bloom для парящих элементов/тостов/CTA, как в спеке Aurora Glass. ── */
   --shadow-sm: 0 1px 3px rgba(38, 35, 59, 0.05);
   --shadow-md: 0 6px 16px rgba(124, 111, 240, 0.15);
-  --shadow-card: 0 8px 24px rgba(124, 111, 240, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  /* Карточки (раздел 6.5: "Панель glass/1 ... shadow/float") — то же значение,
+     что и у shadow-elevated: спека не заводит отдельного, более слабого тона
+     специально для карточек, это один и тот же shadow/float. */
+  --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.18);
   --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.3);
@@ -405,8 +408,11 @@
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 6px 16px rgba(124, 111, 240, 0.25);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
+  /* Раздел 1.4: "тень в цвет — амбиентные тени берут оттенок акцента, а не
+     нейтральный чёрный" — было чистым чёрным, поправлено на iris, как и в
+     светлой теме (см. shadow-card/elevated выше). */
+  --shadow-card: 0 12px 28px rgba(124, 111, 240, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-elevated: 0 12px 28px rgba(124, 111, 240, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   --shadow-xl: 0 18px 40px rgba(240, 111, 168, 0.28);
   --shadow-fab: 0 8px 18px rgba(240, 111, 168, 0.4);
   --shadow-glow-rose: 0 0 20px rgba(240, 111, 168, 0.35);
@@ -422,6 +428,57 @@
   --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
 
   --grain-opacity: 0.045;
+}
+
+/*
+ * Раздел 1.4/5: тени должны реально переключаться между темами, а не только
+ * "на бумаге" в токене. Проблема: Tailwind v4 генерирует утилити-классы вида
+ * `.shadow-card{--tw-shadow: 0 12px 28px var(--tw-shadow-color, #7c6ff033)…}` —
+ * значение --shadow-card из @theme запекается в класс ЛИТЕРАЛОМ на этапе сборки
+ * (только цветовая часть остаётся var(--tw-shadow-color, …) ради модификатора
+ * shadow-card/50, которым мы нигде не пользуемся). Поэтому переопределение
+ * --shadow-card в [data-theme='dark'] выше молча игнорировалось рантаймом —
+ * тёмная тема всегда рисовала числа светлой. Ниже — простые CSS-правила вне
+ * @theme и вне слоёв Tailwind: по правилам CSS Cascade Layers неслоёный CSS
+ * побеждает слоёные Tailwind-утилиты независимо от специфичности/порядка,
+ * так что эти правила перебивают сгенерированные и держат box-shadow живой
+ * ссылкой на токен — он теперь действительно меняется по [data-theme='dark'].
+ */
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+.shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+.shadow-xl {
+  box-shadow: var(--shadow-xl);
+}
+.shadow-fab {
+  box-shadow: var(--shadow-fab);
+}
+.shadow-glow-rose {
+  box-shadow: var(--shadow-glow-rose);
+}
+.shadow-glow-cyan {
+  box-shadow: var(--shadow-glow-cyan);
+}
+.shadow-glow-accent {
+  box-shadow: var(--shadow-glow-accent);
+}
+.shadow-glow-warn {
+  box-shadow: var(--shadow-glow-warn);
+}
+.shadow-glow-danger {
+  box-shadow: var(--shadow-glow-danger);
+}
+.shadow-glow-violet {
+  box-shadow: var(--shadow-glow-violet);
 }
 
 /*

@@ -52,7 +52,7 @@ export const PlantGrid = ({
             key={plant.id}
             type="button"
             onClick={() => onSelect(plant.id)}
-            className="group block w-full overflow-hidden rounded-2xl bg-bg-elevated text-left shadow-card transition-transform duration-200 active:scale-[0.98] desktop:rounded-3xl"
+            className="group block w-full overflow-hidden rounded-2xl border border-surface-glass-border bg-surface-glass text-left shadow-card backdrop-blur-xl backdrop-saturate-150 transition-transform duration-200 active:scale-[0.98] desktop:rounded-3xl"
           >
             <div className="relative aspect-square overflow-hidden bg-bg-tertiary">
               {photo?.imageUrl && (
