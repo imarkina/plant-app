@@ -86,7 +86,7 @@ export const PlantHero = ({
               {HEALTH_LABEL[bucket]}
             </span>
           )}
-          <p id={titleId} className="mt-2 truncate text-h1 text-white">
+          <p id={titleId} className="mt-2 line-clamp-2 text-h1 text-white">
             {name}
           </p>
           {botanicalName && <p className="truncate text-body text-white/70 italic">{botanicalName}</p>}

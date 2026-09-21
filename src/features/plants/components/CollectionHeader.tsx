@@ -1,5 +1,7 @@
+import type { ChangeEvent } from 'react';
 import { LayoutGrid, List } from 'lucide-react';
 import { pluralizeRu } from '../../../shared/helpers';
+import { AddPlantButton } from '../../../shared/ui/components/AddPlantButton/AddPlantButton';
 
 export type CollectionView = 'grid' | 'list';
 
@@ -9,6 +11,8 @@ type Props = {
   attentionCount: number;
   view: CollectionView;
   onViewChange: (view: CollectionView) => void;
+  onAddPlantFile: (event: ChangeEvent<HTMLInputElement>) => void;
+  addingPlant: boolean;
 };
 
 const VIEW_OPTIONS: { id: CollectionView; label: string; icon: typeof LayoutGrid }[] = [
@@ -22,6 +26,8 @@ export const CollectionHeader = ({
   attentionCount,
   view,
   onViewChange,
+  onAddPlantFile,
+  addingPlant,
 }: Props) => {
   const stats = [
     `${plantsCount} ${pluralizeRu(plantsCount, 'растение', 'растения', 'растений')}`,
@@ -56,6 +62,8 @@ export const CollectionHeader = ({
           </button>
         ))}
       </div>
+
+      <AddPlantButton onFileSelect={onAddPlantFile} loading={addingPlant} className="mt-3 w-full" />
     </div>
   );
 };

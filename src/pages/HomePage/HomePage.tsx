@@ -22,8 +22,7 @@ import { useAddPlant } from '../../features/plants/hooks/useAddPlant';
 import { resizeImage } from '../../shared/image/resize';
 import { deriveDisplayName, pluralizeRu } from '../../shared/helpers';
 import { Header } from '../../shared/ui/components/Header/Header';
-import { FAB } from '../../shared/ui/components/FAB/FAB';
-import { ComingSoon } from '../../shared/ui/components/ComingSoon/ComingSoon';
+import { AddPlantButton } from '../../shared/ui/components/AddPlantButton/AddPlantButton';
 import { Confetti } from '../../shared/ui/components/Confetti/Confetti';
 import { Toast } from '../../shared/ui/components/Toast/Toast';
 import { useToast } from '../../shared/ui/hooks/useToast';
@@ -207,12 +206,20 @@ export const HomePage = () => {
     return (
       <>
         <Header title={`${greeting.text}, ${deriveDisplayName(user?.email ?? null)} ${greeting.emoji}`} />
-        <ComingSoon
-          emoji="🌱"
-          title="Пока пусто"
-          description="Добавь первое растение — здесь появится дашборд с задачами на сегодня и растением дня."
-        />
-        <FAB onFileSelect={(event) => void handleAddPlant(event)} loading={addingPlant} />
+        <div className="flex min-h-[50vh] flex-col items-center justify-center px-6 text-center">
+          <div className="flex size-16 items-center justify-center rounded-3xl border border-surface-glass-border bg-surface-glass text-3xl shadow-card backdrop-blur-xl backdrop-saturate-150">
+            🌱
+          </div>
+          <h2 className="mt-4 text-h2 text-text-primary">Пока пусто</h2>
+          <p className="mt-2 max-w-xs text-body-sm text-text-muted">
+            Добавь первое растение — здесь появится дашборд с задачами на сегодня и растением дня.
+          </p>
+          <AddPlantButton
+            onFileSelect={(event) => void handleAddPlant(event)}
+            loading={addingPlant}
+            className="mt-5"
+          />
+        </div>
       </>
     );
   }
@@ -436,7 +443,6 @@ export const HomePage = () => {
         })}
       </div>
 
-      <FAB onFileSelect={(event) => void handleAddPlant(event)} loading={addingPlant} />
       <Confetti active={celebrate} onDone={() => setCelebrate(false)} />
       <Toast message={toast} type={toastType} />
     </>

@@ -42,7 +42,9 @@
   --color-photo-overlay-border: rgba(255, 255, 255, 0.25);
   --color-text-primary: #26233b;
   --color-text-secondary: #63617e;
-  --color-text-muted: #a5a3bc;
+  /* Затемнено с #a5a3bc (контраст 2.25:1 на --color-bg-primary — провал WCAG AA)
+     до 4.76:1, с запасом над минимумом 4.5:1 для обычного текста. */
+  --color-text-muted: #6b698f;
   --color-text-inverse: #ffffff;
   --color-text-on-glass: #26233b;
   --color-accent: #7c6ff0;

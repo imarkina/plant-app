@@ -15,7 +15,6 @@ import { useLocations } from '../../locations/hooks/useLocations';
 import { useCareTasksForPlants } from '../../care-tasks';
 import { useAddPlant } from '../hooks/useAddPlant';
 import { useReminderSettings } from '../../reminders';
-import { FAB } from '../../../shared/ui/components/FAB/FAB';
 
 type Props = {
   plants: Plant[];
@@ -112,6 +111,8 @@ export const CollectionTab = ({ plants }: Props) => {
         attentionCount={attentionCount}
         view={view}
         onViewChange={setView}
+        onAddPlantFile={(event) => void handleFileSelect(event)}
+        addingPlant={loading}
       />
       <CollectionFilters value={filters} onChange={setFilters} rooms={locations} />
       {view === 'grid' ? (
@@ -130,7 +131,6 @@ export const CollectionTab = ({ plants }: Props) => {
           onSelect={setOpenPlantId}
         />
       )}
-      <FAB onFileSelect={(event) => void handleFileSelect(event)} loading={loading} />
 
       {lastOpenPlant && (
         <PlantBottomSheet

@@ -37,6 +37,29 @@ export function threatToVariant(level: ThreatLevel): BadgeVariant {
   }
 }
 
+const HEALTH_STATUS_LABEL: Record<HealthStatus, string> = {
+  excellent: 'Отличное',
+  good: 'Хорошее',
+  fair: 'Среднее',
+  poor: 'Плохое',
+  critical: 'Критическое',
+};
+
+export function healthStatusToLabel(status: HealthStatus): string {
+  return HEALTH_STATUS_LABEL[status];
+}
+
+const THREAT_LEVEL_LABEL: Record<ThreatLevel, string> = {
+  low: 'Низкая',
+  medium: 'Средняя',
+  high: 'Высокая',
+  critical: 'Критическая',
+};
+
+export function threatLevelToLabel(level: ThreatLevel): string {
+  return THREAT_LEVEL_LABEL[level];
+}
+
 export function confidenceToVariant(confidencePercent: number): BadgeVariant {
   if (confidencePercent > HIGH_CONFIDENCE_THRESHOLD_PERCENT) {
     return 'success';
