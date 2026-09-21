@@ -1,6 +1,8 @@
 export type ChipOption<T extends string> = {
   value: T;
   label: string;
+  /** Tailwind bg-* class for the 8px status dot (spec §6.4). Omit for chips with no natural accent color. */
+  dotClassName?: string;
 };
 
 type Props<T extends string> = {
@@ -20,12 +22,15 @@ export function ChipSelect<T extends string>({ options, value, onChange }: Props
             key={option.value}
             type="button"
             onClick={() => onChange(isActive ? null : option.value)}
-            className={`cursor-pointer rounded-full px-3.5 py-2 text-body-sm font-sans font-medium transition-all duration-100 active:scale-[0.97] ${
+            className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-2 text-body-sm font-sans font-medium transition-all duration-100 active:scale-[0.97] ${
               isActive
                 ? 'bg-bg-elevated text-accent shadow-card'
                 : 'border border-surface-glass-border bg-surface-glass text-text-secondary hover:text-text-primary'
             }`}
           >
+            {option.dotClassName && (
+              <span className={`size-2 shrink-0 rounded-full ${option.dotClassName}`} />
+            )}
             {option.label}
           </button>
         );

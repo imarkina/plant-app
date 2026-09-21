@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Check } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { signInSchema, signUpSchema } from '../models/auth.schema';
@@ -98,27 +99,43 @@ export const AuthForm = () => {
       <form onSubmit={(event) => void handleSubmit(event)} noValidate className="mt-5">
         <label className="mb-4 flex flex-col gap-1.5">
           <span className="text-body-sm font-semibold text-text-secondary">Email</span>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            autoComplete="email"
-            disabled={submitting}
-            className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
-          />
+          <div className="relative">
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
+              disabled={submitting}
+              className="w-full rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 pr-10 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
+            />
+            {email.trim().length > 0 && (
+              <Check
+                size={18}
+                className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-brand-lime"
+              />
+            )}
+          </div>
           {fieldErrors.email && <span className="text-caption text-danger">{fieldErrors.email}</span>}
         </label>
 
         <label className="mb-4 flex flex-col gap-1.5">
           <span className="text-body-sm font-semibold text-text-secondary">Пароль</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            autoComplete={mode === 'signIn' ? 'current-password' : 'new-password'}
-            disabled={submitting}
-            className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
-          />
+          <div className="relative">
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              autoComplete={mode === 'signIn' ? 'current-password' : 'new-password'}
+              disabled={submitting}
+              className="w-full rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 pr-10 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
+            />
+            {password.length > 0 && (
+              <Check
+                size={18}
+                className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-brand-lime"
+              />
+            )}
+          </div>
           {fieldErrors.password && (
             <span className="text-caption text-danger">{fieldErrors.password}</span>
           )}
@@ -127,14 +144,22 @@ export const AuthForm = () => {
         {mode === 'signUp' && (
           <label className="mb-4 flex flex-col gap-1.5">
             <span className="text-body-sm font-semibold text-text-secondary">Повторите пароль</span>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-              autoComplete="new-password"
-              disabled={submitting}
-              className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
-            />
+            <div className="relative">
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                autoComplete="new-password"
+                disabled={submitting}
+                className="w-full rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 pr-10 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
+              />
+              {confirmPassword.length > 0 && (
+                <Check
+                  size={18}
+                  className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-brand-lime"
+                />
+              )}
+            </div>
             {fieldErrors.confirmPassword && (
               <span className="text-caption text-danger">{fieldErrors.confirmPassword}</span>
             )}

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Check } from 'lucide-react';
 import { ChipSelect } from '../../../shared/ui/components/ChipSelect/ChipSelect';
 import { Button } from '../../../shared/ui/components/Button/Button';
 import { useLocationsContext } from '../hooks/useLocationsContext';
@@ -54,14 +55,22 @@ export const LocationForm = ({ onCreated }: Props) => {
     <form className="flex flex-col gap-4" onSubmit={(event) => void handleSubmit(event)}>
       <label className="flex flex-col gap-1.5">
         <span className="text-body-sm font-semibold text-text-secondary">Название комнаты</span>
-        <input
-          type="text"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="Кухня, подоконник"
-          disabled={submitting}
-          className="rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Кухня, подоконник"
+            disabled={submitting}
+            className="w-full rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3.5 pr-10 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
+          />
+          {name.trim().length > 0 && (
+            <Check
+              size={18}
+              className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-brand-lime"
+            />
+          )}
+        </div>
       </label>
 
       <div className="flex flex-col gap-1.5">

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Check } from 'lucide-react';
 import type { Plant, PotType, SubstrateType } from '../models/plant.types';
 import { usePlantsContext } from '../hooks/usePlantsContext';
 import { useLocations } from '../../locations/hooks/useLocations';
@@ -25,7 +26,7 @@ const NO_SPECIES_OPTION = '';
 const SAVE_FAILED_MESSAGE = 'Не удалось сохранить профиль';
 
 const FIELD_INPUT_CLASSES =
-  'rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]';
+  'w-full rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body font-sans text-text-primary outline-none backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]';
 
 type Props = {
   plant: Plant;
@@ -96,13 +97,21 @@ export const PlantProfileTab = ({ plant }: Props) => {
     <form className="flex flex-col gap-4" onSubmit={(event) => void handleSubmit(event)}>
       <label className="flex flex-col gap-1.5">
         <span className="text-body-sm font-semibold text-text-secondary">Кличка</span>
-        <input
-          type="text"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          disabled={saving}
-          className={FIELD_INPUT_CLASSES}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            disabled={saving}
+            className={`${FIELD_INPUT_CLASSES} pr-10`}
+          />
+          {name.trim().length > 0 && (
+            <Check
+              size={18}
+              className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-brand-lime"
+            />
+          )}
+        </div>
       </label>
 
       <label className="flex flex-col gap-1.5">
@@ -143,14 +152,22 @@ export const PlantProfileTab = ({ plant }: Props) => {
 
       <label className="flex flex-col gap-1.5">
         <span className="text-body-sm font-semibold text-text-secondary">Своё название вида</span>
-        <input
-          type="text"
-          value={customSpeciesName}
-          onChange={(event) => handleCustomSpeciesChange(event.target.value)}
-          placeholder="Если вида нет в справочнике"
-          disabled={saving}
-          className={FIELD_INPUT_CLASSES}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            value={customSpeciesName}
+            onChange={(event) => handleCustomSpeciesChange(event.target.value)}
+            placeholder="Если вида нет в справочнике"
+            disabled={saving}
+            className={`${FIELD_INPUT_CLASSES} pr-10`}
+          />
+          {customSpeciesName.trim().length > 0 && (
+            <Check
+              size={18}
+              className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-brand-lime"
+            />
+          )}
+        </div>
       </label>
 
       <label className="flex flex-col gap-1.5">

@@ -5,9 +5,9 @@ import { RoomChips } from './RoomChips';
 import type { Location } from '../../locations';
 
 const STATUS_OPTIONS: ChipOption<HealthBucket>[] = [
-  { value: 'healthy', label: 'Здорово' },
-  { value: 'warning', label: 'Внимание' },
-  { value: 'sick', label: 'Болеет' },
+  { value: 'healthy', label: 'Здорово', dotClassName: 'bg-brand-lime' },
+  { value: 'warning', label: 'Внимание', dotClassName: 'bg-warn' },
+  { value: 'sick', label: 'Болеет', dotClassName: 'bg-danger' },
 ];
 
 export const ALL_ROOMS_OPTION = '';
