@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { queryClient } from '../shared/query/queryClient';
 import { PlantsProvider } from '../features/plants';
 import { AuthProvider, ProtectedRoute } from '../features/auth';
+import { ThemeProvider } from '../shared/ui/context/ThemeProvider';
 import { BlobBackground } from '../shared/ui/components/BlobBackground/BlobBackground';
 import { BottomNav } from '../shared/ui/components/BottomNav/BottomNav';
 import { ErrorBoundary } from '../shared/ui/components/ErrorBoundary/ErrorBoundary';
@@ -44,30 +45,32 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <BlobBackground />
-        <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
-          <BrowserRouter>
-            <AuthProvider>
-              <Suspense fallback={<RouteFallback />}>
-                <Routes>
-                  <Route path="/login" element={<AuthPage />} />
-                  <Route element={<ProtectedRoute />}>
-                    <Route element={<PlantsLayout />}>
-                      <Route path="/" element={<HomePage />} />
-                      <Route path="/collection" element={<CollectionPage />} />
-                      <Route path="/calendar" element={<CalendarPage />} />
-                      <Route path="/plant/:id" element={<PlantPage />} />
-                      <Route path="/profile" element={<ProfilePage />} />
-                      <Route path="/locations" element={<LocationsPage />} />
+        <ThemeProvider>
+          <BlobBackground />
+          <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
+            <BrowserRouter>
+              <AuthProvider>
+                <Suspense fallback={<RouteFallback />}>
+                  <Routes>
+                    <Route path="/login" element={<AuthPage />} />
+                    <Route element={<ProtectedRoute />}>
+                      <Route element={<PlantsLayout />}>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/collection" element={<CollectionPage />} />
+                        <Route path="/calendar" element={<CalendarPage />} />
+                        <Route path="/plant/:id" element={<PlantPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/locations" element={<LocationsPage />} />
+                      </Route>
                     </Route>
-                  </Route>
-                </Routes>
-              </Suspense>
-            </AuthProvider>
-          </BrowserRouter>
-        </div>
-        <GlobalToast />
-        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+                  </Routes>
+                </Suspense>
+              </AuthProvider>
+            </BrowserRouter>
+          </div>
+          <GlobalToast />
+          <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+        </ThemeProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );

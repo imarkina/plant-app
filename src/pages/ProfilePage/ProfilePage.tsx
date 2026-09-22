@@ -6,7 +6,7 @@ import { useAuthContext } from '../../features/auth';
 import { usePlantsContext } from '../../features/plants/hooks/usePlantsContext';
 import { useLocations } from '../../features/locations/hooks/useLocations';
 import { lightLevelLabel, roomIcon } from '../../features/locations';
-import { useTheme } from '../../shared/ui/hooks/useTheme';
+import { useThemeContext } from '../../shared/ui/hooks/useThemeContext';
 import { Switch } from '../../shared/ui/components/Switch/Switch';
 import { deriveDisplayName, formatDate, pluralizeRu } from '../../shared/helpers';
 import {
@@ -66,7 +66,7 @@ export const ProfilePage = () => {
   const { user, signOut } = useAuthContext();
   const { plants } = usePlantsContext();
   const { locations } = useLocations();
-  const { theme, toggle } = useTheme();
+  const { theme, toggle } = useThemeContext();
   const { settings, updateSettings } = useReminderSettings();
   const { subscribed, subscribe, unsubscribe, error: pushError } = usePushSubscription();
   const [exported, setExported] = useState(false);

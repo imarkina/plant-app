@@ -1,4 +1,4 @@
-import { useTheme } from '../../hooks/useTheme';
+import { useThemeContext } from '../../hooks/useThemeContext';
 import { Leaf, Moon, Sun } from 'lucide-react';
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
 };
 
 export const Header = ({ title }: Props) => {
-  const { theme, toggle } = useTheme();
+  const { theme, toggle } = useThemeContext();
 
   return (
     <>
