@@ -85,7 +85,7 @@ export const PlantOverviewTab = ({ plant, wateringTask, onOpenAlbum }: Props) =>
       {sortedPhotos.length === 0 ? (
         <p className="mt-3 text-body-sm text-text-muted">У этого растения пока нет фото.</p>
       ) : (
-        <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
+        <div className="scroll-fade-x mt-3 flex gap-3 overflow-x-auto pb-1">
           {sortedPhotos.map((photo, index) => {
             const isFirst = index === 0;
             const isLast = index === sortedPhotos.length - 1;

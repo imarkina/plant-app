@@ -54,13 +54,15 @@ export const PlantGrid = ({
             onClick={() => onSelect(plant.id)}
             className="group block w-full overflow-hidden rounded-2xl border border-surface-glass-border bg-surface-glass text-left shadow-card backdrop-blur-xl backdrop-saturate-150 transition-transform duration-200 active:scale-[0.98] desktop:rounded-3xl"
           >
-            <div className="relative aspect-square overflow-hidden bg-bg-tertiary">
-              {photo?.imageUrl && (
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-bg-tertiary text-3xl">
+              {photo?.imageUrl ? (
                 <img
                   src={photo.imageUrl}
                   alt={name}
                   className="absolute inset-0 size-full object-cover"
                 />
+              ) : (
+                '🌿'
               )}
 
               {dotClassName && (

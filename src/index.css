@@ -1,11 +1,11 @@
 body {
   font-family: var(--font-family);
-  background: var(--background-image-page), var(--color-bg-primary);
+  background-color: var(--color-bg-primary);
   color: var(--color-text);
   margin: 0;
   /* max() — на обычных устройствах env() = 0, остаётся привычный отступ; на устройствах
      с чёлкой/вырезом контент отодвигается ровно настолько, чтобы не залезать под неё, а
-     сам фон (см. выше) всё равно продолжает закрашивать всю область под ней. */
+     сам фон (см. ниже, body::before) всё равно продолжает закрашивать всю область под ней. */
   padding-top: max(24px, env(safe-area-inset-top));
   padding-right: max(24px, env(safe-area-inset-right));
   padding-bottom: max(24px, env(safe-area-inset-bottom));
@@ -14,6 +14,19 @@ body {
   transition:
     background-color 0.5s,
     color 0.3s;
+}
+
+/* Живой градиентный фон — фиксирован к вьюпорту (не к body), иначе на страницах
+   короче/выше вьюпорта (Локации, Профиль, Календарь) box body получается другой
+   высоты, проценты позиций пятен считаются от него, и снизу остаётся плоская
+   область без единого пятна — именно так и было до фикса. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  /* Ниже BlobBackground (-z-10 через Tailwind) — размытые пятна должны быть видны поверх этого плоского слоя. */
+  z-index: -20;
+  background-image: var(--background-image-page);
 }
 
 /* Плёночное зерно поверх живого фона (Aurora Glass, раздел 3) — на весь вьюпорт,

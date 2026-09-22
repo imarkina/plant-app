@@ -17,7 +17,7 @@ const CHIP_INACTIVE =
 
 export const RoomChips = ({ rooms, value, onChange }: Props) => {
   return (
-    <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+    <div className="scroll-fade-x mt-3 flex gap-2 overflow-x-auto pb-1">
       <button
         type="button"
         onClick={() => onChange(ALL_ROOMS_OPTION)}

@@ -42,13 +42,15 @@ export const PlantListView = ({ plants, locationNameById, careTasksByPlantId, on
             onClick={() => onSelect(plant.id)}
             className="flex w-full items-center gap-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-2.5 text-left shadow-card backdrop-blur-xl backdrop-saturate-150 transition-transform duration-200 active:scale-[0.98]"
           >
-            <div className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-bg-tertiary desktop:size-20">
-              {photo?.imageUrl && (
+            <div className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-bg-tertiary text-xl desktop:size-20">
+              {photo?.imageUrl ? (
                 <img
                   src={photo.imageUrl}
                   alt={name}
                   className="absolute inset-0 size-full object-cover"
                 />
+              ) : (
+                '🌿'
               )}
               {dotClassName && (
                 <span

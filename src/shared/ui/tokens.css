@@ -508,6 +508,20 @@
    never нейтрально-серая" — hover уходит глубже и в bloom, active сжимается.
    Не конфликтует с active:scale-* на самих кнопках — та часть про transform,
    эта про box-shadow, разные свойства. */
+/* Горизонтальные скроллеры чипов/миниатюр (RoomChips, фото-полосы): вместо
+   жёсткого среза элемента ровно по границе паддинга — мягкое затухание по
+   краям, стандартный паттерн для carousel-скроллов. */
+.scroll-fade-x {
+  mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20px,
+    black calc(100% - 20px),
+    transparent
+  );
+}
+
 .shadow-fab:hover {
   box-shadow: var(--shadow-fab-hover);
 }
