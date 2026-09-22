@@ -125,7 +125,12 @@ export const HomePage = () => {
 
   const activePlants = useMemo(() => plants.filter((plant) => !plant.isArchived), [plants]);
   const plantIds = useMemo(() => activePlants.map((plant) => plant.id), [activePlants]);
-  const { tasksByPlantId, loading: tasksLoading, markDone, applyPhotoBackoff } = useCareTasksForPlants(plantIds);
+  const {
+    tasksByPlantId,
+    loading: tasksLoading,
+    markDone,
+    applyPhotoBackoff,
+  } = useCareTasksForPlants(plantIds);
   const { message: toast, type: toastType, showToast } = useToast();
   const [celebrate, setCelebrate] = useState(false);
   const [todayExpanded, setTodayExpanded] = useState(false);
@@ -197,7 +202,9 @@ export const HomePage = () => {
   if (loading) {
     return (
       <>
-        <Header title={`${greeting.text}, ${deriveDisplayName(user?.email ?? null)} ${greeting.emoji}`} />
+        <Header
+          title={`${greeting.text}, ${deriveDisplayName(user?.email ?? null)} ${greeting.emoji}`}
+        />
         <p className="text-body-sm text-text-muted">Загрузка...</p>
       </>
     );
@@ -206,7 +213,9 @@ export const HomePage = () => {
   if (!featuredPlant) {
     return (
       <>
-        <Header title={`${greeting.text}, ${deriveDisplayName(user?.email ?? null)} ${greeting.emoji}`} />
+        <Header
+          title={`${greeting.text}, ${deriveDisplayName(user?.email ?? null)} ${greeting.emoji}`}
+        />
         <div className="flex min-h-[50vh] flex-col items-center justify-center px-6 text-center">
           <div className="flex size-16 items-center justify-center rounded-3xl border border-surface-glass-border bg-surface-glass text-3xl shadow-card backdrop-blur-xl backdrop-saturate-150">
             🌱
@@ -231,7 +240,9 @@ export const HomePage = () => {
   const featuredBucket = featuredAnalysis?.health.status
     ? healthStatusToBucket(featuredAnalysis.health.status)
     : null;
-  const featuredWateringTask = tasksByPlantId.get(featuredPlant.id)?.find((t) => t.type === 'watering');
+  const featuredWateringTask = tasksByPlantId
+    .get(featuredPlant.id)
+    ?.find((t) => t.type === 'watering');
 
   const attentionCount = activePlants.filter((plant) => {
     const status = plant.photos[0]?.analysis?.health.status;
@@ -281,7 +292,9 @@ export const HomePage = () => {
               )}
               {featuredBucket && (
                 <span className="inline-flex items-center gap-1">
-                  <span className={`size-2 rounded-full ${healthBucketToDotClassName(featuredBucket)}`} />
+                  <span
+                    className={`size-2 rounded-full ${healthBucketToDotClassName(featuredBucket)}`}
+                  />
                   {healthBucketToLabel(featuredBucket)}
                 </span>
               )}
@@ -300,7 +313,12 @@ export const HomePage = () => {
           💧 Полить
         </button>
         <label className="cursor-pointer rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-center text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]">
-          <input type="file" accept="image/*" onChange={(event) => void handleFeaturedPhoto(event)} className="hidden" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(event) => void handleFeaturedPhoto(event)}
+            className="hidden"
+          />
           <span className="inline-flex items-center gap-1.5">
             <Camera size={16} className="text-brand-purple" /> Фото
           </span>
@@ -313,135 +331,154 @@ export const HomePage = () => {
         </Link>
       </div>
 
-      <div className="mt-7 flex items-center justify-between">
-        <p className="text-h3 text-text-primary">🔔 Сегодня</p>
-        <Link to="/calendar" className="text-body-sm font-semibold text-info">
-          Календарь →
-        </Link>
-      </div>
+      <div className="desktop:grid desktop:grid-cols-2 desktop:gap-x-8">
+        <div>
+          <div className="mt-7 flex items-center justify-between">
+            <p className="text-h3 text-text-primary">🔔 Сегодня</p>
+            <Link to="/calendar" className="text-body-sm font-semibold text-info">
+              Календарь →
+            </Link>
+          </div>
 
-      {todayItems.length === 0 ? (
-        <p className="mt-3 text-body-sm text-text-muted">Дел на сегодня нет — можно выдохнуть 🌿</p>
-      ) : (
-        <div className="mt-3 flex flex-col gap-2.5">
-          {(todayExpanded ? todayItems : todayItems.slice(0, 3)).map((item) => {
-            const name = item.plant.photos[0]?.analysis?.identification.commonName ?? item.plant.name;
+          {todayItems.length === 0 ? (
+            <p className="mt-3 text-body-sm text-text-muted">
+              Дел на сегодня нет — можно выдохнуть 🌿
+            </p>
+          ) : (
+            <div className="mt-3 flex flex-col gap-2.5">
+              {(todayExpanded ? todayItems : todayItems.slice(0, 3)).map((item) => {
+                const name =
+                  item.plant.photos[0]?.analysis?.identification.commonName ?? item.plant.name;
 
-            if (item.kind === 'alert') {
-              const diagnosis = item.plant.photos[0]?.analysis?.health.diagnosis;
+                if (item.kind === 'alert') {
+                  const diagnosis = item.plant.photos[0]?.analysis?.health.diagnosis;
+
+                  return (
+                    <Link
+                      key={item.key}
+                      to={`/plant/${item.plant.id}`}
+                      className="flex items-center gap-3 rounded-2xl border-l-4 border-danger bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150"
+                    >
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-danger-soft text-lg">
+                        🚨
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-body-sm font-semibold text-text-primary">
+                          {name} нуждается в осмотре
+                        </p>
+                        <p className="truncate text-caption text-text-muted">
+                          {diagnosis ?? 'Нужен диагноз'}
+                        </p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-danger px-3 py-1.5 text-caption font-semibold text-white">
+                        Смотреть
+                      </span>
+                    </Link>
+                  );
+                }
+
+                const isOverdue = getCareStatus(item.task) === 'overdue';
+                const isPhotoTask = item.task.type === 'photo';
+
+                return (
+                  <div
+                    key={item.key}
+                    className={`flex items-center gap-3 rounded-2xl border-l-4 bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150 ${
+                      isOverdue ? 'border-danger' : 'border-info'
+                    }`}
+                  >
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-lg">
+                      {TASK_ICON[item.task.type]}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-body-sm font-semibold text-text-primary">
+                        {TASK_VERB[item.task.type]} {name}
+                      </p>
+                      <p className="truncate text-caption text-text-muted">
+                        {formatDue(getNextDue(item.task))}
+                      </p>
+                    </div>
+                    {isPhotoTask ? (
+                      <label className="shrink-0 cursor-pointer rounded-full bg-brand px-3 py-1.5 text-caption font-semibold text-white">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(event) =>
+                            void handleTaskPhoto(event, item.plant.id, item.task.id)
+                          }
+                        />
+                        Снять
+                      </label>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => void markDone(item.task.id)}
+                        className="shrink-0 cursor-pointer rounded-full bg-brand px-3 py-1.5 text-caption font-semibold text-white"
+                      >
+                        Готово
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+              {!todayExpanded && todayItems.length > 3 && (
+                <button
+                  type="button"
+                  onClick={() => setTodayExpanded(true)}
+                  className="cursor-pointer rounded-2xl border border-dashed border-surface-glass-border py-2.5 text-body-sm font-semibold text-text-secondary"
+                >
+                  Показать ещё {todayItems.length - 3}
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <div className="mt-7 flex items-center justify-between">
+            <p className="text-h3 text-text-primary">🌿 Коллекция</p>
+            <Link to="/collection" className="text-body-sm font-semibold text-info">
+              Все {activePlants.length} →
+            </Link>
+          </div>
+
+          <div className="mt-3 flex gap-3 overflow-x-auto pb-1 desktop:flex-wrap">
+            {activePlants.map((plant) => {
+              const photo = plant.photos[0];
+              const analysis = photo?.analysis;
+              const name = analysis?.identification.commonName ?? plant.name;
+              const dotClassName = analysis?.health.status
+                ? healthBucketToDotClassName(healthStatusToBucket(analysis.health.status))
+                : null;
 
               return (
                 <Link
-                  key={item.key}
-                  to={`/plant/${item.plant.id}`}
-                  className="flex items-center gap-3 rounded-2xl border-l-4 border-danger bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150"
+                  key={plant.id}
+                  to={`/plant/${plant.id}`}
+                  className="relative size-24 shrink-0 overflow-hidden rounded-2xl bg-bg-tertiary shadow-card"
                 >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-danger-soft text-lg">
-                    🚨
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-body-sm font-semibold text-text-primary">{name} нуждается в осмотре</p>
-                    <p className="truncate text-caption text-text-muted">{diagnosis ?? 'Нужен диагноз'}</p>
-                  </div>
-                  <span className="shrink-0 rounded-full bg-danger px-3 py-1.5 text-caption font-semibold text-white">
-                    Смотреть
-                  </span>
+                  {photo?.imageUrl && (
+                    <img
+                      src={photo.imageUrl}
+                      alt={name}
+                      className="absolute inset-0 size-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-card-overlay" />
+                  {dotClassName && (
+                    <span
+                      className={`absolute top-1.5 right-1.5 size-2.5 rounded-full border-2 border-white ${dotClassName}`}
+                    />
+                  )}
+                  <p className="absolute inset-x-0 bottom-1.5 truncate px-2 text-caption font-semibold text-white">
+                    {name}
+                  </p>
                 </Link>
               );
-            }
-
-            const isOverdue = getCareStatus(item.task) === 'overdue';
-            const isPhotoTask = item.task.type === 'photo';
-
-            return (
-              <div
-                key={item.key}
-                className={`flex items-center gap-3 rounded-2xl border-l-4 bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150 ${
-                  isOverdue ? 'border-danger' : 'border-info'
-                }`}
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-lg">
-                  {TASK_ICON[item.task.type]}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-body-sm font-semibold text-text-primary">
-                    {TASK_VERB[item.task.type]} {name}
-                  </p>
-                  <p className="truncate text-caption text-text-muted">
-                    {formatDue(getNextDue(item.task))}
-                  </p>
-                </div>
-                {isPhotoTask ? (
-                  <label className="shrink-0 cursor-pointer rounded-full bg-brand px-3 py-1.5 text-caption font-semibold text-white">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(event) => void handleTaskPhoto(event, item.plant.id, item.task.id)}
-                    />
-                    Снять
-                  </label>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => void markDone(item.task.id)}
-                    className="shrink-0 cursor-pointer rounded-full bg-brand px-3 py-1.5 text-caption font-semibold text-white"
-                  >
-                    Готово
-                  </button>
-                )}
-              </div>
-            );
-          })}
-          {!todayExpanded && todayItems.length > 3 && (
-            <button
-              type="button"
-              onClick={() => setTodayExpanded(true)}
-              className="cursor-pointer rounded-2xl border border-dashed border-surface-glass-border py-2.5 text-body-sm font-semibold text-text-secondary"
-            >
-              Показать ещё {todayItems.length - 3}
-            </button>
-          )}
+            })}
+          </div>
         </div>
-      )}
-
-      <div className="mt-7 flex items-center justify-between">
-        <p className="text-h3 text-text-primary">🌿 Коллекция</p>
-        <Link to="/collection" className="text-body-sm font-semibold text-info">
-          Все {activePlants.length} →
-        </Link>
-      </div>
-
-      <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
-        {activePlants.map((plant) => {
-          const photo = plant.photos[0];
-          const analysis = photo?.analysis;
-          const name = analysis?.identification.commonName ?? plant.name;
-          const dotClassName = analysis?.health.status
-            ? healthBucketToDotClassName(healthStatusToBucket(analysis.health.status))
-            : null;
-
-          return (
-            <Link
-              key={plant.id}
-              to={`/plant/${plant.id}`}
-              className="relative size-24 shrink-0 overflow-hidden rounded-2xl bg-bg-tertiary shadow-card"
-            >
-              {photo?.imageUrl && (
-                <img src={photo.imageUrl} alt={name} className="absolute inset-0 size-full object-cover" />
-              )}
-              <div className="absolute inset-0 bg-card-overlay" />
-              {dotClassName && (
-                <span
-                  className={`absolute top-1.5 right-1.5 size-2.5 rounded-full border-2 border-white ${dotClassName}`}
-                />
-              )}
-              <p className="absolute inset-x-0 bottom-1.5 truncate px-2 text-caption font-semibold text-white">
-                {name}
-              </p>
-            </Link>
-          );
-        })}
       </div>
 
       <Confetti active={celebrate} onDone={() => setCelebrate(false)} />

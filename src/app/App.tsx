@@ -9,6 +9,7 @@ import { AuthProvider, ProtectedRoute } from '../features/auth';
 import { ThemeProvider } from '../shared/ui/context/ThemeProvider';
 import { BlobBackground } from '../shared/ui/components/BlobBackground/BlobBackground';
 import { BottomNav } from '../shared/ui/components/BottomNav/BottomNav';
+import { Sidebar } from '../shared/ui/components/Sidebar/Sidebar';
 import { ErrorBoundary } from '../shared/ui/components/ErrorBoundary/ErrorBoundary';
 import { GlobalToast } from '../shared/ui/components/GlobalToast/GlobalToast';
 
@@ -34,11 +35,28 @@ const LocationsPage = lazy(() =>
 
 const RouteFallback = () => <p className="mt-6 text-body-sm text-text-muted">Загрузка...</p>;
 
+/**
+ * ≥1024px: постоянный Sidebar слева + контент сдвинут на его ширину (pl-60) и
+ * заново центрирован в оставшемся пространстве — вместо растянутой на всю
+ * ширину мобильной колонки. BottomNav/Sidebar скрывают себя по брейкпоинту
+ * каждый сам (см. desktop:hidden/desktop:flex в своих файлах).
+ */
 const PlantsLayout = () => (
   <PlantsProvider>
-    <Outlet />
+    <Sidebar />
+    <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-none desktop:pb-8 desktop:pl-60">
+      <div className="desktop:mx-auto desktop:max-w-[900px] desktop:px-10 wide:max-w-[1080px]">
+        <Outlet />
+      </div>
+    </div>
     <BottomNav />
   </PlantsProvider>
+);
+
+const AuthLayout = () => (
+  <div className="relative mx-auto max-w-full pb-8 tablet:max-w-[720px]">
+    <AuthPage />
+  </div>
 );
 
 function App() {
@@ -47,27 +65,25 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <BlobBackground />
-          <div className="relative mx-auto max-w-full pb-28 tablet:max-w-[720px] desktop:max-w-[1024px] wide:max-w-[1280px]">
-            <BrowserRouter>
-              <AuthProvider>
-                <Suspense fallback={<RouteFallback />}>
-                  <Routes>
-                    <Route path="/login" element={<AuthPage />} />
-                    <Route element={<ProtectedRoute />}>
-                      <Route element={<PlantsLayout />}>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/collection" element={<CollectionPage />} />
-                        <Route path="/calendar" element={<CalendarPage />} />
-                        <Route path="/plant/:id" element={<PlantPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/locations" element={<LocationsPage />} />
-                      </Route>
+          <BrowserRouter>
+            <AuthProvider>
+              <Suspense fallback={<RouteFallback />}>
+                <Routes>
+                  <Route path="/login" element={<AuthLayout />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<PlantsLayout />}>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="/collection" element={<CollectionPage />} />
+                      <Route path="/calendar" element={<CalendarPage />} />
+                      <Route path="/plant/:id" element={<PlantPage />} />
+                      <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/locations" element={<LocationsPage />} />
                     </Route>
-                  </Routes>
-                </Suspense>
-              </AuthProvider>
-            </BrowserRouter>
-          </div>
+                  </Route>
+                </Routes>
+              </Suspense>
+            </AuthProvider>
+          </BrowserRouter>
           <GlobalToast />
           <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
         </ThemeProvider>

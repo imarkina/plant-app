@@ -45,25 +45,27 @@ export const CollectionHeader = ({
         {stats.join(' · ')}
       </p>
 
-      <div className="mt-4 inline-flex gap-1 rounded-full border border-surface-glass-border bg-surface-glass p-1 backdrop-blur-xl backdrop-saturate-150">
-        {VIEW_OPTIONS.map(({ id, label, icon: Icon }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => onViewChange(id)}
-            className={`flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-2 text-body-sm font-sans font-medium transition-all duration-100 ${
-              view === id
-                ? 'bg-bg-elevated text-text-primary shadow-card'
-                : 'text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            <Icon size={16} />
-            {label}
-          </button>
-        ))}
-      </div>
+      <div className="mt-4 flex flex-col gap-3 desktop:flex-row desktop:items-center desktop:justify-between">
+        <div className="inline-flex gap-1 self-start rounded-full border border-surface-glass-border bg-surface-glass p-1 backdrop-blur-xl backdrop-saturate-150">
+          {VIEW_OPTIONS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => onViewChange(id)}
+              className={`flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-2 text-body-sm font-sans font-medium transition-all duration-100 ${
+                view === id
+                  ? 'bg-bg-elevated text-text-primary shadow-card'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              <Icon size={16} />
+              {label}
+            </button>
+          ))}
+        </div>
 
-      <AddPlantButton onFileSelect={onAddPlantFile} loading={addingPlant} className="mt-3 w-full" />
+        <AddPlantButton onFileSelect={onAddPlantFile} loading={addingPlant} className="w-full desktop:w-auto" />
+      </div>
     </div>
   );
 };

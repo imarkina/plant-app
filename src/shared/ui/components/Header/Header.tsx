@@ -10,7 +10,7 @@ export const Header = ({ title }: Props) => {
 
   return (
     <>
-      <header className="flex items-center justify-between py-4">
+      <header className="flex items-center justify-between py-4 desktop:hidden">
         <div className="flex items-center text-accent">
           <Leaf />
         </div>

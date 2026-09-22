@@ -10,7 +10,7 @@ const items = [
 
 export const BottomNav = () => {
   return (
-    <nav className="fixed bottom-[calc(16px+env(safe-area-inset-bottom))] left-1/2 z-[var(--z-nav)] flex w-[calc(100%-32px)] max-w-[408px] -translate-x-1/2 items-center justify-around rounded-full border border-surface-glass-border bg-[var(--color-tab-bar)] px-2 py-2.5 backdrop-blur-xl backdrop-saturate-150 shadow-elevated">
+    <nav className="fixed bottom-[calc(16px+env(safe-area-inset-bottom))] left-1/2 z-[var(--z-nav)] flex w-[calc(100%-32px)] max-w-[408px] -translate-x-1/2 items-center justify-around rounded-full border border-surface-glass-border bg-[var(--color-tab-bar)] px-2 py-2.5 backdrop-blur-xl backdrop-saturate-150 shadow-elevated desktop:hidden">
       {items.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}
