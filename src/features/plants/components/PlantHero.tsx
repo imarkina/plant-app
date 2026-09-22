@@ -2,10 +2,12 @@ import { createElement } from 'react';
 import { ArrowLeft, MoreHorizontal } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { Plant } from '../models/plant.types';
-import { healthBucketToDotClassName, healthStatusToBucket } from '../models/report-status.mappers';
+import {
+  healthBucketToDotClassName,
+  healthBucketToLabel,
+  healthStatusToBucket,
+} from '../models/report-status.mappers';
 import { roomIcon } from '../../locations';
-
-const HEALTH_LABEL = { healthy: 'Здорова', warning: 'Внимание', sick: 'Болеет' } as const;
 
 /** Иконка комнаты вычисляется по имени в рантайме — createElement вместо JSX, чтобы не смущать react-hooks/static-components. */
 function roomBadge(name: string) {
@@ -83,7 +85,7 @@ export const PlantHero = ({
                 />
                 <span className={`relative inline-flex size-full rounded-full ${healthBucketToDotClassName(bucket)}`} />
               </span>
-              {HEALTH_LABEL[bucket]}
+              {healthBucketToLabel(bucket)}
             </span>
           )}
           <p id={titleId} className="mt-2 line-clamp-2 text-h1 text-white">

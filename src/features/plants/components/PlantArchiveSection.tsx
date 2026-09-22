@@ -2,7 +2,6 @@ import { useState } from 'react';
 import type { ArchiveStatus, Plant } from '../models/plant.types';
 import { usePlantsContext } from '../hooks/usePlantsContext';
 import { Button } from '../../../shared/ui/components/Button/Button';
-import './PlantArchiveSection.css';
 
 const ARCHIVE_STATUS_OPTIONS: { value: ArchiveStatus; label: string }[] = [
   { value: 'died', label: 'Погиб' },
@@ -44,12 +43,12 @@ export const PlantArchiveSection = ({ plant }: Props) => {
     };
 
     return (
-      <div className="plant-archive plant-archive--archived">
-        <p className="plant-archive__status">
+      <div className="rounded-3xl border border-surface-glass-border bg-bg-tertiary p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
+        <p className="mb-3 text-body-sm text-text-primary">
           В архиве{statusLabel ? `: ${statusLabel}` : ''}
           {plant.archiveReasonDetail ? ` — ${plant.archiveReasonDetail}` : ''}
         </p>
-        {error && <div className="plant-archive__error">{error}</div>}
+        {error && <div className="mb-3 text-body-sm text-danger">{error}</div>}
         <Button
           type="button"
           variant="glass"
@@ -64,7 +63,11 @@ export const PlantArchiveSection = ({ plant }: Props) => {
 
   if (!showForm) {
     return (
-      <button type="button" className="plant-archive__trigger" onClick={() => setShowForm(true)}>
+      <button
+        type="button"
+        onClick={() => setShowForm(true)}
+        className="block w-full cursor-pointer rounded-2xl border-[1.5px] border-dashed border-danger px-4 py-3 text-center text-body-sm font-semibold text-danger"
+      >
         Переместить в архив
       </button>
     );
@@ -85,36 +88,41 @@ export const PlantArchiveSection = ({ plant }: Props) => {
   };
 
   return (
-    <div className="plant-archive">
-      <p className="plant-archive__label">Причина архивации</p>
-      <div className="plant-archive__options">
+    <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
+      <p className="mb-3 text-body-sm font-semibold text-text-primary">Причина архивации</p>
+      <div className="mb-3 flex flex-col gap-2">
         {ARCHIVE_STATUS_OPTIONS.map((option) => (
-          <label key={option.value} className="plant-archive__option">
+          <label
+            key={option.value}
+            className="flex cursor-pointer items-center gap-2 text-body-sm text-text-primary"
+          >
             <input
               type="radio"
               name="archive-status"
               checked={status === option.value}
               onChange={() => setStatus(option.value)}
               disabled={submitting}
+              className="size-4 accent-accent"
             />
             <span>{option.label}</span>
           </label>
         ))}
       </div>
       <textarea
-        className="plant-archive__detail"
         placeholder="Подробности (необязательно): перелив, засуха, вредители..."
         value={reasonDetail}
         onChange={(event) => setReasonDetail(event.target.value)}
         disabled={submitting}
+        className="mb-3 min-h-[72px] w-full rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-2.5 text-body-sm font-sans text-text-primary outline-none transition-shadow duration-100 focus:shadow-[var(--shadow-focus)]"
       />
-      {error && <div className="plant-archive__error">{error}</div>}
-      <div className="plant-archive__actions">
+      {error && <div className="mb-3 text-body-sm text-danger">{error}</div>}
+      <div className="flex gap-3">
         <Button
           type="button"
           variant="glass"
           onClick={() => setShowForm(false)}
           disabled={submitting}
+          className="flex-1"
         >
           Отмена
         </Button>
@@ -123,6 +131,7 @@ export const PlantArchiveSection = ({ plant }: Props) => {
           variant="primary"
           onClick={() => void handleConfirm()}
           disabled={submitting}
+          className="flex-1"
         >
           {submitting ? 'Сохраняем...' : 'Подтвердить'}
         </Button>

@@ -22,15 +22,6 @@ const CollectionPage = lazy(() =>
 const CalendarPage = lazy(() =>
   import('../pages/CalendarPage').then((m) => ({ default: m.CalendarPage })),
 );
-const WishlistPage = lazy(() =>
-  import('../pages/WishlistPage').then((m) => ({ default: m.WishlistPage })),
-);
-const DiagnosisPage = lazy(() =>
-  import('../pages/DiagnosisPage').then((m) => ({ default: m.DiagnosisPage })),
-);
-const AddPlantPage = lazy(() =>
-  import('../pages/AddPlantPage').then((m) => ({ default: m.AddPlantPage })),
-);
 const PlantPage = lazy(() => import('../pages/PlantPage').then((m) => ({ default: m.PlantPage })));
 const AuthPage = lazy(() => import('../pages/AuthPage').then((m) => ({ default: m.AuthPage })));
 const ProfilePage = lazy(() =>
@@ -65,9 +56,6 @@ function App() {
                       <Route path="/" element={<HomePage />} />
                       <Route path="/collection" element={<CollectionPage />} />
                       <Route path="/calendar" element={<CalendarPage />} />
-                      <Route path="/wishlist" element={<WishlistPage />} />
-                      <Route path="/diagnosis" element={<DiagnosisPage />} />
-                      <Route path="/add" element={<AddPlantPage />} />
                       <Route path="/plant/:id" element={<PlantPage />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/locations" element={<LocationsPage />} />

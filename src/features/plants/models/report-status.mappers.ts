@@ -96,3 +96,13 @@ const HEALTH_BUCKET_DOT_CLASSES: Record<HealthBucket, string> = {
 export function healthBucketToDotClassName(bucket: HealthBucket): string {
   return HEALTH_BUCKET_DOT_CLASSES[bucket];
 }
+
+const HEALTH_BUCKET_LABEL: Record<HealthBucket, string> = {
+  healthy: 'Здорова',
+  warning: 'Внимание',
+  sick: 'Болеет',
+};
+
+export function healthBucketToLabel(bucket: HealthBucket): string {
+  return HEALTH_BUCKET_LABEL[bucket];
+}

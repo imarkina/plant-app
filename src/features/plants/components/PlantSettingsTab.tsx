@@ -236,7 +236,7 @@ export const PlantSettingsTab = ({ plant }: Props) => {
         </div>
       </div>
 
-      <p className="mt-6 text-label text-text-muted uppercase">Опасная зона</p>
+      <p className="mt-6 text-label text-text-muted uppercase">Действия</p>
       <div className="mt-1 flex flex-col gap-2">
         <button
           type="button"
@@ -252,6 +252,10 @@ export const PlantSettingsTab = ({ plant }: Props) => {
         >
           <RotateCcw size={16} /> Перенести в другую комнату
         </button>
+      </div>
+
+      <p className="mt-6 text-label text-text-muted uppercase">Опасная зона</p>
+      <div className="mt-1 flex flex-col gap-2">
         <button
           type="button"
           onClick={() => setDeleteOpen(true)}

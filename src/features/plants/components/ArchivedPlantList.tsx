@@ -25,12 +25,16 @@ export const ArchivedPlantList = ({ plants }: Props) => {
             className="flex items-center gap-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-3 opacity-75 shadow-card backdrop-blur-xl backdrop-saturate-150"
           >
             <Link to={`/plant/${plant.id}`} className="flex min-w-0 flex-1 items-center gap-3">
-              {photo?.imageUrl && (
+              {photo?.imageUrl ? (
                 <img
                   src={photo.imageUrl}
                   alt=""
                   className="size-12 shrink-0 rounded-xl object-cover grayscale"
                 />
+              ) : (
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-xl">
+                  🌿
+                </div>
               )}
               <div className="min-w-0">
                 <p className="truncate text-h4 text-text-primary">{plant.name}</p>

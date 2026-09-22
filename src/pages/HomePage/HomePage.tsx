@@ -6,6 +6,7 @@ import { usePlantsContext } from '../../features/plants/hooks/usePlantsContext';
 import { usePlantReport } from '../../features/plants/hooks/usePlantReport';
 import {
   healthBucketToDotClassName,
+  healthBucketToLabel,
   healthStatusToBucket,
 } from '../../features/plants/models/report-status.mappers';
 import type { Plant, PhotoEntry } from '../../features/plants/models/plant.types';
@@ -281,7 +282,7 @@ export const HomePage = () => {
               {featuredBucket && (
                 <span className="inline-flex items-center gap-1">
                   <span className={`size-2 rounded-full ${healthBucketToDotClassName(featuredBucket)}`} />
-                  {featuredBucket === 'healthy' ? 'Здорова' : featuredBucket === 'warning' ? 'Внимание' : 'Болеет'}
+                  {healthBucketToLabel(featuredBucket)}
                 </span>
               )}
             </p>

@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { ZoomIn } from 'lucide-react';
 import type { PhotoEntry } from '../models/plant.types';
-import { healthStatusToBucket } from '../models/report-status.mappers';
+import { healthBucketToLabel, healthStatusToBucket } from '../models/report-status.mappers';
 import { PHOTO_TYPE_ICON, PHOTO_TYPE_LABEL } from '../models/photo-type-labels';
 import { pluralizeRu } from '../../../shared/helpers';
 
@@ -35,10 +35,13 @@ function formatGapLabel(days: number): string {
 }
 
 function photoTags(photo: PhotoEntry): string[] {
-  const tags: string[] = [photo.type];
+  const tags: string[] = [];
+  if (photo.type !== 'growth') {
+    tags.push(PHOTO_TYPE_LABEL[photo.type]);
+  }
   const status = photo.analysis?.health.status;
   if (status) {
-    tags.push(healthStatusToBucket(status));
+    tags.push(healthBucketToLabel(healthStatusToBucket(status)));
   }
   return tags;
 }

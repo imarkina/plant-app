@@ -1,1 +1,0 @@
-export { AddPlantPage } from './AddPlantPage';

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Header } from '../../shared/ui/components/Header/Header';
-import { ComingSoon } from '../../shared/ui/components/ComingSoon/ComingSoon';
 import { CalendarHeader } from '../../features/calendar/components/CalendarHeader';
 import { CalendarGrid } from '../../features/calendar/components/CalendarGrid';
 import { DayDetailSheet } from '../../features/calendar/components/DayDetailSheet';
@@ -53,11 +53,21 @@ export const CalendarPage = () => {
     return (
       <>
         <Header />
-        <ComingSoon
-          emoji="🗓"
-          title="Пока пусто"
-          description="Добавь первое растение — здесь появится календарь ухода за ним."
-        />
+        <div className="flex min-h-[50vh] flex-col items-center justify-center px-6 text-center">
+          <div className="flex size-16 items-center justify-center rounded-3xl border border-surface-glass-border bg-surface-glass text-3xl shadow-card backdrop-blur-xl backdrop-saturate-150">
+            🗓
+          </div>
+          <h2 className="mt-4 text-h2 text-text-primary">Пока пусто</h2>
+          <p className="mt-2 max-w-xs text-body-sm text-text-muted">
+            Добавь первое растение — здесь появится календарь ухода за ним.
+          </p>
+          <Link
+            to="/collection"
+            className="mt-5 rounded-2xl bg-brand px-4 py-3.5 text-button font-sans font-semibold text-white shadow-fab transition-transform duration-100 active:scale-[0.98]"
+          >
+            Перейти в коллекцию
+          </Link>
+        </div>
       </>
     );
   }
