@@ -22,7 +22,8 @@ export function useAddPlant() {
 
     const plant: Plant = {
       id: crypto.randomUUID(),
-      name: file.name,
+      // Имя файла ("IMG_2837.jpg") — плохой дефолт на случай, если распознавание не удалось.
+      name: analysis?.identification.commonName ?? 'Новое растение',
       photos: [photoEntry],
       ...EMPTY_PLANT_PROFILE,
     };

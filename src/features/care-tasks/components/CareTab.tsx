@@ -3,6 +3,7 @@ import { CareTaskItem } from './CareTaskItem';
 import { createDefaultTasks } from '../models/care-tasks.helpers';
 import type { CareTask } from '../models/care-tasks.model';
 import { PhotoReminderSetup } from '../../../shared/ui/components/PhotoReminderSetup/PhotoReminderSetup';
+import { emitToast } from '../../../shared/ui/toast/toastBus';
 
 type Props = {
   plantId: string;
@@ -13,6 +14,11 @@ export const CareTab = ({ plantId, onPhotoSelected }: Props) => {
   const { tasks, loading, markDone, addTask } = useCareTasks(plantId);
 
   const hasPhotoTask = tasks.some((t) => t.type === 'photo');
+
+  const handleDone = (taskId: string) => {
+    void markDone(taskId);
+    emitToast('Отмечено ✓', 'success');
+  };
 
   const handleCreatePhotoReminder = (intervalDays: number) => {
     void addTask({
@@ -51,7 +57,7 @@ export const CareTab = ({ plantId, onPhotoSelected }: Props) => {
           <CareTaskItem
             key={task.id}
             task={task}
-            onDone={() => void markDone(task.id)}
+            onDone={() => handleDone(task.id)}
             onPhotoSelected={onPhotoSelected}
           />
         ))}

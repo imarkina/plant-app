@@ -413,7 +413,10 @@ export const HomePage = () => {
                     ) : (
                       <button
                         type="button"
-                        onClick={() => void markDone(item.task.id)}
+                        onClick={() => {
+                          void markDone(item.task.id);
+                          showToast('Отмечено ✓');
+                        }}
                         className="shrink-0 cursor-pointer rounded-full bg-brand px-3 py-1.5 text-caption font-semibold text-white"
                       >
                         Готово

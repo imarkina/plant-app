@@ -1,11 +1,20 @@
 import { Trash2 } from 'lucide-react';
 import { useLocationsContext } from '../hooks/useLocationsContext';
 import { lightLevelLabel } from '../models/location-options';
+import { emitToast } from '../../../shared/ui/toast/toastBus';
 
 const NO_DETAILS_LABEL = 'Параметры не указаны';
 
 export const LocationList = () => {
   const { locations, removeLocation } = useLocationsContext();
+
+  const handleRemove = (id: string, name: string) => {
+    if (!window.confirm(`Удалить локацию «${name}»? Растения из неё станут «Без комнаты».`)) {
+      return;
+    }
+    void removeLocation(id);
+    emitToast(`Локация «${name}» удалена`, 'success');
+  };
 
   if (locations.length === 0) {
     return (
@@ -34,7 +43,7 @@ export const LocationList = () => {
             {/* 44px круглая icon-кнопка из glass/2 (раздел 6.5) рядом с содержимым карточки. */}
             <button
               type="button"
-              onClick={() => void removeLocation(location.id)}
+              onClick={() => handleRemove(location.id, location.name)}
               aria-label="Удалить локацию"
               className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-surface-glass-border bg-[var(--color-surface-glass-2)] text-text-muted backdrop-blur-xl backdrop-saturate-150 transition-colors duration-100 hover:border-danger/25 hover:bg-danger-soft hover:text-danger"
             >

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { Plant } from '../models/plant.types';
 import { usePlantsContext } from '../hooks/usePlantsContext';
 import { formatDate } from '../../../shared/helpers';
+import { emitToast } from '../../../shared/ui/toast/toastBus';
 
 type Props = {
   plants: Plant[];
@@ -9,6 +10,11 @@ type Props = {
 
 export const ArchivedPlantList = ({ plants }: Props) => {
   const { restore } = usePlantsContext();
+
+  const handleRestore = (plant: Plant) => {
+    void restore(plant.id);
+    emitToast(`«${plant.name}» возвращено в коллекцию 🌿`, 'success');
+  };
 
   if (plants.length === 0) {
     return <p className="mt-6 text-body-sm text-text-muted">В архиве пока пусто</p>;
@@ -47,7 +53,7 @@ export const ArchivedPlantList = ({ plants }: Props) => {
             </Link>
             <button
               type="button"
-              onClick={() => void restore(plant.id)}
+              onClick={() => handleRestore(plant)}
               className="shrink-0 cursor-pointer rounded-full border border-surface-glass-border bg-surface-glass px-3 py-2 text-body-sm font-semibold text-text-primary shadow-md backdrop-blur-xl backdrop-saturate-150"
             >
               Восстановить
