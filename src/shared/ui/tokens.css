@@ -93,7 +93,9 @@
   --background-image-blob-2: linear-gradient(135deg, #7c6ff0, #f06fa8);
   --background-image-blob-3: linear-gradient(135deg, #35c2a2, #5fa8ee);
   --background-image-hero: linear-gradient(135deg, rgba(124, 111, 240, 0.08) 0%, rgba(255, 154, 110, 0.1) 100%);
-  --background-image-card-overlay: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, transparent 55%);
+  /* Тёмный ink-скрим для белых подписей поверх фото — не белый: подпись всегда
+     text-white, светлый градиент делал её нечитаемой на светлой теме (баг). */
+  --background-image-card-overlay: linear-gradient(to top, rgba(38, 35, 59, 0.85) 0%, transparent 55%);
   --background-image-glow-top: radial-gradient(ellipse at 20% 0%, rgba(124, 111, 240, 0.1) 0%, transparent 50%);
   --background-image-glow-bottom: radial-gradient(ellipse at 80% 100%, rgba(240, 111, 168, 0.08) 0%, transparent 50%);
   /* Живой фон (раздел 3, bg/aurora) — буквально CSS-реализация из спеки: 6
