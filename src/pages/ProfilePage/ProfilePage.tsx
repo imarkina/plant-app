@@ -72,9 +72,8 @@ export const ProfilePage = () => {
   const [exported, setExported] = useState(false);
   const signOutMutation = useMutation({ mutationFn: signOut });
 
-  const activePlants = plants.filter((plant) => !plant.isArchived);
-  const photosCount = activePlants.reduce((sum, plant) => sum + plant.photos.length, 0);
-  const allPhotos = activePlants.flatMap((plant) => plant.photos);
+  const photosCount = plants.reduce((sum, plant) => sum + plant.photos.length, 0);
+  const allPhotos = plants.flatMap((plant) => plant.photos);
   const streakWeeks = computeStreak(allPhotos);
 
   const handlePushToggle = async (checked: boolean) => {
@@ -88,7 +87,7 @@ export const ProfilePage = () => {
   };
 
   const plantsByLocation = new Map<string, number>();
-  for (const plant of activePlants) {
+  for (const plant of plants) {
     if (plant.locationId) {
       plantsByLocation.set(plant.locationId, (plantsByLocation.get(plant.locationId) ?? 0) + 1);
     }
@@ -98,7 +97,7 @@ export const ProfilePage = () => {
     downloadJson(`plant-parent-os-export-${new Date().toISOString().slice(0, 10)}.json`, {
       exportedAt: new Date().toISOString(),
       locations,
-      plants: activePlants.map((plant) => ({
+      plants: plants.map((plant) => ({
         ...plant,
         photos: plant.photos.map((photo) => ({
           id: photo.id,
@@ -138,7 +137,7 @@ export const ProfilePage = () => {
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
-        <StatTile value={activePlants.length} label={pluralizeRu(activePlants.length, 'растение', 'растения', 'растений')} />
+        <StatTile value={plants.length} label={pluralizeRu(plants.length, 'растение', 'растения', 'растений')} />
         <StatTile value={locations.length} label={pluralizeRu(locations.length, 'комната', 'комнаты', 'комнат')} />
         <StatTile value={photosCount} label={pluralizeRu(photosCount, 'фото', 'фото', 'фото')} />
       </div>

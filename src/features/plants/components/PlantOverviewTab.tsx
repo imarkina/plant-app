@@ -1,6 +1,7 @@
 import { Droplet, Sun, Thermometer, Wind } from 'lucide-react';
 import type { Plant } from '../models/plant.types';
-import { PlantReportView } from './PlantReportView';
+import { Badge } from '../../../shared/ui/components/Badge/Badge';
+import { threatLevelToLabel, threatToVariant } from '../models/report-status.mappers';
 import type { CareTask } from '../../care-tasks';
 import { formatInterval, pluralizeRu } from '../../../shared/helpers';
 
@@ -34,7 +35,43 @@ export const PlantOverviewTab = ({ plant, wateringTask, onOpenAlbum }: Props) =>
 
   return (
     <div>
-      <PlantReportView analysis={analysis ?? null} />
+      {analysis && (
+        <div className="mt-6 rounded-2xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-h3 text-text-primary">🩺 Диагностика</p>
+            {analysis.health.threatLevel && (
+              <Badge variant={threatToVariant(analysis.health.threatLevel)}>
+                Угроза: {threatLevelToLabel(analysis.health.threatLevel)}
+              </Badge>
+            )}
+          </div>
+          <p className="mt-3 text-body-sm font-semibold text-text-primary">
+            {analysis.health.diagnosis}
+          </p>
+          <p className="mt-1 text-body-sm text-text-secondary">{analysis.health.description}</p>
+
+          {analysis.actionPlan.urgentActions.length > 0 && (
+            <div className="mt-3">
+              <p className="text-caption font-semibold text-warn uppercase">Сделать сейчас</p>
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-body-sm text-text-primary">
+                {analysis.actionPlan.urgentActions.map((action) => (
+                  <li key={action}>{action}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {analysis.actionPlan.prohibitions.length > 0 && (
+            <div className="mt-3">
+              <p className="text-caption font-semibold text-danger uppercase">Нельзя</p>
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-body-sm text-text-primary">
+                {analysis.actionPlan.prohibitions.map((prohibition) => (
+                  <li key={prohibition}>{prohibition}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
 
       <p className="mt-7 text-h3 text-text-primary">🌿 Параметры ухода</p>
       <div className="mt-3 grid grid-cols-2 gap-3">
@@ -98,8 +135,10 @@ export const PlantOverviewTab = ({ plant, wateringTask, onOpenAlbum }: Props) =>
                 onClick={onOpenAlbum}
                 className="relative size-24 shrink-0 cursor-pointer overflow-hidden rounded-2xl bg-bg-tertiary shadow-card"
               >
-                {photo.imageUrl && (
+                {photo.imageUrl ? (
                   <img src={photo.imageUrl} alt="" className="absolute inset-0 size-full object-cover" />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-2xl">🌿</div>
                 )}
                 <div className="absolute inset-0 bg-card-overlay" />
                 <p className="absolute inset-x-0 bottom-1.5 truncate px-2 text-caption font-semibold text-white">
@@ -111,15 +150,13 @@ export const PlantOverviewTab = ({ plant, wateringTask, onOpenAlbum }: Props) =>
         </div>
       )}
 
-      <p className="mt-7 text-h3 text-text-primary">🌿 Соседство</p>
-      <div className="mt-3 rounded-2xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
-        <p className="text-body-sm text-text-muted">
-          Скоро — подберём растения из твоей коллекции с похожими условиями по свету и влажности.
-        </p>
-      </div>
-
       <p className="mt-7 text-h3 text-text-primary">🪴 Профиль растения</p>
       <div className="mt-3 grid grid-cols-2 gap-3 text-body-sm">
+        {!plant.purchasedAt && plant.potDiameterCm == null && (
+          <p className="col-span-2 text-body-sm text-text-muted">
+            Пока нет данных — можно добавить в настройках.
+          </p>
+        )}
         {plant.purchasedAt && (
           <div className="rounded-2xl border border-surface-glass-border bg-surface-glass p-3 shadow-card backdrop-blur-xl backdrop-saturate-150">
             <p className="text-caption text-text-muted uppercase">Дата покупки</p>

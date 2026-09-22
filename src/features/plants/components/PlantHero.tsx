@@ -24,22 +24,9 @@ type Props = {
   roomName: string | null;
   lightLabel: string | null;
   onOpenSettings: () => void;
-  /** По умолчанию navigate(-1); переопределяется, когда герой встроен в bottom sheet (там "назад" = закрыть лист). */
-  onBack?: () => void;
-  /** Отрицательный margin, которым фото «пробивает» боковой паддинг контейнера — на странице это body (24px = -mx-6), в BottomSheet это его собственный паддинг (16px = -mx-4). */
-  bleedClassName?: string;
-  titleId?: string;
 };
 
-export const PlantHero = ({
-  plant,
-  roomName,
-  lightLabel,
-  onOpenSettings,
-  onBack,
-  bleedClassName = '-mx-6',
-  titleId,
-}: Props) => {
+export const PlantHero = ({ plant, roomName, lightLabel, onOpenSettings }: Props) => {
   const navigate = useNavigate();
   const photo = plant.photos[0];
   const analysis = photo?.analysis;
@@ -49,7 +36,7 @@ export const PlantHero = ({
 
   return (
     <div>
-      <div className={`relative ${bleedClassName} h-[300px] overflow-hidden tablet:h-[360px]`}>
+      <div className="relative -mx-6 h-[300px] overflow-hidden tablet:h-[360px]">
         {photo?.imageUrl ? (
           <img src={photo.imageUrl} alt={name} className="absolute inset-0 size-full object-cover" />
         ) : (
@@ -60,7 +47,7 @@ export const PlantHero = ({
         <div className="absolute inset-x-4 top-4 flex items-center justify-between">
           <button
             type="button"
-            onClick={() => void (onBack ? onBack() : navigate(-1))}
+            onClick={() => void navigate(-1)}
             aria-label="Назад"
             className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-md transition-transform active:scale-90"
           >
@@ -88,9 +75,7 @@ export const PlantHero = ({
               {healthBucketToLabel(bucket)}
             </span>
           )}
-          <p id={titleId} className="mt-2 line-clamp-2 text-h1 text-white">
-            {name}
-          </p>
+          <p className="mt-2 line-clamp-2 text-h1 text-white">{name}</p>
           {botanicalName && <p className="truncate text-body text-white/70 italic">{botanicalName}</p>}
           <p className="mt-1 flex flex-wrap items-center gap-x-1.5 text-caption text-white/80">
             {roomName && roomBadge(roomName)}

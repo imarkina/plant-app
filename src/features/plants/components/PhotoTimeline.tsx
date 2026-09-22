@@ -106,10 +106,12 @@ export const PhotoTimeline = ({ photos, onZoom, onCompare }: Props) => {
                   <button
                     type="button"
                     onClick={() => onZoom(photo)}
-                    className="size-20 shrink-0 cursor-pointer overflow-hidden rounded-xl bg-bg-tertiary"
+                    className="flex size-20 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-bg-tertiary text-xl"
                   >
-                    {photo.imageUrl && (
+                    {photo.imageUrl ? (
                       <img src={photo.imageUrl} alt="" className="size-full object-cover" />
+                    ) : (
+                      '🌿'
                     )}
                   </button>
 

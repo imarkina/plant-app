@@ -6,8 +6,7 @@ import { buildCalendarEvents, buildMonthGrid, getCalendarNow, groupEventsByDay }
 /** Растения + их задачи ухода/фото, спроецированные на видимый месяц. Данные уже в кэше TanStack Query — новых запросов к сети это не добавляет. */
 export function useCalendarEvents(year: number, month: number) {
   const { plants, loading: plantsLoading } = usePlantsContext();
-  const activePlants = useMemo(() => plants.filter((plant) => !plant.isArchived), [plants]);
-  const plantIds = useMemo(() => activePlants.map((plant) => plant.id), [activePlants]);
+  const plantIds = useMemo(() => plants.map((plant) => plant.id), [plants]);
   const { tasksByPlantId, loading: tasksLoading } = useCareTasksForPlants(plantIds);
 
   const weeks = useMemo(() => buildMonthGrid(year, month), [year, month]);
@@ -15,8 +14,8 @@ export function useCalendarEvents(year: number, month: number) {
   const rangeEnd = weeks[weeks.length - 1][6];
 
   const events = useMemo(
-    () => buildCalendarEvents(activePlants, tasksByPlantId, rangeStart, rangeEnd, getCalendarNow()),
-    [activePlants, tasksByPlantId, rangeStart, rangeEnd],
+    () => buildCalendarEvents(plants, tasksByPlantId, rangeStart, rangeEnd, getCalendarNow()),
+    [plants, tasksByPlantId, rangeStart, rangeEnd],
   );
 
   const eventsByDay = useMemo(() => groupEventsByDay(events), [events]);
@@ -24,7 +23,7 @@ export function useCalendarEvents(year: number, month: number) {
   return {
     weeks,
     eventsByDay,
-    plants: activePlants,
+    plants,
     loading: plantsLoading || tasksLoading,
   };
 }

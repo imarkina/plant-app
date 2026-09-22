@@ -1,6 +1,5 @@
 import type { PlantReport } from './plant-report.types';
 import type {
-  ArchiveStatus,
   PhotoEntry,
   PhotoType,
   Plant,
@@ -31,10 +30,6 @@ interface SupabasePlantRow {
   pot_diameter_cm: number | null;
   has_drainage: boolean | null;
   substrate_type: SubstrateType | null;
-  is_archived: boolean;
-  archive_status: ArchiveStatus | null;
-  archive_reason_detail: string | null;
-  archived_at: string | null;
 }
 
 export function mapPhotoRowToPhotoEntry(row: SupabasePhotoRow): PhotoEntry {
@@ -62,10 +57,6 @@ export function mapPlantRowToPlant(row: SupabasePlantRow): Plant {
     potDiameterCm: row.pot_diameter_cm,
     hasDrainage: row.has_drainage,
     substrateType: row.substrate_type,
-    isArchived: row.is_archived,
-    archiveStatus: row.archive_status,
-    archiveReasonDetail: row.archive_reason_detail,
-    archivedAt: row.archived_at,
   };
 }
 

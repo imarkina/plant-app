@@ -123,8 +123,7 @@ export const HomePage = () => {
   const { addPlantFromFile, loading: addingPlant } = useAddPlant();
   const navigate = useNavigate();
 
-  const activePlants = useMemo(() => plants.filter((plant) => !plant.isArchived), [plants]);
-  const plantIds = useMemo(() => activePlants.map((plant) => plant.id), [activePlants]);
+  const plantIds = useMemo(() => plants.map((plant) => plant.id), [plants]);
   const {
     tasksByPlantId,
     loading: tasksLoading,
@@ -146,8 +145,8 @@ export const HomePage = () => {
   }, [tasksLoading, tasksByPlantId]);
 
   const greeting = getGreeting();
-  const featuredPlant = pickFeaturedPlant(activePlants, tasksByPlantId);
-  const todayItems = buildTodayItems(activePlants, tasksByPlantId);
+  const featuredPlant = pickFeaturedPlant(plants, tasksByPlantId);
+  const todayItems = buildTodayItems(plants, tasksByPlantId);
 
   const addPhotoToPlant = async (plantId: string, file: File) => {
     const resized = await resizeImage(file);
@@ -244,7 +243,7 @@ export const HomePage = () => {
     .get(featuredPlant.id)
     ?.find((t) => t.type === 'watering');
 
-  const attentionCount = activePlants.filter((plant) => {
+  const attentionCount = plants.filter((plant) => {
     const status = plant.photos[0]?.analysis?.health.status;
     return status ? healthStatusToBucket(status) !== 'healthy' : false;
   }).length;
@@ -442,12 +441,12 @@ export const HomePage = () => {
           <div className="mt-7 flex items-center justify-between">
             <p className="text-h3 text-text-primary">🌿 Коллекция</p>
             <Link to="/collection" className="text-body-sm font-semibold text-info">
-              Все {activePlants.length} →
+              Все {plants.length} →
             </Link>
           </div>
 
           <div className="scroll-fade-x mt-3 flex gap-3 overflow-x-auto pb-1 desktop:flex-wrap desktop:[mask-image:none] desktop:[-webkit-mask-image:none]">
-            {activePlants.map((plant) => {
+            {plants.map((plant) => {
               const photo = plant.photos[0];
               const analysis = photo?.analysis;
               const name = analysis?.identification.commonName ?? plant.name;

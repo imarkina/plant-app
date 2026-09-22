@@ -3,4 +3,3 @@ export { PlantsProvider } from './context/PlantsProvider';
 export default PlantForm;
 export { PlantTimelineView } from './components/PlantTimelineView';
 export { PlantProfileTab } from './components/PlantProfileTab';
-export { PlantArchiveSection } from './components/PlantArchiveSection';

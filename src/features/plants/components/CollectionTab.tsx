@@ -1,8 +1,8 @@
-import { type ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { type ChangeEvent, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Plant } from '../models/plant.types';
 import { PlantGrid } from './PlantGrid';
 import { PlantListView } from './PlantListView';
-import { PlantBottomSheet } from './PlantBottomSheet';
 import { CollectionHeader, type CollectionView } from './CollectionHeader';
 import {
   ALL_ROOMS_OPTION,
@@ -27,6 +27,7 @@ const INITIAL_FILTERS: CollectionFiltersValue = {
 };
 
 export const CollectionTab = ({ plants }: Props) => {
+  const navigate = useNavigate();
   const { locations } = useLocations();
   const plantIds = useMemo(() => plants.map((plant) => plant.id), [plants]);
   const { tasksByPlantId } = useCareTasksForPlants(plantIds);
@@ -34,17 +35,6 @@ export const CollectionTab = ({ plants }: Props) => {
   const [filters, setFilters] = useState<CollectionFiltersValue>(INITIAL_FILTERS);
   const [view, setView] = useState<CollectionView>('grid');
   const { addPlantFromFile, loading } = useAddPlant();
-
-  const [openPlantId, setOpenPlantId] = useState<string | null>(null);
-  const [lastOpenPlant, setLastOpenPlant] = useState<Plant | null>(null);
-
-  useEffect(() => {
-    const found = plants.find((plant) => plant.id === openPlantId);
-
-    if (found) {
-      queueMicrotask(() => setLastOpenPlant(found));
-    }
-  }, [openPlantId, plants]);
 
   const locationNameById = useMemo(
     () => new Map(locations.map((location) => [location.id, location.name])),
@@ -99,8 +89,12 @@ export const CollectionTab = ({ plants }: Props) => {
     const plantId = await addPlantFromFile(file);
 
     if (plantId) {
-      setOpenPlantId(plantId);
+      void navigate(`/plant/${plantId}`);
     }
+  };
+
+  const handleSelect = (plantId: string) => {
+    void navigate(`/plant/${plantId}`);
   };
 
   return (
@@ -120,7 +114,7 @@ export const CollectionTab = ({ plants }: Props) => {
           plants={filteredPlants}
           locationNameById={locationNameById}
           careTasksByPlantId={tasksByPlantId}
-          onSelect={setOpenPlantId}
+          onSelect={handleSelect}
           photoReminderBadgesEnabled={!reminderSettings.pushEnabled}
         />
       ) : (
@@ -128,15 +122,7 @@ export const CollectionTab = ({ plants }: Props) => {
           plants={filteredPlants}
           locationNameById={locationNameById}
           careTasksByPlantId={tasksByPlantId}
-          onSelect={setOpenPlantId}
-        />
-      )}
-
-      {lastOpenPlant && (
-        <PlantBottomSheet
-          plant={lastOpenPlant}
-          open={openPlantId !== null}
-          onClose={() => setOpenPlantId(null)}
+          onSelect={handleSelect}
         />
       )}
     </div>

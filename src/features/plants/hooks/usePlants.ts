@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { ArchiveStatus, PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
+import type { PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
 import { plantsRepository } from '../models/plant.repository';
 
 export const plantsQueryKey = ['plants'] as const;
@@ -114,44 +114,6 @@ export function usePlants() {
     },
   });
 
-  const archiveMutation = useMutation({
-    mutationFn: async (args: { plantId: string; status: ArchiveStatus; reasonDetail?: string | null }) => {
-      await plantsRepository.archive(args.plantId, args.status, args.reasonDetail);
-      return { ...args, archivedAt: new Date().toISOString() };
-    },
-    onSuccess: ({ plantId, status, reasonDetail, archivedAt }) => {
-      patchPlants((current) =>
-        current.map((plant) =>
-          plant.id === plantId
-            ? {
-                ...plant,
-                isArchived: true,
-                archiveStatus: status,
-                archiveReasonDetail: reasonDetail ?? null,
-                archivedAt,
-              }
-            : plant,
-        ),
-      );
-    },
-  });
-
-  const restoreMutation = useMutation({
-    mutationFn: async (plantId: string) => {
-      await plantsRepository.restore(plantId);
-      return plantId;
-    },
-    onSuccess: (plantId) => {
-      patchPlants((current) =>
-        current.map((plant) =>
-          plant.id === plantId
-            ? { ...plant, isArchived: false, archiveStatus: null, archiveReasonDetail: null, archivedAt: null }
-            : plant,
-        ),
-      );
-    },
-  });
-
   const deletePlantMutation = useMutation({
     mutationFn: async (plantId: string) => {
       await plantsRepository.deletePlant(plantId);
@@ -174,9 +136,6 @@ export function usePlants() {
       setAvatarPhotoMutation.mutateAsync({ plantId, photoId }).then(() => undefined),
     updateProfile: (plantId: string, update: PlantProfileUpdate) =>
       updateProfileMutation.mutateAsync({ plantId, update }).then(() => undefined),
-    archive: (plantId: string, status: ArchiveStatus, reasonDetail?: string | null) =>
-      archiveMutation.mutateAsync({ plantId, status, reasonDetail }).then(() => undefined),
-    restore: (plantId: string) => restoreMutation.mutateAsync(plantId).then(() => undefined),
     deletePlant: (plantId: string) => deletePlantMutation.mutateAsync(plantId).then(() => undefined),
   };
 }

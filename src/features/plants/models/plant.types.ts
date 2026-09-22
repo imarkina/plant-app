@@ -2,7 +2,6 @@ import type { PlantReport } from './plant-report.types';
 
 export type PotType = 'plastic' | 'terracotta' | 'ceramic_glazed' | 'self_watering';
 export type SubstrateType = 'standard' | 'aroid_mix' | 'mineral' | 'other';
-export type ArchiveStatus = 'died' | 'given_away_or_sold' | 'other';
 export type PhotoType = 'growth' | 'purchase' | 'diagnosis' | 'archive';
 
 export interface PhotoEntry {
@@ -28,13 +27,9 @@ export interface Plant {
   potDiameterCm: number | null;
   hasDrainage: boolean | null;
   substrateType: SubstrateType | null;
-  isArchived: boolean;
-  archiveStatus: ArchiveStatus | null;
-  archiveReasonDetail: string | null;
-  archivedAt: string | null;
 }
 
-/** Profile defaults for a freshly created plant that hasn't been placed in a location or archived. */
+/** Profile defaults for a freshly created plant that hasn't been placed in a location. */
 export const EMPTY_PLANT_PROFILE: Omit<Plant, 'id' | 'name' | 'photos'> = {
   locationId: null,
   speciesId: null,
@@ -44,10 +39,6 @@ export const EMPTY_PLANT_PROFILE: Omit<Plant, 'id' | 'name' | 'photos'> = {
   potDiameterCm: null,
   hasDrainage: null,
   substrateType: null,
-  isArchived: false,
-  archiveStatus: null,
-  archiveReasonDetail: null,
-  archivedAt: null,
 };
 
 export interface PlantProfileUpdate {
@@ -64,8 +55,6 @@ export interface PlantProfileUpdate {
 
 export interface PlantsRepository {
   getAll(): Promise<Plant[]>;
-  getActive(): Promise<Plant[]>;
-  getArchived(): Promise<Plant[]>;
   /** Возвращает сохранённое растение с разрешёнными imageUrl у фото — чтобы вызывающий код мог обновить кэш без повторного getAll(). */
   save(plant: Plant): Promise<Plant>;
   /** Возвращает сохранённое фото с разрешённым imageUrl — по той же причине. */
@@ -74,8 +63,6 @@ export interface PlantsRepository {
   updatePhotoType(photoId: string, type: PhotoType): Promise<void>;
   setAvatarPhoto(plantId: string, photoId: string): Promise<void>;
   updateProfile(plantId: string, update: PlantProfileUpdate): Promise<void>;
-  archive(plantId: string, status: ArchiveStatus, reasonDetail?: string | null): Promise<void>;
-  restore(plantId: string): Promise<void>;
   /** Безвозвратное удаление: сами фото из Storage, строки photos/care_tasks/plants. */
   deletePlant(plantId: string): Promise<void>;
 }

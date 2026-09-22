@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Pencil, RotateCcw, Trash2 } from 'lucide-react';
-import type { ArchiveStatus, Plant } from '../models/plant.types';
+import type { Plant } from '../models/plant.types';
 import { usePlantsContext } from '../hooks/usePlantsContext';
 import { useLocations } from '../../locations/hooks/useLocations';
 import { PlantProfileTab } from './PlantProfileTab';
-import { PlantArchiveSection } from './PlantArchiveSection';
-import { ARCHIVE_STATUS_OPTIONS } from '../models/archive-options';
 import { BottomSheet } from '../../../shared/ui/components/BottomSheet/BottomSheet';
 import { emitToast } from '../../../shared/ui/toast/toastBus';
 
@@ -110,8 +108,6 @@ const MoveToRoomSheet = ({
   );
 };
 
-type DeleteStep = 'confirm' | 'choose-archive' | 'archive-reason';
-
 const DeletePlantSheet = ({
   plant,
   open,
@@ -121,36 +117,15 @@ const DeletePlantSheet = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const { archive, deletePlant } = usePlantsContext();
+  const { deletePlant } = usePlantsContext();
   const navigate = useNavigate();
-  const [step, setStep] = useState<DeleteStep>('confirm');
   const [busy, setBusy] = useState(false);
-  const [archiveStatus, setArchiveStatus] = useState<ArchiveStatus>('other');
-  const [archiveDetail, setArchiveDetail] = useState('');
-
-  const handleClose = () => {
-    setStep('confirm');
-    setArchiveStatus('other');
-    setArchiveDetail('');
-    onClose();
-  };
-
-  const handleArchiveInstead = async () => {
-    setBusy(true);
-    try {
-      await archive(plant.id, archiveStatus, archiveDetail.trim() || null);
-      handleClose();
-      emitToast(`«${plant.name}» перемещено в архив 🌿`, 'success');
-    } finally {
-      setBusy(false);
-    }
-  };
 
   const handleHardDelete = async () => {
     setBusy(true);
     try {
       await deletePlant(plant.id);
-      handleClose();
+      onClose();
       void navigate('/collection');
       emitToast(`«${plant.name}» удалено безвозвратно`, 'success');
     } finally {
@@ -159,105 +134,31 @@ const DeletePlantSheet = ({
   };
 
   return (
-    <BottomSheet open={open} onClose={handleClose} labelledBy="delete-plant-title">
-      {step === 'confirm' ? (
-        <>
-          <h2 id="delete-plant-title" className="text-h3 text-text-primary">
-            Удалить «{plant.name}» из коллекции?
-          </h2>
-          <p className="mt-2 text-body-sm text-text-muted">
-            Растение пропадёт из активной коллекции. На следующем шаге выберешь — сохранить фото и
-            историю в архив, или удалить всё безвозвратно.
-          </p>
-          <div className="mt-5 flex gap-2">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="flex-1 cursor-pointer rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-button font-sans font-semibold text-text-primary shadow-md backdrop-blur-xl backdrop-saturate-150"
-            >
-              Отмена
-            </button>
-            <button
-              type="button"
-              onClick={() => setStep('choose-archive')}
-              className="flex-1 cursor-pointer rounded-2xl border border-danger/25 bg-danger-soft px-4 py-3 text-button font-sans font-semibold text-danger"
-            >
-              Удалить
-            </button>
-          </div>
-        </>
-      ) : step === 'choose-archive' ? (
-        <>
-          <h2 className="text-h3 text-text-primary">Сохранить фото и историю в архив?</h2>
-          <p className="mt-2 text-body-sm text-text-muted">
-            Архив можно восстановить в любой момент из настроек. Полное удаление необратимо.
-          </p>
-          <div className="mt-5 flex flex-col gap-2">
-            <button
-              type="button"
-              onClick={() => setStep('archive-reason')}
-              className="cursor-pointer rounded-2xl bg-brand px-4 py-3 text-button font-sans font-semibold text-white shadow-fab"
-            >
-              Да, сохранить в архив
-            </button>
-            <button
-              type="button"
-              onClick={() => void handleHardDelete()}
-              disabled={busy}
-              className="cursor-pointer rounded-2xl border border-danger/25 bg-danger-soft px-4 py-3 text-button font-sans font-semibold text-danger disabled:opacity-50"
-            >
-              {busy ? 'Удаляем...' : 'Нет, удалить всё безвозвратно'}
-            </button>
-          </div>
-        </>
-      ) : (
-        <>
-          <h2 className="text-h3 text-text-primary">Почему растение отправляется в архив?</h2>
-          <p className="mt-2 text-body-sm text-text-muted">
-            Это поможет вести честную историю коллекции — можно будет посмотреть в архиве.
-          </p>
-          <div className="mt-4 flex flex-col gap-2">
-            {ARCHIVE_STATUS_OPTIONS.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => setArchiveStatus(option.value)}
-                className={`cursor-pointer rounded-2xl border px-4 py-3 text-left text-body-sm font-semibold ${
-                  archiveStatus === option.value
-                    ? 'border-accent bg-accent-glow text-accent'
-                    : 'border-surface-glass-border text-text-primary'
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <textarea
-            value={archiveDetail}
-            onChange={(event) => setArchiveDetail(event.target.value)}
-            placeholder="Комментарий (необязательно)"
-            rows={2}
-            className="mt-3 w-full resize-none rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-body-sm text-text-primary placeholder:text-text-muted"
-          />
-          <div className="mt-5 flex gap-2">
-            <button
-              type="button"
-              onClick={() => setStep('choose-archive')}
-              className="flex-1 cursor-pointer rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-button font-sans font-semibold text-text-primary shadow-md backdrop-blur-xl backdrop-saturate-150"
-            >
-              Назад
-            </button>
-            <button
-              type="button"
-              onClick={() => void handleArchiveInstead()}
-              disabled={busy}
-              className="flex-1 cursor-pointer rounded-2xl bg-brand px-4 py-3 text-button font-sans font-semibold text-white shadow-fab disabled:opacity-50"
-            >
-              {busy ? 'Сохраняем...' : 'Сохранить в архив'}
-            </button>
-          </div>
-        </>
-      )}
+    <BottomSheet open={open} onClose={onClose} labelledBy="delete-plant-title">
+      <h2 id="delete-plant-title" className="text-h3 text-text-primary">
+        Удалить «{plant.name}» из коллекции?
+      </h2>
+      <p className="mt-2 text-body-sm text-text-muted">
+        Фото, история ухода и все данные растения будут удалены безвозвратно — отменить это
+        действие нельзя.
+      </p>
+      <div className="mt-5 flex gap-2">
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex-1 cursor-pointer rounded-2xl border border-surface-glass-border bg-surface-glass px-4 py-3 text-button font-sans font-semibold text-text-primary shadow-md backdrop-blur-xl backdrop-saturate-150"
+        >
+          Отмена
+        </button>
+        <button
+          type="button"
+          onClick={() => void handleHardDelete()}
+          disabled={busy}
+          className="flex-1 cursor-pointer rounded-2xl border border-danger/25 bg-danger-soft px-4 py-3 text-button font-sans font-semibold text-danger disabled:opacity-50"
+        >
+          {busy ? 'Удаляем...' : 'Удалить навсегда'}
+        </button>
+      </div>
     </BottomSheet>
   );
 };
@@ -270,14 +171,6 @@ export const PlantSettingsTab = ({ plant }: Props) => {
 
   const roomName = locations.find((location) => location.id === plant.locationId)?.name ?? 'Без комнаты';
   const scientificName = plant.photos[0]?.analysis?.identification.botanicalName ?? 'Неизвестно';
-
-  if (plant.isArchived) {
-    return (
-      <div className="mt-6">
-        <PlantArchiveSection plant={plant} />
-      </div>
-    );
-  }
 
   return (
     <div className="mt-6">
@@ -315,7 +208,7 @@ export const PlantSettingsTab = ({ plant }: Props) => {
           onClick={() => setDeleteOpen(true)}
           className="flex cursor-pointer items-center gap-2 rounded-2xl border border-danger-soft bg-danger-soft px-4 py-3 text-body-sm font-semibold text-danger"
         >
-          <Trash2 size={16} /> Удалить растение из коллекции
+          <Trash2 size={16} /> Удалить растение навсегда
         </button>
       </div>
 

@@ -24,14 +24,9 @@ const PLANT_DETAIL_TABS = [
 
 type Props = {
   plant: Plant;
-  /** Передаётся, когда компонент встроен в BottomSheet (там "назад" = закрыть лист). */
-  onBack?: () => void;
-  /** true, когда компонент встроен в BottomSheet — сужает bleed фото-героя под паддинг листа. */
-  embedded?: boolean;
-  titleId?: string;
 };
 
-export const PlantDetailTabs = ({ plant, onBack, embedded = false, titleId }: Props) => {
+export const PlantDetailTabs = ({ plant }: Props) => {
   const [activeTab, setActiveTab] = useState('overview');
   const { addPhotoFromFile } = useAddPhoto(plant.id);
   const { tasks, markDone } = useCareTasks(plant.id);
@@ -56,9 +51,6 @@ export const PlantDetailTabs = ({ plant, onBack, embedded = false, titleId }: Pr
         roomName={location?.name ?? null}
         lightLabel={lightLevelLabel(location?.lightLevel ?? null)}
         onOpenSettings={() => setActiveTab('settings')}
-        onBack={onBack}
-        bleedClassName={embedded ? '-mx-4' : '-mx-6'}
-        titleId={titleId}
       />
 
       <Tabs tabs={PLANT_DETAIL_TABS} active={activeTab} onChange={setActiveTab} />

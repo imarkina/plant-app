@@ -1,11 +1,4 @@
-import type {
-  ArchiveStatus,
-  PhotoEntry,
-  PhotoType,
-  Plant,
-  PlantProfileUpdate,
-  PlantsRepository,
-} from './plant.types';
+import type { PhotoEntry, PhotoType, Plant, PlantProfileUpdate, PlantsRepository } from './plant.types';
 
 import { supabase } from '../../../shared/supabase/client';
 import { unwrap } from '../../../shared/supabase/unwrap';
@@ -23,22 +16,6 @@ function buildPhotoStoragePath(plantId: string, photoId: string): string {
 class SupabasePlantsRepository implements PlantsRepository {
   async getAll(): Promise<Plant[]> {
     const rows = unwrap(await supabase.from(PLANTS_TABLE).select('*, photos(*)'));
-
-    return rows.map(mapPlantRowToPlant);
-  }
-
-  async getActive(): Promise<Plant[]> {
-    return this.getAllFilteredByArchiveState(false);
-  }
-
-  async getArchived(): Promise<Plant[]> {
-    return this.getAllFilteredByArchiveState(true);
-  }
-
-  private async getAllFilteredByArchiveState(isArchived: boolean): Promise<Plant[]> {
-    const rows = unwrap(
-      await supabase.from(PLANTS_TABLE).select('*, photos(*)').eq('is_archived', isArchived),
-    );
 
     return rows.map(mapPlantRowToPlant);
   }
@@ -114,38 +91,6 @@ class SupabasePlantsRepository implements PlantsRepository {
     }
 
     unwrap(await supabase.from(PLANTS_TABLE).update(row).eq('id', plantId));
-  }
-
-  async archive(
-    plantId: string,
-    status: ArchiveStatus,
-    reasonDetail?: string | null,
-  ): Promise<void> {
-    unwrap(
-      await supabase
-        .from(PLANTS_TABLE)
-        .update({
-          is_archived: true,
-          archive_status: status,
-          archive_reason_detail: reasonDetail ?? null,
-          archived_at: new Date().toISOString(),
-        })
-        .eq('id', plantId),
-    );
-  }
-
-  async restore(plantId: string): Promise<void> {
-    unwrap(
-      await supabase
-        .from(PLANTS_TABLE)
-        .update({
-          is_archived: false,
-          archive_status: null,
-          archive_reason_detail: null,
-          archived_at: null,
-        })
-        .eq('id', plantId),
-    );
   }
 
   async deletePlant(plantId: string): Promise<void> {

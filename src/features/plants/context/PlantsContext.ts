@@ -1,4 +1,4 @@
-import type { ArchiveStatus, PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
+import type { PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
 import { createContext } from 'react';
 
 type PlantsContextValue = {
@@ -9,8 +9,6 @@ type PlantsContextValue = {
   deletePhoto: (plantId: string, photoId: string) => Promise<void>;
   setAvatarPhoto: (plantId: string, photoId: string) => Promise<void>;
   updateProfile: (plantId: string, update: PlantProfileUpdate) => Promise<void>;
-  archive: (plantId: string, status: ArchiveStatus, reasonDetail?: string | null) => Promise<void>;
-  restore: (plantId: string) => Promise<void>;
   deletePlant: (plantId: string) => Promise<void>;
 };
 
