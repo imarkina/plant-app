@@ -44,7 +44,11 @@ export const PlantTimelineView = ({ plant }: Props) => {
 
       {sortedPhotos.length >= 2 && (
         <div className="mt-4">
-          <PlantComparison first={sortedPhotos[0]} last={sortedPhotos[sortedPhotos.length - 1]} />
+          <PlantComparison
+            plantId={plant.id}
+            first={sortedPhotos[0]}
+            last={sortedPhotos[sortedPhotos.length - 1]}
+          />
         </div>
       )}
 

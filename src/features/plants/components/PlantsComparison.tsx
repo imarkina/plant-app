@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { AdjustmentCard } from '../../../shared/ui/components/AdjustmentCard/AdjustmentCard';
 import { AlertTriangle, ChevronDown, CircleCheck, Eye } from 'lucide-react';
 import { DetailRow } from '../../../shared/ui/components/DetailedRow/DetailedRow';
+import { formatDate } from '../../../shared/helpers';
 
 type Props = {
+  plantId: string;
   first: PhotoEntry;
   last: PhotoEntry;
 };
@@ -23,11 +25,19 @@ const isNoActionNeeded = (items: string[]): boolean => {
   return text.includes('не требуется') || text.includes('не нужно') || text.includes('оптимальн');
 };
 
-export const PlantComparison = ({ first, last }: Props) => {
-  const { compare, result, loading, error } = usePlantComparison();
+export const PlantComparison = ({ plantId, first, last }: Props) => {
+  const { compare, result, comparedAt, loading, checkingSaved, error } = usePlantComparison(
+    plantId,
+    first.id,
+    last.id,
+  );
   const [showDetails, setShowDetails] = useState(false);
 
   const handleCompare = () => compare(first, last);
+
+  if (checkingSaved) {
+    return null;
+  }
 
   return (
     <div className="mb-6">
@@ -46,6 +56,9 @@ export const PlantComparison = ({ first, last }: Props) => {
 
       {result && (
         <div className="flex flex-col gap-5 rounded-3xl border border-surface-glass-border bg-surface-glass p-5 shadow-card backdrop-blur-xl backdrop-saturate-150">
+          {comparedAt && (
+            <p className="text-caption text-text-muted">Сравнение от {formatDate(comparedAt)}</p>
+          )}
           {/* Вердикт с меткой тренда */}
           {(() => {
             const { Icon, label, variant } = getComparisonTrendMeta(result.summary.status);
