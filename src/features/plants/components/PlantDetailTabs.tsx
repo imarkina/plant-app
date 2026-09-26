@@ -61,6 +61,7 @@ export const PlantDetailTabs = ({ plant }: Props) => {
       {activeTab === 'care' && (
         <CareTab
           plantId={plant.id}
+          carePassport={plant.photos[0]?.analysis?.carePassport}
           onPhotoSelected={(task, file) => void handlePhotoSelected(task, file)}
         />
       )}
