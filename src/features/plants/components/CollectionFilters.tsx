@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react';
-import { ChipSelect, type ChipOption } from '../../../shared/ui/components/ChipSelect/ChipSelect';
+import { Chip, type ChipOption } from '../../../shared/ui/components/ChipSelect/ChipSelect';
 import type { HealthBucket } from '../models/report-status.mappers';
 import { RoomChips } from './RoomChips';
 import type { Location } from '../../locations';
@@ -45,11 +45,27 @@ export const CollectionFilters = ({ value, onChange, rooms }: Props) => {
         onChange={(roomId) => onChange({ ...value, roomId })}
       />
 
-      <ChipSelect
-        options={STATUS_OPTIONS}
-        value={value.status}
-        onChange={(status) => onChange({ ...value, status })}
-      />
+      <div className="flex flex-wrap gap-2">
+        <Chip active={value.status === null} onClick={() => onChange({ ...value, status: null })}>
+          Все
+        </Chip>
+        {STATUS_OPTIONS.map((option) => {
+          const isActive = value.status === option.value;
+
+          return (
+            <Chip
+              key={option.value}
+              active={isActive}
+              onClick={() => onChange({ ...value, status: isActive ? null : option.value })}
+            >
+              {option.dotClassName && (
+                <span className={`size-2 shrink-0 rounded-full ${option.dotClassName}`} />
+              )}
+              {option.label}
+            </Chip>
+          );
+        })}
+      </div>
     </div>
   );
 };

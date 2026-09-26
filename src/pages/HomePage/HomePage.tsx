@@ -445,7 +445,7 @@ export const HomePage = () => {
             </Link>
           </div>
 
-          <div className="scroll-fade-x mt-3 flex gap-3 overflow-x-auto pb-1 desktop:flex-wrap desktop:[mask-image:none] desktop:[-webkit-mask-image:none]">
+          <div className="mt-3 flex gap-3 overflow-x-auto pb-1 desktop:flex-wrap">
             {plants.map((plant) => {
               const photo = plant.photos[0];
               const analysis = photo?.analysis;
