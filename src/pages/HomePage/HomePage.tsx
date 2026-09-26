@@ -307,11 +307,11 @@ export const HomePage = () => {
           type="button"
           onClick={handleFeaturedWater}
           disabled={!featuredWateringTask}
-          className="cursor-pointer rounded-2xl bg-brand px-3 py-3 text-body-sm font-semibold text-white shadow-fab active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40"
+          className="cursor-pointer rounded-2xl bg-brand px-3 py-3 text-body font-semibold text-white shadow-fab active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40"
         >
           💧 Полить
         </button>
-        <label className="cursor-pointer rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-center text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]">
+        <label className="cursor-pointer rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-center text-body font-semibold text-text-primary shadow-card active:scale-[0.97]">
           <input
             type="file"
             accept="image/*"
@@ -324,7 +324,7 @@ export const HomePage = () => {
         </label>
         <Link
           to={`/plant/${featuredPlant.id}`}
-          className="flex items-center justify-center gap-1.5 rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-body-sm font-semibold text-text-primary shadow-card active:scale-[0.97]"
+          className="flex items-center justify-center gap-1.5 rounded-2xl border border-surface-glass-border bg-bg-elevated px-3 py-3 text-body font-semibold text-text-primary shadow-card active:scale-[0.97]"
         >
           <Stethoscope size={16} className="text-danger" /> Диагноз
         </Link>

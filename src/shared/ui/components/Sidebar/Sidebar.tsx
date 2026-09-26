@@ -52,7 +52,7 @@ export const Sidebar = () => {
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand text-white">
           <User size={18} />
         </span>
-        <span className="truncate text-body-sm font-semibold text-text-primary">
+        <span className="truncate text-body font-semibold text-text-primary">
           {deriveDisplayName(user?.email ?? null)}
         </span>
       </NavLink>
@@ -63,7 +63,7 @@ export const Sidebar = () => {
             key={to}
             to={to}
             end={end}
-            className="flex items-center gap-3 rounded-2xl px-3 py-2.5 text-body-sm font-semibold text-text-secondary transition-colors duration-100 hover:text-text-primary"
+            className="flex items-center gap-3 rounded-2xl px-3 py-2.5 text-body font-semibold text-text-secondary transition-colors duration-100 hover:text-text-primary"
           >
             {({ isActive }) => (
               <>
@@ -92,7 +92,7 @@ export const Sidebar = () => {
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand text-white">
           {loading ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} strokeWidth={2.5} />}
         </span>
-        <span className="text-body-sm font-semibold text-text-primary">
+        <span className="text-body font-semibold text-text-primary">
           {loading ? 'Добавляем...' : 'Добавить новое фото'}
         </span>
       </label>
