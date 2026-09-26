@@ -5,6 +5,7 @@ import { createDefaultTasks } from '../models/care-tasks.helpers';
 import type { CareTask } from '../models/care-tasks.model';
 import type { PlantReport } from '../../plants/models/plant-report.types';
 import { PhotoReminderSetup } from '../../../shared/ui/components/PhotoReminderSetup/PhotoReminderSetup';
+import { Skeleton } from '../../../shared/ui/components/Skeleton/Skeleton';
 import { emitToast } from '../../../shared/ui/toast/toastBus';
 
 type Props = {
@@ -35,7 +36,12 @@ export const CareTab = ({ plantId, carePassport, onPhotoSelected }: Props) => {
   };
 
   if (loading) {
-    return <p className="mt-6 text-body-sm text-text-muted">Загрузка...</p>;
+    return (
+      <div className="mt-6 flex flex-col gap-2.5">
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+      </div>
+    );
   }
 
   if (tasks.length === 0) {

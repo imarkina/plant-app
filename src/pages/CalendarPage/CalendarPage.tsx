@@ -5,6 +5,7 @@ import { CalendarHeader } from '../../features/calendar/components/CalendarHeade
 import { CalendarGrid } from '../../features/calendar/components/CalendarGrid';
 import { DayDetailSheet } from '../../features/calendar/components/DayDetailSheet';
 import { useCalendarEvents } from '../../features/calendar/hooks/useCalendarEvents';
+import { Skeleton } from '../../shared/ui/components/Skeleton/Skeleton';
 
 const now = new Date();
 
@@ -44,7 +45,16 @@ export const CalendarPage = () => {
     return (
       <>
         <Header />
-        <p className="mt-6 text-body-sm text-text-muted">Загрузка...</p>
+        <div className="mt-4 flex items-center justify-between">
+          <Skeleton className="h-9 w-9 rounded-full" />
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-9 w-9 rounded-full" />
+        </div>
+        <div className="mt-4 grid grid-cols-7 gap-1.5">
+          {Array.from({ length: 35 }, (_, i) => (
+            <Skeleton key={i} className="aspect-square" />
+          ))}
+        </div>
       </>
     );
   }

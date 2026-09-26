@@ -27,6 +27,7 @@ import { AddPlantButton } from '../../shared/ui/components/AddPlantButton/AddPla
 import { Confetti } from '../../shared/ui/components/Confetti/Confetti';
 import { Toast } from '../../shared/ui/components/Toast/Toast';
 import { useToast } from '../../shared/ui/hooks/useToast';
+import { Skeleton } from '../../shared/ui/components/Skeleton/Skeleton';
 
 function getGreeting(): { text: string; emoji: string } {
   const hour = new Date().getHours();
@@ -204,7 +205,17 @@ export const HomePage = () => {
         <Header
           title={`${greeting.text}, ${deriveDisplayName(user?.email ?? null)} ${greeting.emoji}`}
         />
-        <p className="text-body-sm text-text-muted">Загрузка...</p>
+        <Skeleton className="mt-5 h-[220px] w-full rounded-3xl tablet:h-[260px]" />
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          <Skeleton className="h-12" />
+          <Skeleton className="h-12" />
+          <Skeleton className="h-12" />
+        </div>
+        <Skeleton className="mt-7 h-6 w-28" />
+        <div className="mt-3 flex flex-col gap-2.5">
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+        </div>
       </>
     );
   }

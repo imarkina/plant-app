@@ -131,6 +131,9 @@
   --animate-calendar-slide-right: calendar-slide-from-right 0.28s cubic-bezier(0, 0, 0.2, 1);
   --animate-calendar-slide-left: calendar-slide-from-left 0.28s cubic-bezier(0, 0, 0.2, 1);
 
+  /* ── Шиммер skeleton-лоадеров (замена текстовых "Загрузка...") ── */
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
   /* ── Типографика (раздел 4) ── */
   /* Body/Caption/Label — интерфейсный шрифт (Manrope). Display/Title (hero/h1/h2/h3)
      переключаются на --font-display точечным правилом ниже, вне @theme, по имени
@@ -322,6 +325,16 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Keyframes для --animate-shimmer (sweep движется через .skeleton::after). */
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
   }
 }
 
@@ -520,6 +533,23 @@
     black calc(100% - 20px),
     transparent
   );
+}
+
+/* Skeleton-заглушка: сплошная плашка (bg-tertiary) + диагональный блик,
+   пробегающий поверх через ::after (translateX, --animate-shimmer). Блик —
+   surface-glass-highlight, он уже theme-aware (белый с разной непрозрачностью
+   в light/dark), так что отдельных dark:-правил не нужно. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg-tertiary);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--color-surface-glass-highlight), transparent);
+  animation: var(--animate-shimmer);
 }
 
 .shadow-fab:hover {

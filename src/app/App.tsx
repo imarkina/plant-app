@@ -12,6 +12,7 @@ import { BottomNav } from '../shared/ui/components/BottomNav/BottomNav';
 import { Sidebar } from '../shared/ui/components/Sidebar/Sidebar';
 import { ErrorBoundary } from '../shared/ui/components/ErrorBoundary/ErrorBoundary';
 import { GlobalToast } from '../shared/ui/components/GlobalToast/GlobalToast';
+import { PageSkeleton } from '../shared/ui/components/Skeleton/PageSkeleton';
 
 /**
  * Каждая страница — отдельный чанк вместо одного бандла на 650+ кБ: страницу
@@ -33,7 +34,7 @@ const LocationsPage = lazy(() =>
   import('../pages/LocationsPage').then((m) => ({ default: m.LocationsPage })),
 );
 
-const RouteFallback = () => <p className="mt-6 text-body-sm text-text-muted">Загрузка...</p>;
+const RouteFallback = () => <PageSkeleton />;
 
 /**
  * ≥1024px: постоянный Sidebar слева + контент сдвинут на его ширину (pl-60) и

@@ -1,4 +1,5 @@
 import { BackButton } from '../../shared/ui/components/BackButton/BackButton';
+import { Skeleton } from '../../shared/ui/components/Skeleton/Skeleton';
 import {
   LocationForm,
   LocationList,
@@ -13,7 +14,12 @@ const LocationsPageContent = () => {
     return (
       <div>
         <BackButton />
-        <p className="text-body-sm text-text-muted">Загрузка...</p>
+        <Skeleton className="h-8 w-40" />
+        <div className="mt-4 flex flex-col gap-2.5">
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+        </div>
       </div>
     );
   }

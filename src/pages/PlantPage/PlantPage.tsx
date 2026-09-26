@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { usePlantsContext } from '../../features/plants/hooks/usePlantsContext';
 import { BackButton } from '../../shared/ui/components/BackButton/BackButton';
 import { PlantPageContent } from './components/PlantPageContent';
+import { PlantPageSkeleton } from './components/PlantPageSkeleton';
 
 export const PlantPage = () => {
   const { id } = useParams();
@@ -10,7 +11,7 @@ export const PlantPage = () => {
   const plant = plants.find((p) => p.id === id);
 
   if (loading) {
-    return <p className="mt-6 text-body-sm text-text-muted">Загрузка...</p>;
+    return <PlantPageSkeleton />;
   }
 
   if (!plant || !plant.photos[0]) {
