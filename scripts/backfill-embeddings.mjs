@@ -138,3 +138,8 @@ async function backfillComparisons() {
 
 await backfillPhotos();
 await backfillComparisons();
+
+// На Windows у Node/libuv есть известный краш при штатном закрытии хендлов
+// fetch-клиента (undici) после того, как вся работа уже сделана — форсируем
+// выход, чтобы не доходить до этой гонки в процессе завершения.
+process.exit(0);
