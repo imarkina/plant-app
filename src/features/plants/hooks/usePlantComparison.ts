@@ -15,43 +15,50 @@ interface CompareResponseBody {
   result: PlantComparison;
 }
 
-/** Checks for a saved comparison of this exact photo pair before offering to run a new one. */
-export const usePlantComparison = (plantId: string, firstPhotoId: string, lastPhotoId: string) => {
-  const pairKey = `${firstPhotoId}:${lastPhotoId}`;
-  const [checkedPairKey, setCheckedPairKey] = useState<string | null>(null);
+/**
+ * Показывает последнее сравнение, посчитанное для этого растения (не для
+ * конкретной пары фото — иначе добавление нового фото делает уже посчитанный
+ * результат ненаходимым, хотя он никуда не делся).
+ */
+export const usePlantComparison = (plantId: string) => {
+  const [checkedPlantId, setCheckedPlantId] = useState<string | null>(null);
   const [result, setResult] = useState<PlantComparison | null>(null);
   const [comparedAt, setComparedAt] = useState<number | null>(null);
+  const [comparedFirstPhotoId, setComparedFirstPhotoId] = useState<string | null>(null);
+  const [comparedLastPhotoId, setComparedLastPhotoId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Reset during render (not in an effect) when the photo pair changes, per
+  // Reset during render (not in an effect) when the plant changes, per
   // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
-  const checkingSaved = checkedPairKey !== pairKey;
+  const checkingSaved = checkedPlantId !== plantId;
   if (checkingSaved && result !== null) {
     setResult(null);
     setComparedAt(null);
+    setComparedFirstPhotoId(null);
+    setComparedLastPhotoId(null);
   }
 
   useEffect(() => {
     let cancelled = false;
 
-    void plantComparisonRepository
-      .find(firstPhotoId, lastPhotoId)
-      .then((saved) => {
-        if (cancelled) {
-          return;
-        }
-        if (saved) {
-          setResult(saved.result);
-          setComparedAt(saved.createdAt);
-        }
-        setCheckedPairKey(pairKey);
-      });
+    void plantComparisonRepository.findLatestForPlant(plantId).then((saved) => {
+      if (cancelled) {
+        return;
+      }
+      if (saved) {
+        setResult(saved.result);
+        setComparedAt(saved.createdAt);
+        setComparedFirstPhotoId(saved.firstPhotoId);
+        setComparedLastPhotoId(saved.lastPhotoId);
+      }
+      setCheckedPlantId(plantId);
+    });
 
     return () => {
       cancelled = true;
     };
-  }, [pairKey, firstPhotoId, lastPhotoId]);
+  }, [plantId]);
 
   const compare = async (first: PhotoEntry, last: PhotoEntry) => {
     setLoading(true);
@@ -83,6 +90,8 @@ export const usePlantComparison = (plantId: string, firstPhotoId: string, lastPh
       );
       setResult(saved.result);
       setComparedAt(saved.createdAt);
+      setComparedFirstPhotoId(saved.firstPhotoId);
+      setComparedLastPhotoId(saved.lastPhotoId);
     } catch {
       setError(COMPARISON_FAILED_MESSAGE);
     } finally {
@@ -90,5 +99,14 @@ export const usePlantComparison = (plantId: string, firstPhotoId: string, lastPh
     }
   };
 
-  return { compare, result, comparedAt, loading, checkingSaved, error };
+  return {
+    compare,
+    result,
+    comparedAt,
+    comparedFirstPhotoId,
+    comparedLastPhotoId,
+    loading,
+    checkingSaved,
+    error,
+  };
 };

@@ -26,13 +26,19 @@ function mapRow(row: ComparisonRow): StoredPlantComparison {
 }
 
 class SupabasePlantComparisonRepository {
-  async find(firstPhotoId: string, lastPhotoId: string): Promise<StoredPlantComparison | null> {
+  /**
+   * Последнее сравнение для растения вообще, а не для конкретной пары фото —
+   * иначе добавление нового фото меняет "последнее" фото пары, и уже
+   * посчитанный результат становится ненаходимым по точному ключу.
+   */
+  async findLatestForPlant(plantId: string): Promise<StoredPlantComparison | null> {
     const rows = unwrap<ComparisonRow[]>(
       await supabase
         .from(TABLE)
         .select('*')
-        .eq('first_photo_id', firstPhotoId)
-        .eq('last_photo_id', lastPhotoId),
+        .eq('plant_id', plantId)
+        .order('created_at', { ascending: false })
+        .limit(1),
     );
 
     return rows[0] ? mapRow(rows[0]) : null;
