@@ -168,7 +168,7 @@ export const ProfilePage = () => {
       <div className="mt-6 rounded-3xl border border-surface-glass-border bg-surface-glass p-4 shadow-card backdrop-blur-xl backdrop-saturate-150">
         <p className="text-label text-text-muted uppercase">Напоминания</p>
         <div className="mt-1 divide-y divide-surface-glass-border">
-          <SettingsRow icon={<Bell size={18} />} title="Push-уведомления" subtitle="Напоминать сделать фото">
+          <SettingsRow icon={<Bell size={18} />} title="Push-уведомления" subtitle="Полив, подкормка, опрыскивание и фото">
             <Switch checked={settings.pushEnabled} onChange={(checked) => void handlePushToggle(checked)} label="Push-уведомления" />
           </SettingsRow>
 
@@ -215,7 +215,7 @@ export const ProfilePage = () => {
             ? 'Этот браузер не поддерживает push-уведомления — сохраним только твой выбор.'
             : pushError
               ? pushError
-              : 'Как это работает: мы сохраняем твои настройки и оформляем реальную push-подписку в браузере. Сама отправка уведомлений по расписанию появится, когда подключим сервер уведомлений — этого шага пока нет.'}
+              : 'Интервалы для полива и подкормки берутся из паспорта ухода, который выдаёт AI по фото растения — напоминания приходят по своему расписанию для каждой задачи.'}
         </p>
       </div>
 

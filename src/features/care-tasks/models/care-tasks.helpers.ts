@@ -1,4 +1,5 @@
 import type { CareStatus, CareTask, CareTaskType } from './care-tasks.model';
+import type { PlantReport } from '../../plants/models/plant-report.types';
 import { pluralDays } from '../../../shared/helpers';
 
 const daysToMs = (days: number) => {
@@ -40,11 +41,40 @@ const DEFAULT_TASKS: Array<{ type: CareTaskType; intervalDays: number }> = [
   { type: 'misting', intervalDays: 3 },
 ];
 
+/**
+ * Интервалы из паспорта ухода, который вернул Gemini, вместо захардкоженных
+ * умолчаний. Числовые поля появились не сразу — у диагнозов, сохранённых до
+ * этого, их нет, поэтому тип watering/fertilizing пропускается, если для
+ * него нет числа (а не подставляется дефолт молча).
+ */
+export function deriveTasksFromCarePassport(
+  carePassport: PlantReport['carePassport'],
+): Array<{ type: CareTaskType; intervalDays: number }> {
+  const tasks: Array<{ type: CareTaskType; intervalDays: number }> = [];
+
+  if (typeof carePassport.watering.intervalDays === 'number') {
+    tasks.push({ type: 'watering', intervalDays: carePassport.watering.intervalDays });
+  }
+  if (typeof carePassport.fertilizing.intervalDays === 'number') {
+    tasks.push({ type: 'feeding', intervalDays: carePassport.fertilizing.intervalDays });
+  }
+  if (typeof carePassport.environment.mistingIntervalDays === 'number') {
+    tasks.push({ type: 'misting', intervalDays: carePassport.environment.mistingIntervalDays });
+  }
+
+  return tasks;
+}
+
+/** Ручное создание плана ухода — предпочитает интервалы из паспорта ухода, если он уже есть. */
 export const createDefaultTasks = async (
   plantId: string,
   addTask: (task: CareTask) => Promise<void>,
+  carePassport?: PlantReport['carePassport'],
 ) => {
-  for (const def of DEFAULT_TASKS) {
+  const derived = carePassport ? deriveTasksFromCarePassport(carePassport) : [];
+  const tasksToCreate = derived.length > 0 ? derived : DEFAULT_TASKS;
+
+  for (const def of tasksToCreate) {
     await addTask({
       id: crypto.randomUUID(),
       plantId,

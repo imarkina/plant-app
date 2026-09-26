@@ -1,12 +1,14 @@
 import type { PhotoEntry, PhotoType } from '../models/plant.types';
 import { resizeImage } from '../../../shared/image/resize';
 import { computeDiagnosisEmbedding } from '../models/search-embeddings';
+import { useApplyCarePassport } from '../../care-tasks';
 import { usePlantsContext } from './usePlantsContext';
 import { usePlantReport } from './usePlantReport';
 
 export function useAddPhoto(plantId: string) {
   const { addPhoto } = usePlantsContext();
   const { fetchAnalysis, loading, error } = usePlantReport();
+  const applyCarePassport = useApplyCarePassport();
 
   const addPhotoFromFile = async (
     file: Blob,
@@ -27,6 +29,7 @@ export function useAddPhoto(plantId: string) {
     };
 
     await addPhoto(plantId, photo); // дописать к растению
+    await applyCarePassport(plantId, analysis?.carePassport);
   };
 
   return { addPhotoFromFile, loading, error };

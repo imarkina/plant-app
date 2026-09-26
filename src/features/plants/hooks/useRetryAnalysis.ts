@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { PhotoEntry } from '../models/plant.types';
 import { computeDiagnosisEmbedding } from '../models/search-embeddings';
+import { useApplyCarePassport } from '../../care-tasks';
 import { usePlantsContext } from './usePlantsContext';
 import { usePlantReport } from './usePlantReport';
 
@@ -10,6 +11,7 @@ const IMAGE_MISSING_MESSAGE = 'Не удалось найти фото для п
 export function useRetryAnalysis(plantId: string) {
   const { retryPhotoAnalysis } = usePlantsContext();
   const { fetchAnalysis, loading, error: analysisError } = usePlantReport();
+  const applyCarePassport = useApplyCarePassport();
   const [imageError, setImageError] = useState<string | null>(null);
 
   const retry = async (photo: PhotoEntry): Promise<boolean> => {
@@ -30,6 +32,7 @@ export function useRetryAnalysis(plantId: string) {
 
     const embedding = await computeDiagnosisEmbedding(analysis);
     await retryPhotoAnalysis(plantId, photo.id, analysis, embedding);
+    await applyCarePassport(plantId, analysis.carePassport);
     return true;
   };
 

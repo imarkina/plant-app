@@ -1,12 +1,14 @@
 import { resizeImage } from '../../../shared/image/resize';
 import { DEFAULT_PLANT_NAME, EMPTY_PLANT_PROFILE, type PhotoEntry, type Plant } from '../models/plant.types';
 import { computeDiagnosisEmbedding } from '../models/search-embeddings';
+import { useApplyCarePassport } from '../../care-tasks';
 import { usePlantReport } from './usePlantReport';
 import { usePlantsContext } from './usePlantsContext';
 
 export function useAddPlant() {
   const { addPlant } = usePlantsContext();
   const { fetchAnalysis, loading, error } = usePlantReport();
+  const applyCarePassport = useApplyCarePassport();
 
   const addPlantFromFile = async (file: File) => {
     const resized = await resizeImage(file);
@@ -32,6 +34,7 @@ export function useAddPlant() {
     };
 
     await addPlant(plant);
+    await applyCarePassport(plant.id, analysis?.carePassport);
 
     return plant.id;
   };

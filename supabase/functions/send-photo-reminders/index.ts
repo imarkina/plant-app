@@ -1,11 +1,14 @@
-// Scheduled Edge Function for US-ALBUM-5's real push reminders.
+// Scheduled Edge Function for real push reminders — originally photo-only
+// (US-ALBUM-5), now covers every care_tasks type (watering/feeding/misting
+// too), since their intervals are auto-derived from the AI carePassport
+// instead of being purely informational text.
 //
 // Invoked roughly hourly by pg_cron (see the accompanying migration
-// 20260910110000_schedule_photo_reminders.sql). For every photo-type care
-// task that is overdue, hasn't been reminded about today, and whose owner
-// has push enabled + this is (approximately) their chosen reminder hour, it
-// sends a real Web Push notification to every subscription that user has
-// registered from the browser (features/reminders/hooks/usePushSubscription.ts).
+// 20260910110000_schedule_photo_reminders.sql). For every care task that is
+// overdue, hasn't been reminded about today, and whose owner has push
+// enabled + this is (approximately) their chosen reminder hour, it sends a
+// real Web Push notification to every subscription that user has registered
+// from the browser (features/reminders/hooks/usePushSubscription.ts).
 //
 // Requires these function secrets (see deploy instructions):
 //   VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT (mailto:you@example.com)
@@ -27,20 +30,42 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+type CareTaskType = 'photo' | 'watering' | 'feeding' | 'misting';
+
 type CareTaskRow = {
   id: string;
   plant_id: string;
   user_id: string;
+  type: CareTaskType;
   interval_days: number;
   last_done_at: string | null;
   last_reminder_sent_at: string | null;
+};
+
+const NOTIFICATION_COPY: Record<CareTaskType, { title: (plantName: string) => string; body: string }> = {
+  photo: {
+    title: (plantName) => `📸 Пора сфоткать ${plantName}!`,
+    body: 'Обнови таймлайн роста — это займёт пару секунд.',
+  },
+  watering: {
+    title: (plantName) => `💧 Пора полить ${plantName}!`,
+    body: 'Проверь почву — если подсохла по паспорту ухода, самое время полить.',
+  },
+  feeding: {
+    title: (plantName) => `🌱 Пора подкормить ${plantName}!`,
+    body: 'По графику из паспорта ухода — время для удобрения.',
+  },
+  misting: {
+    title: (plantName) => `💦 Пора опрыскать ${plantName}!`,
+    body: 'Поддержи влажность, которая нужна этому растению.',
+  },
 };
 
 type PushSubRow = { user_id: string; endpoint: string; keys_p256dh: string; keys_auth: string };
 
 function isDue(task: CareTaskRow, now: number): boolean {
   if (task.last_done_at === null) {
-    // Никогда не фотографировали -- ждём первого визита в приложение, а не пушим сразу.
+    // Ни разу не выполняли задачу -- ждём первого визита в приложение, а не пушим сразу.
     return false;
   }
 
@@ -69,8 +94,8 @@ Deno.serve(async (req) => {
 
   const { data: tasks, error: tasksError } = await supabase
     .from('care_tasks')
-    .select('id, plant_id, user_id, interval_days, last_done_at, last_reminder_sent_at')
-    .eq('type', 'photo');
+    .select('id, plant_id, user_id, type, interval_days, last_done_at, last_reminder_sent_at')
+    .in('type', ['photo', 'watering', 'feeding', 'misting']);
 
   if (tasksError) {
     return new Response(JSON.stringify({ error: tasksError.message }), { status: 500 });
@@ -126,9 +151,10 @@ Deno.serve(async (req) => {
     }
 
     const plantName = plantNameById.get(task.plant_id) ?? 'растение';
+    const copy = NOTIFICATION_COPY[task.type];
     const payload = JSON.stringify({
-      title: `📸 Пора сфоткать ${plantName}!`,
-      body: 'Обнови таймлайн роста — это займёт пару секунд.',
+      title: copy.title(plantName),
+      body: copy.body,
       url: `/plant/${task.plant_id}`,
     });
 

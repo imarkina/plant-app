@@ -34,12 +34,26 @@ export const plantReportSchema = z.object({
     watering: z.object({
       frequency: z.string().describe('Правило полива (например: По мере просыхания на 1/2)'),
       waterQuality: z.string().describe('Требования к воде'),
+      intervalDays: z
+        .number()
+        .min(1)
+        .max(60)
+        .optional()
+        .describe(
+          'Среднее количество дней между поливами по правилу выше — конкретное число (не диапазон), всегда указывать',
+        ),
     }),
     environment: z.object({
       humidity: z.string().describe('Требования к влажности (например: 50-70%)'),
       temperatureMinC: z.number().describe('Минимальная критическая температура'),
       temperatureOptimal: z.string().describe('Оптимальный диапазон температур'),
       notes: z.string().optional().describe('Примечания по сквознякам или опрыскиванию'),
+      mistingIntervalDays: z
+        .number()
+        .min(1)
+        .max(14)
+        .optional()
+        .describe('Как часто опрыскивать, в днях — указывать только если растению это нужно'),
     }),
     soilAndPot: z.object({
       soilMix: z.string().describe('Состав грунта'),
@@ -50,6 +64,14 @@ export const plantReportSchema = z.object({
       schedule: z.string().describe('График подкормок'),
       dosage: z.string().describe('Дозировка'),
       warnings: z.string().describe('Ограничения (например: не перекармливать азотом)'),
+      intervalDays: z
+        .number()
+        .min(1)
+        .max(120)
+        .optional()
+        .describe(
+          'Среднее количество дней между подкормками по графику выше — конкретное число, всегда указывать',
+        ),
     }),
   }),
 });
