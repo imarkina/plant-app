@@ -4,30 +4,29 @@
 // src/features/plants/models/search-embeddings.ts). Идёт по всем
 // пользователям — нужен service role key, чтобы обойти RLS.
 //
+// Эмбеддинг считаем не прямым вызовом Gemini, а через уже задеплоенный
+// /api/embed приложения (тот же эндпоинт, что использует сам сайт) — Gemini
+// API блокирует прямые запросы из некоторых регионов, а вызов с серверов
+// Vercel это обходит, плюс не нужен отдельный GEMINI_API_KEY на машине,
+// с которой запускаете скрипт.
+//
 // Запуск:
-//   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... GEMINI_API_KEY=... \
+//   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... APP_URL=https://<ваш-домен> \
 //     node scripts/backfill-embeddings.mjs
 
 import { createClient } from '@supabase/supabase-js';
-import { GoogleGenAI } from '@google/genai';
 
 const SUPABASE_URL = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const APP_URL = process.env.APP_URL;
 
-if (!SUPABASE_URL || !SERVICE_ROLE_KEY || !GEMINI_API_KEY) {
-  console.error(
-    'Нужны SUPABASE_URL (или VITE_SUPABASE_URL), SUPABASE_SERVICE_ROLE_KEY и GEMINI_API_KEY в env.',
-  );
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY || !APP_URL) {
+  console.error('Нужны SUPABASE_URL (или VITE_SUPABASE_URL), SUPABASE_SERVICE_ROLE_KEY и APP_URL в env.');
   process.exit(1);
 }
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
-const genai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
-// Модель и размерность — как в src/server/embed-text.ts.
-const EMBEDDING_MODEL = 'gemini-embedding-001';
-const EMBEDDING_DIMENSIONS = 768;
+const EMBED_ENDPOINT = new URL('/api/embed', APP_URL).toString();
 const PAGE_SIZE = 500;
 
 // Тексты держим в точности как computeDiagnosisEmbedding/computeComparisonEmbedding
@@ -48,17 +47,17 @@ function buildComparisonText(result) {
 }
 
 async function embed(text) {
-  const response = await genai.models.embedContent({
-    model: EMBEDDING_MODEL,
-    contents: text,
-    config: { outputDimensionality: EMBEDDING_DIMENSIONS },
+  const response = await fetch(EMBED_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
   });
 
-  const values = response.embeddings?.[0]?.values;
-  if (!values) {
-    throw new Error('no embedding returned');
+  const body = await response.json();
+  if (!response.ok || !body.embedding) {
+    throw new Error(body.error ?? `embed failed: HTTP ${response.status}`);
   }
-  return values;
+  return body.embedding;
 }
 
 async function fetchAllNeedingEmbedding(table, selectColumns) {
