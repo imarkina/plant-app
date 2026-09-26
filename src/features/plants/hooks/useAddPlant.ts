@@ -1,5 +1,5 @@
 import { resizeImage } from '../../../shared/image/resize';
-import { EMPTY_PLANT_PROFILE, type PhotoEntry, type Plant } from '../models/plant.types';
+import { DEFAULT_PLANT_NAME, EMPTY_PLANT_PROFILE, type PhotoEntry, type Plant } from '../models/plant.types';
 import { usePlantReport } from './usePlantReport';
 import { usePlantsContext } from './usePlantsContext';
 
@@ -23,7 +23,7 @@ export function useAddPlant() {
     const plant: Plant = {
       id: crypto.randomUUID(),
       // Имя файла ("IMG_2837.jpg") — плохой дефолт на случай, если распознавание не удалось.
-      name: analysis?.identification.commonName ?? 'Новое растение',
+      name: analysis?.identification.commonName ?? DEFAULT_PLANT_NAME,
       photos: [photoEntry],
       ...EMPTY_PLANT_PROFILE,
     };

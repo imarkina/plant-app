@@ -11,6 +11,7 @@ export const PlantsProvider = ({ children }: { children: React.ReactNode }) => {
     deletePhoto,
     setAvatarPhoto,
     updateProfile,
+    retryPhotoAnalysis,
     deletePlant,
   } = usePlants();
 
@@ -24,6 +25,7 @@ export const PlantsProvider = ({ children }: { children: React.ReactNode }) => {
         deletePhoto,
         setAvatarPhoto,
         updateProfile,
+        retryPhotoAnalysis,
         deletePlant,
       }}
     >

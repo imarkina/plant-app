@@ -2,6 +2,7 @@ import { Droplet, Sun, Thermometer, Wind } from 'lucide-react';
 import type { Plant } from '../models/plant.types';
 import { Badge } from '../../../shared/ui/components/Badge/Badge';
 import { threatLevelToLabel, threatToVariant } from '../models/report-status.mappers';
+import { RetryAnalysisBanner } from './RetryAnalysisBanner';
 import type { CareTask } from '../../care-tasks';
 import { formatInterval, pluralizeRu } from '../../../shared/helpers';
 
@@ -71,6 +72,10 @@ export const PlantOverviewTab = ({ plant, wateringTask, onOpenAlbum }: Props) =>
             </div>
           )}
         </div>
+      )}
+
+      {!analysis && plant.photos[0] && (
+        <RetryAnalysisBanner plant={plant} photo={plant.photos[0]} />
       )}
 
       <p className="mt-7 text-h3 text-text-primary">🌿 Параметры ухода</p>

@@ -1,4 +1,5 @@
 import type { PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
+import type { PlantReport } from '../models/plant-report.types';
 import { createContext } from 'react';
 
 type PlantsContextValue = {
@@ -9,6 +10,7 @@ type PlantsContextValue = {
   deletePhoto: (plantId: string, photoId: string) => Promise<void>;
   setAvatarPhoto: (plantId: string, photoId: string) => Promise<void>;
   updateProfile: (plantId: string, update: PlantProfileUpdate) => Promise<void>;
+  retryPhotoAnalysis: (plantId: string, photoId: string, analysis: PlantReport) => Promise<void>;
   deletePlant: (plantId: string) => Promise<void>;
 };
 

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { PhotoEntry, Plant, PlantProfileUpdate } from '../models/plant.types';
+import { DEFAULT_PLANT_NAME, type PhotoEntry, type Plant, type PlantProfileUpdate } from '../models/plant.types';
+import type { PlantReport } from '../models/plant-report.types';
 import { plantsRepository } from '../models/plant.repository';
 
 export const plantsQueryKey = ['plants'] as const;
@@ -114,6 +115,49 @@ export function usePlants() {
     },
   });
 
+  /**
+   * Перезапуск AI-анализа для фото, у которого он не сохранился при первой
+   * загрузке (сеть/лимиты/таймаут — см. usePlantReport.fetchAnalysis). Заодно
+   * переименовывает растение, если оно всё ещё носит дефолтное имя, которое
+   * присвоилось именно из-за того первого неудачного анализа.
+   */
+  const retryPhotoAnalysisMutation = useMutation({
+    mutationFn: async ({
+      plantId,
+      photoId,
+      analysis,
+    }: {
+      plantId: string;
+      photoId: string;
+      analysis: PlantReport;
+    }) => {
+      const plant = plants.find((p) => p.id === plantId);
+      const shouldRename = plant?.name === DEFAULT_PLANT_NAME;
+
+      await plantsRepository.updatePhotoAnalysis(photoId, analysis);
+      if (shouldRename) {
+        await plantsRepository.updateProfile(plantId, { name: analysis.identification.commonName });
+      }
+
+      return { plantId, photoId, analysis, renamedTo: shouldRename ? analysis.identification.commonName : null };
+    },
+    onSuccess: ({ plantId, photoId, analysis, renamedTo }) => {
+      patchPlants((current) =>
+        current.map((plant) => {
+          if (plant.id !== plantId) {
+            return plant;
+          }
+
+          return {
+            ...plant,
+            name: renamedTo ?? plant.name,
+            photos: plant.photos.map((photo) => (photo.id === photoId ? { ...photo, analysis } : photo)),
+          };
+        }),
+      );
+    },
+  });
+
   const deletePlantMutation = useMutation({
     mutationFn: async (plantId: string) => {
       await plantsRepository.deletePlant(plantId);
@@ -136,6 +180,8 @@ export function usePlants() {
       setAvatarPhotoMutation.mutateAsync({ plantId, photoId }).then(() => undefined),
     updateProfile: (plantId: string, update: PlantProfileUpdate) =>
       updateProfileMutation.mutateAsync({ plantId, update }).then(() => undefined),
+    retryPhotoAnalysis: (plantId: string, photoId: string, analysis: PlantReport) =>
+      retryPhotoAnalysisMutation.mutateAsync({ plantId, photoId, analysis }).then(() => undefined),
     deletePlant: (plantId: string) => deletePlantMutation.mutateAsync(plantId).then(() => undefined),
   };
 }

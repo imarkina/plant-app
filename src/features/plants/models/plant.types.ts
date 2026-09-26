@@ -4,6 +4,9 @@ export type PotType = 'plastic' | 'terracotta' | 'ceramic_glazed' | 'self_wateri
 export type SubstrateType = 'standard' | 'aroid_mix' | 'mineral' | 'other';
 export type PhotoType = 'growth' | 'purchase' | 'diagnosis' | 'archive';
 
+/** Имя, которое получает растение, когда AI-анализ первого фото не удался при создании — сравнивается при ретрае, чтобы не перезаписать имя, которое пользователь успел задать сам. */
+export const DEFAULT_PLANT_NAME = 'Новое растение';
+
 export interface PhotoEntry {
   id: string;
   createdAt: number;
@@ -61,6 +64,8 @@ export interface PlantsRepository {
   addPhoto(plantId: string, photo: PhotoEntry): Promise<PhotoEntry>;
   deletePhoto(plantId: string, photoId: string): Promise<void>;
   updatePhotoType(photoId: string, type: PhotoType): Promise<void>;
+  /** Сохраняет результат повторного AI-анализа фото (когда исходный анализ упал при загрузке). */
+  updatePhotoAnalysis(photoId: string, analysis: PlantReport): Promise<void>;
   setAvatarPhoto(plantId: string, photoId: string): Promise<void>;
   updateProfile(plantId: string, update: PlantProfileUpdate): Promise<void>;
   /** Безвозвратное удаление: сами фото из Storage, строки photos/care_tasks/plants. */

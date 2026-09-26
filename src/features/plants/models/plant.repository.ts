@@ -1,4 +1,5 @@
 import type { PhotoEntry, PhotoType, Plant, PlantProfileUpdate, PlantsRepository } from './plant.types';
+import type { PlantReport } from './plant-report.types';
 
 import { supabase } from '../../../shared/supabase/client';
 import { unwrap } from '../../../shared/supabase/unwrap';
@@ -61,6 +62,10 @@ class SupabasePlantsRepository implements PlantsRepository {
 
   async updatePhotoType(photoId: string, type: PhotoType): Promise<void> {
     unwrap(await supabase.from(PHOTOS_TABLE).update({ photo_type: type }).eq('id', photoId));
+  }
+
+  async updatePhotoAnalysis(photoId: string, analysis: PlantReport): Promise<void> {
+    unwrap(await supabase.from(PHOTOS_TABLE).update({ analysis }).eq('id', photoId));
   }
 
   private async uploadPhotoImage(plantId: string, photoId: string, image: Blob): Promise<string> {
