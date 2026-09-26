@@ -8,7 +8,6 @@ import {
 
 type UserSettingsRow = {
   push_enabled: boolean;
-  reminder_interval_days: number;
   reminder_time: string;
   streak_reminders_enabled: boolean;
 };
@@ -16,7 +15,6 @@ type UserSettingsRow = {
 function rowToSettings(row: UserSettingsRow): UserSettings {
   return {
     pushEnabled: row.push_enabled,
-    reminderIntervalDays: row.reminder_interval_days as UserSettings['reminderIntervalDays'],
     reminderTime: row.reminder_time,
     streakRemindersEnabled: row.streak_reminders_enabled,
   };
@@ -26,7 +24,7 @@ class SupabaseRemindersRepository implements RemindersRepository {
   async getSettings(userId: string): Promise<UserSettings> {
     const { data, error } = await supabase
       .from('user_settings')
-      .select('push_enabled, reminder_interval_days, reminder_time, streak_reminders_enabled')
+      .select('push_enabled, reminder_time, streak_reminders_enabled')
       .eq('user_id', userId)
       .maybeSingle();
 
@@ -47,13 +45,12 @@ class SupabaseRemindersRepository implements RemindersRepository {
         {
           user_id: userId,
           push_enabled: merged.pushEnabled,
-          reminder_interval_days: merged.reminderIntervalDays,
           reminder_time: merged.reminderTime,
           streak_reminders_enabled: merged.streakRemindersEnabled,
         },
         { onConflict: 'user_id' },
       )
-      .select('push_enabled, reminder_interval_days, reminder_time, streak_reminders_enabled')
+      .select('push_enabled, reminder_time, streak_reminders_enabled')
       .single();
 
     if (error) {

@@ -14,7 +14,6 @@ import {
   PUSH_SUPPORTED,
   usePushSubscription,
   useReminderSettings,
-  type ReminderIntervalDays,
 } from '../../features/reminders';
 import type { PhotoEntry } from '../../features/plants/models/plant.types';
 
@@ -174,22 +173,6 @@ export const ProfilePage = () => {
 
           {settings.pushEnabled && (
             <>
-              <SettingsRow icon="🗓" title="Интервал напоминаний" subtitle="Как часто напоминать">
-                <select
-                  value={settings.reminderIntervalDays}
-                  onChange={(e) =>
-                    void updateSettings({
-                      reminderIntervalDays: Number(e.target.value) as ReminderIntervalDays,
-                    })
-                  }
-                  className="cursor-pointer rounded-full border border-surface-glass-border bg-bg-elevated px-3 py-1.5 text-body-sm font-semibold text-text-primary"
-                >
-                  <option value={7}>7 дней</option>
-                  <option value={14}>14 дней</option>
-                  <option value={30}>30 дней</option>
-                </select>
-              </SettingsRow>
-
               <SettingsRow icon="⏰" title="Время напоминания" subtitle="Во сколько присылать">
                 <input
                   type="time"

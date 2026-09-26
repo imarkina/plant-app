@@ -1,15 +1,11 @@
-export type ReminderIntervalDays = 7 | 14 | 30;
-
 export interface UserSettings {
   pushEnabled: boolean;
-  reminderIntervalDays: ReminderIntervalDays;
   reminderTime: string;
   streakRemindersEnabled: boolean;
 }
 
 export const DEFAULT_USER_SETTINGS: UserSettings = {
   pushEnabled: false,
-  reminderIntervalDays: 7,
   reminderTime: '09:00',
   streakRemindersEnabled: true,
 };
