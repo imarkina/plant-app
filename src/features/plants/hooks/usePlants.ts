@@ -126,22 +126,30 @@ export function usePlants() {
       plantId,
       photoId,
       analysis,
+      embedding,
     }: {
       plantId: string;
       photoId: string;
       analysis: PlantReport;
+      embedding: number[] | null;
     }) => {
       const plant = plants.find((p) => p.id === plantId);
       const shouldRename = plant?.name === DEFAULT_PLANT_NAME;
 
-      await plantsRepository.updatePhotoAnalysis(photoId, analysis);
+      await plantsRepository.updatePhotoAnalysis(photoId, analysis, embedding);
       if (shouldRename) {
         await plantsRepository.updateProfile(plantId, { name: analysis.identification.commonName });
       }
 
-      return { plantId, photoId, analysis, renamedTo: shouldRename ? analysis.identification.commonName : null };
+      return {
+        plantId,
+        photoId,
+        analysis,
+        embedding,
+        renamedTo: shouldRename ? analysis.identification.commonName : null,
+      };
     },
-    onSuccess: ({ plantId, photoId, analysis, renamedTo }) => {
+    onSuccess: ({ plantId, photoId, analysis, embedding, renamedTo }) => {
       patchPlants((current) =>
         current.map((plant) => {
           if (plant.id !== plantId) {
@@ -151,7 +159,9 @@ export function usePlants() {
           return {
             ...plant,
             name: renamedTo ?? plant.name,
-            photos: plant.photos.map((photo) => (photo.id === photoId ? { ...photo, analysis } : photo)),
+            photos: plant.photos.map((photo) =>
+              photo.id === photoId ? { ...photo, analysis, embedding: embedding ?? undefined } : photo,
+            ),
           };
         }),
       );
@@ -180,8 +190,8 @@ export function usePlants() {
       setAvatarPhotoMutation.mutateAsync({ plantId, photoId }).then(() => undefined),
     updateProfile: (plantId: string, update: PlantProfileUpdate) =>
       updateProfileMutation.mutateAsync({ plantId, update }).then(() => undefined),
-    retryPhotoAnalysis: (plantId: string, photoId: string, analysis: PlantReport) =>
-      retryPhotoAnalysisMutation.mutateAsync({ plantId, photoId, analysis }).then(() => undefined),
+    retryPhotoAnalysis: (plantId: string, photoId: string, analysis: PlantReport, embedding: number[] | null) =>
+      retryPhotoAnalysisMutation.mutateAsync({ plantId, photoId, analysis, embedding }).then(() => undefined),
     deletePlant: (plantId: string) => deletePlantMutation.mutateAsync(plantId).then(() => undefined),
   };
 }

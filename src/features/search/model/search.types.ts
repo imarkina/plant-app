@@ -1,8 +1,7 @@
 export type PlantEmbedding = {
   plantId: string;
   name: string;
-  text: string; // текст диагноза, который эмбеддили
-  embedding: number[]; // вектор
+  embedding: number[]; // вектор, посчитанный и закэшированный в БД при сохранении диагноза
 };
 
 export type SearchResult = {

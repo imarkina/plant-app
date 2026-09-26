@@ -10,7 +10,12 @@ type PlantsContextValue = {
   deletePhoto: (plantId: string, photoId: string) => Promise<void>;
   setAvatarPhoto: (plantId: string, photoId: string) => Promise<void>;
   updateProfile: (plantId: string, update: PlantProfileUpdate) => Promise<void>;
-  retryPhotoAnalysis: (plantId: string, photoId: string, analysis: PlantReport) => Promise<void>;
+  retryPhotoAnalysis: (
+    plantId: string,
+    photoId: string,
+    analysis: PlantReport,
+    embedding: number[] | null,
+  ) => Promise<void>;
   deletePlant: (plantId: string) => Promise<void>;
 };
 

@@ -10,6 +10,7 @@ interface ComparisonRow {
   first_photo_id: string;
   last_photo_id: string;
   result: PlantComparison;
+  embedding: number[] | null;
   created_at: string;
 }
 
@@ -47,12 +48,19 @@ class SupabasePlantComparisonRepository {
     firstPhotoId: string,
     lastPhotoId: string,
     result: PlantComparison,
+    embedding: number[] | null,
   ): Promise<StoredPlantComparison> {
     const rows = unwrap<ComparisonRow[]>(
       await supabase
         .from(TABLE)
         .upsert(
-          { plant_id: plantId, first_photo_id: firstPhotoId, last_photo_id: lastPhotoId, result },
+          {
+            plant_id: plantId,
+            first_photo_id: firstPhotoId,
+            last_photo_id: lastPhotoId,
+            result,
+            embedding,
+          },
           { onConflict: 'first_photo_id,last_photo_id' },
         )
         .select('*'),

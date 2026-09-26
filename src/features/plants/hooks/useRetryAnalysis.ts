@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { PhotoEntry } from '../models/plant.types';
+import { computeDiagnosisEmbedding } from '../models/search-embeddings';
 import { usePlantsContext } from './usePlantsContext';
 import { usePlantReport } from './usePlantReport';
 
@@ -27,7 +28,8 @@ export function useRetryAnalysis(plantId: string) {
       return false;
     }
 
-    await retryPhotoAnalysis(plantId, photo.id, analysis);
+    const embedding = await computeDiagnosisEmbedding(analysis);
+    await retryPhotoAnalysis(plantId, photo.id, analysis, embedding);
     return true;
   };
 

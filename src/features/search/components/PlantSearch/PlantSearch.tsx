@@ -10,10 +10,8 @@ type Props = {
 
 export const PlantSearch = ({ plants }: Props) => {
   const [query, setQuery] = useState('');
-  const { plantEmbeddings, loading: embeddingsLoading } = usePlantEmbeddings(plants);
-  const { results, loading: searchLoading, error, runSearch } = usePlantSearch(plantEmbeddings);
-
-  const loading = embeddingsLoading || searchLoading;
+  const plantEmbeddings = usePlantEmbeddings(plants);
+  const { results, loading, error, runSearch } = usePlantSearch(plantEmbeddings);
 
   const handleSubmit = () => void runSearch(query);
 
@@ -37,11 +35,11 @@ export const PlantSearch = ({ plants }: Props) => {
         disabled={loading}
         className="cursor-pointer rounded-2xl bg-brand px-4 py-3 text-button font-sans font-semibold text-white shadow-fab disabled:pointer-events-none disabled:opacity-50"
       >
-        {embeddingsLoading ? 'Готовим индекс...' : searchLoading ? 'Ищем...' : 'Найти'}
+        {loading ? 'Ищем...' : 'Найти'}
       </button>
 
       {error && <p className="text-body-sm text-danger">{error}</p>}
-      {!error && plantEmbeddings.length === 0 && !embeddingsLoading && (
+      {!error && plantEmbeddings.length === 0 && (
         <p className="text-body-sm text-text-muted">
           Пока нечего искать — добавьте растения с диагнозом.
         </p>

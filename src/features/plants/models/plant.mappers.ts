@@ -13,6 +13,7 @@ interface SupabasePhotoRow {
   created_at: string;
   image_url: string | null;
   analysis: PlantReport | null;
+  embedding: number[] | null;
   is_avatar: boolean;
   photo_type: PhotoType | null;
   note: string | null;
@@ -38,6 +39,7 @@ export function mapPhotoRowToPhotoEntry(row: SupabasePhotoRow): PhotoEntry {
     createdAt: new Date(row.created_at).getTime(),
     imageUrl: row.image_url ?? undefined,
     analysis: row.analysis ?? undefined,
+    embedding: row.embedding ?? undefined,
     isAvatar: row.is_avatar,
     type: row.photo_type ?? 'growth',
     note: row.note ?? undefined,

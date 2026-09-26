@@ -5,6 +5,7 @@ import type { PhotoEntry } from '../models/plant.types';
 
 import type { PlantComparison } from '../models/plant-comparison.types';
 import { plantComparisonRepository } from '../models/plant-comparison.repository';
+import { computeComparisonEmbedding } from '../models/search-embeddings';
 
 const COMPARE_ENDPOINT = '/api/compare';
 const COMPARE_IMAGE_MIME_TYPE = 'image/jpeg';
@@ -72,11 +73,13 @@ export const usePlantComparison = (plantId: string, firstPhotoId: string, lastPh
         }),
       });
       const responseBody = (await response.json()) as CompareResponseBody;
+      const embedding = await computeComparisonEmbedding(responseBody.result);
       const saved = await plantComparisonRepository.save(
         plantId,
         first.id,
         last.id,
         responseBody.result,
+        embedding,
       );
       setResult(saved.result);
       setComparedAt(saved.createdAt);

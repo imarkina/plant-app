@@ -43,6 +43,7 @@ class SupabasePlantsRepository implements PlantsRepository {
         plant_id: plantId,
         created_at: new Date(photo.createdAt).toISOString(),
         analysis: photo.analysis,
+        embedding: photo.embedding ?? null,
         image_url: imageUrl,
         photo_type: photo.type,
         note: photo.note ?? null,
@@ -64,8 +65,8 @@ class SupabasePlantsRepository implements PlantsRepository {
     unwrap(await supabase.from(PHOTOS_TABLE).update({ photo_type: type }).eq('id', photoId));
   }
 
-  async updatePhotoAnalysis(photoId: string, analysis: PlantReport): Promise<void> {
-    unwrap(await supabase.from(PHOTOS_TABLE).update({ analysis }).eq('id', photoId));
+  async updatePhotoAnalysis(photoId: string, analysis: PlantReport, embedding: number[] | null): Promise<void> {
+    unwrap(await supabase.from(PHOTOS_TABLE).update({ analysis, embedding }).eq('id', photoId));
   }
 
   private async uploadPhotoImage(plantId: string, photoId: string, image: Blob): Promise<string> {

@@ -13,6 +13,8 @@ export interface PhotoEntry {
   image?: Blob;
   imageUrl?: string;
   analysis?: PlantReport;
+  /** Эмбеддинг диагноза для поиска по симптомам — считается один раз при сохранении analysis, см. models/search-embeddings.ts. */
+  embedding?: number[];
   isAvatar?: boolean;
   type: PhotoType;
   note?: string;
@@ -64,8 +66,8 @@ export interface PlantsRepository {
   addPhoto(plantId: string, photo: PhotoEntry): Promise<PhotoEntry>;
   deletePhoto(plantId: string, photoId: string): Promise<void>;
   updatePhotoType(photoId: string, type: PhotoType): Promise<void>;
-  /** Сохраняет результат повторного AI-анализа фото (когда исходный анализ упал при загрузке). */
-  updatePhotoAnalysis(photoId: string, analysis: PlantReport): Promise<void>;
+  /** Сохраняет результат повторного AI-анализа фото (когда исходный анализ упал при загрузке) вместе с эмбеддингом для поиска. */
+  updatePhotoAnalysis(photoId: string, analysis: PlantReport, embedding: number[] | null): Promise<void>;
   setAvatarPhoto(plantId: string, photoId: string): Promise<void>;
   updateProfile(plantId: string, update: PlantProfileUpdate): Promise<void>;
   /** Безвозвратное удаление: сами фото из Storage, строки photos/care_tasks/plants. */
