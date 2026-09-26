@@ -1,6 +1,6 @@
 import type { PlantEmbedding, SearchResult } from './search.types';
 
-export function cosineSimilarity(a: number[], b: number[]): number {
+function cosineSimilarity(a: number[], b: number[]): number {
   let dot = 0;
   let sumSquaresA = 0;
   let sumSquaresB = 0;

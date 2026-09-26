@@ -1,11 +1,4 @@
-export type {
-  Location,
-  LocationsRepository,
-  LocationUpdate,
-  NewLocationInput,
-  LightLevel,
-} from './models/location.types';
-export { locationsRepository } from './models/location.repository';
+export type { Location } from './models/location.types';
 export { roomIcon } from './models/location-icon';
 export { lightLevelLabel } from './models/location-options';
 export { LocationsProvider } from './context/LocationsProvider';
