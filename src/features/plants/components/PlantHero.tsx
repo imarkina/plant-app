@@ -36,7 +36,7 @@ export const PlantHero = ({ plant, roomName, lightLabel, onOpenSettings }: Props
 
   return (
     <div>
-      <div className="relative -mx-6 h-[300px] overflow-hidden tablet:h-[360px]">
+      <div className="relative h-[220px] overflow-hidden rounded-3xl tablet:h-[260px]">
         {photo?.imageUrl ? (
           <img src={photo.imageUrl} alt={name} className="absolute inset-0 size-full object-cover" />
         ) : (

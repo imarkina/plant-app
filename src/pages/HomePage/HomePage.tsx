@@ -269,7 +269,7 @@ export const HomePage = () => {
         to={`/plant/${featuredPlant.id}`}
         className="mt-5 block overflow-hidden rounded-3xl bg-bg-tertiary shadow-card"
       >
-        <div className="relative aspect-[4/3]">
+        <div className="relative h-[220px] tablet:h-[260px]">
           {featuredPhoto?.imageUrl && (
             <img
               src={featuredPhoto.imageUrl}
