@@ -10,6 +10,36 @@ reminders. React 19 + TypeScript + Vite frontend, Supabase (Postgres + Auth + St
 Functions) as the backend, Vercel Edge Functions as the only server-side code that talks to
 Gemini.
 
+## Rules
+
+- No `any` — `tsconfig.app.json` has `strict: true` and the codebase currently has zero `any`/
+  `as any`; don't introduce the first one.
+- No raw colors — every color is a token from `src/shared/ui/tokens.css`'s `@theme` block
+  (`--color-*`), referenced as a Tailwind class (`bg-bg-primary`, `text-accent`, ...). There are
+  no arbitrary-value color classes (`bg-[#...]`) anywhere in `src/`; don't add the first one —
+  add a token instead.
+- Cross-feature imports go through the barrel — import from `features/<name>` (its `index.ts`),
+  never reach into another feature's `components/`/`hooks/`/`models/` by path. If something
+  isn't exported from the barrel, it isn't meant to be used outside that feature.
+- Components never import `supabase` directly — go through that feature's repository (see
+  Architecture below), even for a one-off read.
+- Don't add local `try/catch` + toast in mutation hooks — `queryClient.ts`'s single
+  `MutationCache.onError` already handles every mutation failure app-wide; a local catch there
+  would just suppress that.
+
+## Don't
+
+- Don't commit `.env*` — already gitignored; if you ever need to show its shape, show
+  `.env.example`-style key names only, never real values.
+- Don't change a table's shape by editing Supabase directly or assuming a column exists — add a
+  new file under `supabase/migrations/` (the existing ones are the schema's source of truth, and
+  several carry design-rationale comments worth reading before you touch the same table).
+- Don't rotate/change `GEMINI_API_KEY` in only one place — it's read from `process.env` by both
+  the Vercel edge functions and the Supabase edge function; update both or they drift.
+- Don't assume only `Sidebar` or only `BottomNav` is mounted — both are always in the tree and
+  hide themselves by breakpoint (`desktop:hidden`/`desktop:flex`); code that reaches for "the
+  nav" needs to account for both existing at once.
+
 ## Commands
 
 - `npm run dev` — Vite dev server.
