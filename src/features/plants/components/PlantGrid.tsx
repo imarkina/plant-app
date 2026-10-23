@@ -3,6 +3,7 @@ import type { Plant } from '../models/plant.types';
 import { healthBucketToDotClassName, healthStatusToBucket } from '../models/report-status.mappers';
 import { formatDue, getCareStatus, getNextDue, type CareTask } from '../../care-tasks';
 import { roomIcon } from '../../locations';
+import { Badge } from '../../../shared/ui/components/Badge/Badge';
 
 type Props = {
   plants: Plant[];
@@ -100,6 +101,11 @@ export const PlantGrid = ({
               <p className="truncate text-h4 text-text-primary desktop:text-h3">{name}</p>
               {botanicalName && (
                 <p className="truncate text-body-sm text-text-muted italic">{botanicalName}</p>
+              )}
+              {isWateringOverdue && (
+                <div className="mt-2">
+                  <Badge variant="danger">Просрочен полив</Badge>
+                </div>
               )}
               <div className="mt-2 flex items-center gap-1.5 text-caption text-text-secondary">
                 {roomName && RoomIcon && (
