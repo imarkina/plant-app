@@ -84,19 +84,10 @@ the repository and wrap it in TanStack Query (`useQuery`/`useMutation`); compone
 `MutationCache.onError` that logs and shows one generic toast for every failed mutation
 app-wide, so don't add local try/catch+toast in individual mutation hooks.
 
-**AI pipeline (client → edge function → Gemini → client → Supabase).** The browser never calls
-Gemini directly (no API key in the client bundle). Flow: client base64-encodes a photo →
-`POST /api/analyze` (Vercel Edge Function, `api/analyze.ts`) → `src/server/analyze-plant-image.ts`
-calls `@google/genai` with `responseJsonSchema: z.toJSONSchema(plantReportSchema)` for
-structured output → client receives a `PlantReport` (identification, health, actionPlan,
-carePassport) → stored on the photo row (`plant.repository.ts`) → `useApplyCarePassport` derives
-watering/feeding/misting intervals from `carePassport` and upserts `care_tasks` rows so the
-schedule tracks what Gemini actually recommended for *that* plant, not hardcoded defaults.
-`api/compare.ts` / `compare-plants.ts` does the same for before/after photo comparisons.
-`api/embed.ts` / `embed-text.ts` generates embeddings for symptom/species semantic search
-(`features/search`, cosine similarity in `search/model/similarity.ts`); embeddings for
-diagnoses/comparisons are cached on the row instead of recomputed on read (see
-`scripts/backfill-embeddings.mjs` for pre-existing rows).
+**AI pipeline.** Before changing anything under `api/*` or `src/server/*`, read
+`docs/ai-pipeline.md` — it covers why the call is split client → edge function → `src/server/*`
+→ Gemini, the three endpoints (`analyze`/`compare`/`embed`), how `useApplyCarePassport` turns a
+diagnosis into `care_tasks`, and how embeddings get cached instead of recomputed.
 
 **Supabase as the whole backend.** `supabase/migrations/*.sql` is the source of truth for the
 schema — read the most recent ones before changing any table shape; several contain design-notes
@@ -107,12 +98,10 @@ an intentionally unscoped shared read-only catalog. `supabase/functions/send-pho
 is a Supabase Edge Function (Deno), not a Vercel one — it's the scheduled job that sends push
 reminders, separate from the Vercel `api/*.ts` functions that serve the SPA.
 
-**Push notifications.** `usePushSubscription` (features/reminders) does real
-`PushManager.subscribe()` plumbing against `/sw.js` and persists the subscription to
-`push_subscriptions`; delivery is handled server-side by the Supabase edge function above using
-the VAPID keypair. `public/push-sw.js` holds the `push`/`notificationclick` handlers and is
-pulled into the generated service worker via `vite-plugin-pwa`'s `workbox.importScripts` (see
-`vite.config.ts`) — it is not the service worker itself.
+**Push notifications.** Before changing `features/reminders/*`, `public/push-sw.js`, the PWA
+block in `vite.config.ts`, or `supabase/functions/send-photo-reminders/`, read `docs/push.md` —
+it covers the subscribe/receive/send split, the due/eligible logic the cron job uses, and how to
+add a new reminder type.
 
 **Responsive layout, not responsive CSS alone.** Tailwind v4 (`@tailwindcss/vite`, no
 `tailwind.config.*` — config lives in `src/shared/ui/tokens.css`). Below `desktop:` breakpoint,
