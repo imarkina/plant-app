@@ -33,6 +33,9 @@ const ProfilePage = lazy(() =>
 const LocationsPage = lazy(() =>
   import('../pages/LocationsPage').then((m) => ({ default: m.LocationsPage })),
 );
+const WishlistPage = lazy(() =>
+  import('../pages/WishlistPage').then((m) => ({ default: m.WishlistPage })),
+);
 
 const RouteFallback = () => <PageSkeleton />;
 
@@ -79,6 +82,7 @@ function App() {
                       <Route path="/plant/:id" element={<PlantPage />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/locations" element={<LocationsPage />} />
+                      <Route path="/wishlist" element={<WishlistPage />} />
                     </Route>
                   </Route>
                 </Routes>

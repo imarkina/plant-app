@@ -1,10 +1,11 @@
 import { NavLink } from 'react-router-dom';
-import { Calendar, Home, Leaf, User } from 'lucide-react';
+import { Calendar, Heart, Home, Leaf, User } from 'lucide-react';
 
 const items = [
   { to: '/', label: 'Главная', icon: Home, end: true },
   { to: '/collection', label: 'Коллекция', icon: Leaf, end: false },
   { to: '/calendar', label: 'Календарь', icon: Calendar, end: false },
+  { to: '/wishlist', label: 'Вишлист', icon: Heart, end: false },
   { to: '/profile', label: 'Профиль', icon: User, end: false },
 ];
 

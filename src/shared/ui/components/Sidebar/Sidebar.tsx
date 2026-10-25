@@ -1,6 +1,6 @@
 import { type ChangeEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Calendar, Home, Leaf, Loader2, Plus, User } from 'lucide-react';
+import { Calendar, Heart, Home, Leaf, Loader2, Plus, User } from 'lucide-react';
 import { useAuthContext } from '../../../../features/auth';
 import { useAddPlant } from '../../../../features/plants/hooks/useAddPlant';
 import { deriveDisplayName } from '../../../helpers';
@@ -9,6 +9,7 @@ const items = [
   { to: '/', label: 'Главная', icon: Home, end: true },
   { to: '/collection', label: 'Коллекция', icon: Leaf, end: false },
   { to: '/calendar', label: 'Календарь', icon: Calendar, end: false },
+  { to: '/wishlist', label: 'Вишлист', icon: Heart, end: false },
 ];
 
 const CARD = 'rounded-3xl border border-surface-glass-border bg-surface-glass shadow-card backdrop-blur-xl backdrop-saturate-150';
