@@ -8,7 +8,7 @@ import type {
   SubstrateType,
 } from './plant.types';
 
-interface SupabasePhotoRow {
+export interface SupabasePhotoRow {
   id: string;
   created_at: string;
   image_url: string | null;
@@ -19,7 +19,7 @@ interface SupabasePhotoRow {
   note: string | null;
 }
 
-interface SupabasePlantRow {
+export interface SupabasePlantRow {
   id: string;
   name: string;
   photos: SupabasePhotoRow[];
@@ -62,9 +62,21 @@ export function mapPlantRowToPlant(row: SupabasePlantRow): Plant {
   };
 }
 
+interface SupabasePlantUpdateRow {
+  name?: string;
+  location_id?: string | null;
+  species_id?: string | null;
+  custom_species_name?: string | null;
+  purchased_at?: string | null;
+  pot_type?: PotType | null;
+  pot_diameter_cm?: number | null;
+  has_drainage?: boolean | null;
+  substrate_type?: SubstrateType | null;
+}
+
 /** Builds a partial Supabase update payload, touching only the fields that were actually passed. */
-export function mapPlantProfileUpdateToRow(update: PlantProfileUpdate): Record<string, unknown> {
-  const row: Record<string, unknown> = {};
+export function mapPlantProfileUpdateToRow(update: PlantProfileUpdate): SupabasePlantUpdateRow {
+  const row: SupabasePlantUpdateRow = {};
 
   if (update.name !== undefined) row.name = update.name;
   if (update.locationId !== undefined) row.location_id = update.locationId;

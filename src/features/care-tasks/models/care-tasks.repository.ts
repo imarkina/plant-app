@@ -1,6 +1,6 @@
 import { supabase } from '../../../shared/supabase/client';
 import type { CareTask, CareTasksRepository } from './care-tasks.model';
-import { supabaseRowToCareTask } from './care-tasks.mappers';
+import { supabaseRowToCareTask, type SupabaseCareTaskRow } from './care-tasks.mappers';
 
 class SupabaseCareTasksRepository implements CareTasksRepository {
   async getCareTasks(plantId: string): Promise<CareTask[]> {
@@ -10,7 +10,9 @@ class SupabaseCareTasksRepository implements CareTasksRepository {
       throw error;
     }
 
-    return data.map(supabaseRowToCareTask);
+    // `type` is the DB's generic text column, narrowed here to CareTaskType --
+    // enforced by the table's own check constraint, see the migrations.
+    return (data as SupabaseCareTaskRow[]).map(supabaseRowToCareTask);
   }
 
   async getCareTasksForPlants(plantIds: string[]): Promise<CareTask[]> {
@@ -24,7 +26,7 @@ class SupabaseCareTasksRepository implements CareTasksRepository {
       throw error;
     }
 
-    return data.map(supabaseRowToCareTask);
+    return (data as SupabaseCareTaskRow[]).map(supabaseRowToCareTask);
   }
 
   async addCareTask(task: CareTask): Promise<void> {

@@ -1,9 +1,14 @@
 import type { LightLevel, Location, LocationUpdate } from './location.types';
 
-interface SupabaseLocationRow {
+export interface SupabaseLocationRow {
   id: string;
   name: string;
   light_level: LightLevel | null;
+}
+
+interface SupabaseLocationUpdateRow {
+  name?: string;
+  light_level?: LightLevel | null;
 }
 
 export function mapLocationRowToLocation(row: SupabaseLocationRow): Location {
@@ -14,8 +19,8 @@ export function mapLocationRowToLocation(row: SupabaseLocationRow): Location {
   };
 }
 
-export function mapLocationUpdateToRow(changes: LocationUpdate): Record<string, unknown> {
-  const row: Record<string, unknown> = {};
+export function mapLocationUpdateToRow(changes: LocationUpdate): SupabaseLocationUpdateRow {
+  const row: SupabaseLocationUpdateRow = {};
 
   if (changes.name !== undefined) row.name = changes.name;
   if (changes.lightLevel !== undefined) row.light_level = changes.lightLevel;
