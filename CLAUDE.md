@@ -44,6 +44,9 @@ Gemini.
 - Don't change a table's shape by editing Supabase directly or assuming a column exists — add a
   new file under `supabase/migrations/` (the existing ones are the schema's source of truth, and
   several carry design-rationale comments worth reading before you touch the same table).
+- Don't run `supabase db push` against the real project — its migration history table is empty
+  (every migration so far was applied by hand), so the CLI would try to re-run all of them. Apply
+  a new migration manually (SQL Editor), then regenerate the types.
 - Don't rotate/change `GEMINI_API_KEY` in only one place — it's read from `process.env` by both
   the Vercel edge functions and the Supabase edge function; update both or they drift.
 - Don't assume only `Sidebar` or only `BottomNav` is mounted — both are always in the tree and

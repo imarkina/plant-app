@@ -1,10 +1,16 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: '14.15';
+  };
   public: {
     Tables: {
       care_tasks: {
         Row: {
+          created_at: string | null;
           id: string;
           interval_days: number;
           last_done_at: string | null;
@@ -13,8 +19,8 @@ export type Database = {
           type: string;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
+          created_at?: string | null;
           id?: string;
           interval_days: number;
           last_done_at?: string | null;
@@ -24,6 +30,7 @@ export type Database = {
           user_id?: string;
         };
         Update: {
+          created_at?: string | null;
           id?: string;
           interval_days?: number;
           last_done_at?: string | null;
@@ -54,7 +61,6 @@ export type Database = {
           user_id: string;
           window_direction: string | null;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           distance_from_window_cm?: number | null;
@@ -95,10 +101,9 @@ export type Database = {
           id: string;
           last_photo_id: string;
           plant_id: string;
-          result: NonNullable<Json>;
+          result: Json;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           embedding?: number[] | null;
@@ -106,7 +111,7 @@ export type Database = {
           id?: string;
           last_photo_id: string;
           plant_id: string;
-          result: NonNullable<Json>;
+          result: Json;
           user_id?: string;
         };
         Update: {
@@ -116,7 +121,7 @@ export type Database = {
           id?: string;
           last_photo_id?: string;
           plant_id?: string;
-          result?: NonNullable<Json>;
+          result?: Json;
           user_id?: string;
         };
         Relationships: [
@@ -156,10 +161,9 @@ export type Database = {
           plant_id: string;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           analysis?: Json | null;
-          created_at?: string;
+          created_at: string;
           embedding?: number[] | null;
           id?: string;
           image_url?: string | null;
@@ -201,7 +205,6 @@ export type Database = {
           type: string;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           id?: string;
@@ -235,6 +238,7 @@ export type Database = {
           archive_reason_detail: string | null;
           archive_status: string | null;
           archived_at: string | null;
+          created_at: string | null;
           custom_species_name: string | null;
           has_drainage: boolean | null;
           id: string;
@@ -248,11 +252,11 @@ export type Database = {
           substrate_type: string | null;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           archive_reason_detail?: string | null;
           archive_status?: string | null;
           archived_at?: string | null;
+          created_at?: string | null;
           custom_species_name?: string | null;
           has_drainage?: boolean | null;
           id?: string;
@@ -270,6 +274,7 @@ export type Database = {
           archive_reason_detail?: string | null;
           archive_status?: string | null;
           archived_at?: string | null;
+          created_at?: string | null;
           custom_species_name?: string | null;
           has_drainage?: boolean | null;
           id?: string;
@@ -309,7 +314,6 @@ export type Database = {
           keys_p256dh: string;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           endpoint: string;
@@ -335,7 +339,6 @@ export type Database = {
           name: string;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           id?: string;
@@ -357,7 +360,6 @@ export type Database = {
           created_at: string;
           id: string;
         };
-        ComputedFields: never;
         Insert: {
           botanical_name?: string | null;
           common_name: string;
@@ -380,7 +382,6 @@ export type Database = {
           updated_at: string;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           push_enabled?: boolean;
           reminder_time?: string;
@@ -406,7 +407,6 @@ export type Database = {
           name: string;
           user_id: string;
         };
-        ComputedFields: never;
         Insert: {
           created_at?: string;
           id?: string;
@@ -430,10 +430,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      dearmor: { Args: { '': string }; Returns: string };
-      gen_random_uuid: { Args: Record<PropertyKey, never>; Returns: string };
-      gen_salt: { Args: { '': string }; Returns: string };
-      pgp_armor_headers: { Args: { '': string }; Returns: Record<string, unknown>[] };
+      [_ in never]: never;
     };
     Enums: {
       [_ in never]: never;
@@ -458,7 +455,9 @@ export type Tables<
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
     : never) = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R;
@@ -481,7 +480,9 @@ export type TablesInsert<
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never) = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Insert: infer I;
     }
@@ -503,7 +504,9 @@ export type TablesUpdate<
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never) = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Update: infer U;
     }
@@ -525,7 +528,9 @@ export type Enums<
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
     : never) = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
     ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
@@ -539,7 +544,9 @@ export type CompositeTypes<
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
     : never) = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
     ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
