@@ -15,17 +15,14 @@ class SupabaseWishlistRepository implements WishlistRepository {
   }
 
   async create(input: NewWishlistItemInput): Promise<WishlistItem> {
-    const { data, error } = await supabase
-      .from(WISHLIST_TABLE)
-      .insert({ name: input.name, image_url: input.imageUrl ?? null })
-      .select('id, name, image_url, is_purchased, created_at')
-      .single();
+    const rows = unwrap(
+      await supabase
+        .from(WISHLIST_TABLE)
+        .insert({ name: input.name, image_url: input.imageUrl ?? null })
+        .select('id, name, image_url, is_purchased, created_at'),
+    );
 
-    if (error) {
-      throw error;
-    }
-
-    return mapWishlistRowToItem(data);
+    return rows.map(mapWishlistRowToItem)[0];
   }
 
   async setPurchased(itemId: string, isPurchased: boolean): Promise<void> {
