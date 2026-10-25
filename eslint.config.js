@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint'
 import prettier from 'eslint-config-prettier'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
-export default defineConfig([globalIgnores(['dist', 'supabase/functions']), {
+export default defineConfig([globalIgnores(['dist', 'supabase/functions', 'src/shared/supabase/database.types.ts']), {
   // App source: covered by tsconfig.app.json, so it gets full type-aware linting
   // (catches things like floating promises and unsafe `any` flow that plain
   // syntax-level rules can't see).

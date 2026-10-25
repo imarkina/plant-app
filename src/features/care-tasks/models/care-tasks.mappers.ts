@@ -1,6 +1,6 @@
 import type { CareTask, CareTaskType } from './care-tasks.model';
 
-interface SupabaseCareTaskRow {
+export interface SupabaseCareTaskRow {
   id: string;
   plant_id: string;
   interval_days: number;

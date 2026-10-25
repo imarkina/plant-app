@@ -6,13 +6,21 @@ import type {
   LocationUpdate,
   NewLocationInput,
 } from './location.types';
-import { mapLocationRowToLocation, mapLocationUpdateToRow } from './location.mappers';
+import {
+  mapLocationRowToLocation,
+  mapLocationUpdateToRow,
+  type SupabaseLocationRow,
+} from './location.mappers';
 
 const LOCATIONS_TABLE = 'locations';
 
 class SupabaseLocationsRepository implements LocationsRepository {
   async getAll(): Promise<Location[]> {
-    const rows = unwrap(await supabase.from(LOCATIONS_TABLE).select('*').order('created_at'));
+    // `light_level` is the DB's generic text column, narrowed here to LightLevel --
+    // enforced by the table's own check constraint, see the migrations.
+    const rows = unwrap(
+      await supabase.from(LOCATIONS_TABLE).select('*').order('created_at'),
+    ) as SupabaseLocationRow[];
 
     return rows.map(mapLocationRowToLocation);
   }
@@ -20,7 +28,7 @@ class SupabaseLocationsRepository implements LocationsRepository {
   async getBySite(siteId: string): Promise<Location[]> {
     const rows = unwrap(
       await supabase.from(LOCATIONS_TABLE).select('*').eq('site_id', siteId).order('created_at'),
-    );
+    ) as SupabaseLocationRow[];
 
     return rows.map(mapLocationRowToLocation);
   }

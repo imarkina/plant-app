@@ -3,7 +3,7 @@ import type { PlantReport } from './plant-report.types';
 
 import { supabase } from '../../../shared/supabase/client';
 import { unwrap } from '../../../shared/supabase/unwrap';
-import { mapPlantProfileUpdateToRow, mapPlantRowToPlant } from './plant.mappers';
+import { mapPlantProfileUpdateToRow, mapPlantRowToPlant, type SupabasePlantRow } from './plant.mappers';
 
 const PLANTS_TABLE = 'plants';
 const PHOTOS_TABLE = 'photos';
@@ -16,7 +16,12 @@ function buildPhotoStoragePath(plantId: string, photoId: string): string {
 
 class SupabasePlantsRepository implements PlantsRepository {
   async getAll(): Promise<Plant[]> {
-    const rows = unwrap(await supabase.from(PLANTS_TABLE).select('*, photos(*)'));
+    // Generated row types only know the DB's generic column types (photo_type: string,
+    // analysis: Json, ...) -- narrowed here to the app's known-valid shapes (enforced by
+    // DB check constraints / only ever written via the Gemini Zod schema).
+    const rows = unwrap(
+      await supabase.from(PLANTS_TABLE).select('*, photos(*)'),
+    ) as unknown as SupabasePlantRow[];
 
     return rows.map(mapPlantRowToPlant);
   }

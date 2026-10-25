@@ -32,14 +32,16 @@ class SupabasePlantComparisonRepository {
    * посчитанный результат становится ненаходимым по точному ключу.
    */
   async findLatestForPlant(plantId: string): Promise<StoredPlantComparison | null> {
-    const rows = unwrap<ComparisonRow[]>(
+    // `result` is the DB's generic jsonb column, narrowed here to PlantComparison --
+    // it's only ever written as the parsed, Zod-validated Gemini response below.
+    const rows = unwrap(
       await supabase
         .from(TABLE)
         .select('*')
         .eq('plant_id', plantId)
         .order('created_at', { ascending: false })
         .limit(1),
-    );
+    ) as unknown as ComparisonRow[];
 
     return rows[0] ? mapRow(rows[0]) : null;
   }
@@ -56,7 +58,7 @@ class SupabasePlantComparisonRepository {
     result: PlantComparison,
     embedding: number[] | null,
   ): Promise<StoredPlantComparison> {
-    const rows = unwrap<ComparisonRow[]>(
+    const rows = unwrap(
       await supabase
         .from(TABLE)
         .upsert(
@@ -70,7 +72,7 @@ class SupabasePlantComparisonRepository {
           { onConflict: 'first_photo_id,last_photo_id' },
         )
         .select('*'),
-    );
+    ) as unknown as ComparisonRow[];
 
     return mapRow(rows[0]);
   }

@@ -12,8 +12,18 @@ Gemini.
 
 ## Rules
 
-- No `any` — `tsconfig.app.json` has `strict: true` and the codebase currently has zero `any`/
-  `as any`; don't introduce the first one.
+- Every value should have a type that actually constrains it — not just "no literal `any` in
+  the source," but no place where TypeScript silently *infers* `any` either (an untyped JSON
+  parse, a callback parameter TS can't narrow, a library call with no type info). If you hit
+  implicit `any` — `tsc`/`eslint` flagging a variable, parameter, or return as `any` without you
+  having written the word — don't suppress it and don't leave it: add the real type, or an
+  explicit, narrow cast at the exact boundary where you're asserting more than TypeScript can
+  prove (e.g. `src/shared/supabase/client.ts`'s generated row types are honest about what the DB
+  driver can see — `photo_type: string`, not `PhotoType` — so a repository narrows that
+  explicitly, with a comment saying why it's safe, right where it reads the row; see
+  `plant.repository.ts`'s `getAll()`). The goal is that nothing reaches app code with a type
+  that's lying or absent — `tsconfig.app.json` has `strict: true`, and the whole point of that
+  is defeated if `any` leaks in through the back door.
 - No raw colors — every color is a token from `src/shared/ui/tokens.css`'s `@theme` block
   (`--color-*`), referenced as a Tailwind class (`bg-bg-primary`, `text-accent`, ...). There are
   no arbitrary-value color classes (`bg-[#...]`) anywhere in `src/`; don't add the first one —
@@ -97,6 +107,16 @@ history). Row-level security scopes every per-user table by `user_id = auth.uid(
 an intentionally unscoped shared read-only catalog. `supabase/functions/send-photo-reminders/`
 is a Supabase Edge Function (Deno), not a Vercel one — it's the scheduled job that sends push
 reminders, separate from the Vercel `api/*.ts` functions that serve the SPA.
+
+**Generated DB types.** `src/shared/supabase/client.ts` passes `Database` (from
+`src/shared/supabase/database.types.ts`) to `createClient<Database>`, so every `supabase.from(...)`
+call is typed against the real schema instead of resolving to `any`. That file is generated, not
+hand-written — after adding a migration, regenerate it (`supabase gen types typescript
+--project-id <ref> > src/shared/supabase/database.types.ts`, or `--db-url <connection-string>`
+against any Postgres that already has the migrations applied, if the project isn't linked) and
+re-run `npm run build`; don't hand-edit it, and don't let it go stale after a schema change — a
+column that's new to the DB but missing from this file is invisible to the type checker exactly
+like the untyped client used to be.
 
 **Push notifications.** Before changing `features/reminders/*`, `public/push-sw.js`, the PWA
 block in `vite.config.ts`, or `supabase/functions/send-photo-reminders/`, read `docs/push.md` —
