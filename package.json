@@ -10,6 +10,7 @@
     "test": "vitest run",
     "preview": "vite preview",
     "backfill:embeddings": "node scripts/backfill-embeddings.mjs",
+    "load:knowledge": "node scripts/load-knowledge.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
