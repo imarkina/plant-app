@@ -7,24 +7,45 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "test": "vitest run",
+    "preview": "vite preview",
+    "backfill:embeddings": "node scripts/backfill-embeddings.mjs",
+    "load:knowledge": "node scripts/load-knowledge.mjs",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@google/genai": "2.16.0",
+    "@supabase/supabase-js": "^2.112.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/react-query": "^5.103.1",
+    "@tanstack/react-query-devtools": "^5.103.1",
+    "lucide-react": "^1.31.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@storybook/react-vite": "^10.5.7",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
     "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
+    "eslint-plugin-storybook": "^10.5.7",
     "globals": "^17.7.0",
+    "prettier": "^3.9.6",
+    "storybook": "^10.5.7",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0",
-    "vite": "^8.2.0"
+    "vite": "^8.2.0",
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^5.0.1"
   }
 }
