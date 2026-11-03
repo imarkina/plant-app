@@ -1,4 +1,5 @@
 {
-  "source": "/api/gemini/:path*",
-  "destination": "/api/gemini?path=:path*"
+  "rewrites": [
+    { "source": "/api/gemini/:path*", "destination": "/api/gemini?path=:path*" }
+  ]
 }
