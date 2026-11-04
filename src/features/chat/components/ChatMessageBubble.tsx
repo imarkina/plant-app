@@ -28,7 +28,7 @@ export const ChatMessageBubble = ({ message, onRetry }: Props) => {
   const isUser = message.role === 'user';
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex animate-message-in ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`flex max-w-[85%] flex-col gap-2 rounded-2xl px-4 py-3 ${
           isUser
@@ -36,14 +36,17 @@ export const ChatMessageBubble = ({ message, onRetry }: Props) => {
             : 'border border-surface-glass-border bg-surface-glass backdrop-blur-xl backdrop-saturate-150'
         }`}
       >
-        {/* parts только растёт и обновляется на месте, индекс как key безопасен */}
+        {/* parts только растёт и обновляется на месте, индекс как key безопасен —
+            animate-message-in проигрывается один раз при первом монтировании
+            конкретного part, последующие обновления того же part (например,
+            дозапись текста в TEXT_DELTA) её не перезапускают. */}
         {message.parts.map((part, index) =>
           part.kind === 'tool' ? (
             <ToolStepIndicator key={index} step={part.step} />
           ) : (
-            <ReactMarkdown key={index} components={MARKDOWN_COMPONENTS}>
-              {part.text}
-            </ReactMarkdown>
+            <div key={index} className="animate-message-in">
+              <ReactMarkdown components={MARKDOWN_COMPONENTS}>{part.text}</ReactMarkdown>
+            </div>
           ),
         )}
 

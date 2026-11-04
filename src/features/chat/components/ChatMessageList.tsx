@@ -11,7 +11,11 @@ export const ChatMessageList = ({ messages, onRetry }: Props) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // behavior: 'auto' — не smooth: при стриминге messages обновляется на
+    // каждый TEXT_DELTA (много раз в секунду), и каждый smooth-вызов обрывал
+    // предыдущую анимацию скролла на середине — это и дёргало страницу
+    // (вместе с ней — sticky ChatInput).
+    bottomRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
   }, [messages]);
 
   if (messages.length === 0) {
