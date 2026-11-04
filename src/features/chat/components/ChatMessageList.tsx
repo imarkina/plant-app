@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import type { ChatMessage } from '../models/chat.types';
 import { ChatMessageBubble } from './ChatMessageBubble';
 
+const BOTTOM_THRESHOLD_PX = 48;
+
 type Props = {
   messages: ChatMessage[];
   onRetry: (messageId: string) => void;
@@ -9,8 +11,27 @@ type Props = {
 
 export const ChatMessageList = ({ messages, onRetry }: Props) => {
   const bottomRef = useRef<HTMLDivElement>(null);
+  // true, если пользователь сейчас у нижнего края страницы (или ещё не
+  // скроллил сам) — пока это так, новые сообщения автоскроллят вниз. Как
+  // только пользователь скроллит выше, автоскролл встаёт на пауза и
+  // возобновляется только когда он сам докроллит обратно до низа —
+  // слушатель это определяет по тому же порогу, которым меряет и
+  // программный scrollIntoView, так что отличать программный скролл от
+  // ручного не нужно: после scrollIntoView страница и так оказывается внизу.
+  const shouldAutoScrollRef = useRef(true);
 
   useEffect(() => {
+    const handleScroll = () => {
+      const distanceToBottom =
+        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      shouldAutoScrollRef.current = distanceToBottom <= BOTTOM_THRESHOLD_PX;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!shouldAutoScrollRef.current) return;
     // behavior: 'auto' — не smooth: при стриминге messages обновляется на
     // каждый TEXT_DELTA (много раз в секунду), и каждый smooth-вызов обрывал
     // предыдущую анимацию скролла на середине — это и дёргало страницу
