@@ -134,6 +134,9 @@
   /* ── Шиммер skeleton-лоадеров (замена текстовых "Загрузка...") ── */
   --animate-shimmer: shimmer 1.6s ease-in-out infinite;
 
+  /* ── Плавное появление новых сообщений/шагов в чате с AI ── */
+  --animate-message-in: message-in 0.22s ease-out;
+
   /* ── Типографика (раздел 4) ── */
   /* Body/Caption/Label — интерфейсный шрифт (Manrope). Display/Title (hero/h1/h2/h3)
      переключаются на --font-display точечным правилом ниже, вне @theme, по имени
@@ -335,6 +338,18 @@
   }
   to {
     transform: translateX(100%);
+  }
+}
+
+/* Keyframes для --animate-message-in. */
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
