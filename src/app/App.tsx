@@ -36,7 +36,7 @@ const LocationsPage = lazy(() =>
 const WishlistPage = lazy(() =>
   import('../pages/WishlistPage').then((m) => ({ default: m.WishlistPage })),
 );
-
+const ChatPage = lazy(() => import('../pages/ChatPage').then((m) => ({ default: m.ChatPage })));
 const RouteFallback = () => <PageSkeleton />;
 
 /**
@@ -83,6 +83,7 @@ function App() {
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/locations" element={<LocationsPage />} />
                       <Route path="/wishlist" element={<WishlistPage />} />
+                      <Route path="/chat" element={<ChatPage />} />
                     </Route>
                   </Route>
                 </Routes>
