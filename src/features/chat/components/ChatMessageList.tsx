@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import type { ChatMessage } from '../models/chat.types';
 import { ChatMessageBubble } from './ChatMessageBubble';
 
-const BOTTOM_THRESHOLD_PX = 48;
+const BOTTOM_THRESHOLD_PX = 16;
 
 type Props = {
   messages: ChatMessage[];
@@ -13,7 +13,7 @@ export const ChatMessageList = ({ messages, onRetry }: Props) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   // true, если пользователь сейчас у нижнего края страницы (или ещё не
   // скроллил сам) — пока это так, новые сообщения автоскроллят вниз. Как
-  // только пользователь скроллит выше, автоскролл встаёт на пауза и
+  // только пользователь скроллит выше, автоскролл встаёт на паузу и
   // возобновляется только когда он сам докроллит обратно до низа —
   // слушатель это определяет по тому же порогу, которым меряет и
   // программный scrollIntoView, так что отличать программный скролл от
@@ -22,9 +22,18 @@ export const ChatMessageList = ({ messages, onRetry }: Props) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const distanceToBottom =
-        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-      shouldAutoScrollRef.current = distanceToBottom <= BOTTOM_THRESHOLD_PX;
+      const sentinel = bottomRef.current;
+      if (!sentinel) return;
+      // Мерим позицию сентинела на экране (getBoundingClientRect), а не
+      // document.documentElement.scrollHeight/scrollY: у сентинела есть
+      // scroll-margin-bottom (зазор под sticky ChatInput), поэтому
+      // scrollIntoView никогда не доводит страницу до буквального конца
+      // scrollHeight — после него ниже сентинела ещё остаётся pb родителя.
+      // Сравнение с scrollHeight считало это "пользователь проскроллил
+      // вверх" сразу после самого первого автоскролла и навсегда ставило
+      // автоскролл на паузу — сентинел же всегда там, куда целится сам
+      // scrollIntoView, так что именно по нему и нужно судить "у низа ли мы".
+      shouldAutoScrollRef.current = sentinel.getBoundingClientRect().top <= window.innerHeight + BOTTOM_THRESHOLD_PX;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
