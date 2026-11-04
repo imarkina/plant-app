@@ -1,12 +1,14 @@
+import { Header } from '../../shared/ui/components/Header/Header';
 import { useChat, ChatInput, ChatMessageList } from '../../features/chat';
 
 export const ChatPage = () => {
-  const chat = useChat();
+  const { messages, sending, sendMessage, stop, retry } = useChat();
 
   return (
     <>
-      <ChatMessageList />
-      <ChatInput />
+      <Header title="Чат с AI" />
+      <ChatMessageList messages={messages} onRetry={retry} />
+      <ChatInput disabled={sending} onSend={(text) => void sendMessage(text)} onStop={stop} />
     </>
   );
 };

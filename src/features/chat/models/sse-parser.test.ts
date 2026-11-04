@@ -4,7 +4,6 @@ import { createStreamDecoder, extractSseEvents, parseChatEvent } from './sse-par
 describe('extractSseEvents', () => {
   it('buffers an event split across two chunks', () => {
     const first = extractSseEvents('', 'event: DONE\nda');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     expect(first.events).toEqual([]);
     expect(first.remainder).toBe('event: DONE\nda');
 

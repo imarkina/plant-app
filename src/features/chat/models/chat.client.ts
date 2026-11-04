@@ -6,7 +6,7 @@ export async function* streamChat(
   chatId: string,
   signal: AbortSignal,
 ): AsyncGenerator<ChatEvent> {
-  const response = await fetch(`${import.meta.env.VITE_AGENT_URL}`, {
+  const response = await fetch(`${import.meta.env.VITE_AGENT_URL}/chat`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
