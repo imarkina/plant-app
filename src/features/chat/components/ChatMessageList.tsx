@@ -27,15 +27,19 @@ export const ChatMessageList = ({ messages, onRetry }: Props) => {
   }
 
   return (
-    // pb с запасом под sticky ChatInput (bottom-смещение + его собственная
-    // высота) — иначе последние строки последнего сообщения прячутся под
-    // ним. На мобиле запас больше: там у ChatInput ещё и отступ от
-    // плавающего BottomNav (bottom-[calc(96px+...)]).
+    // pb — запас на случай, когда вниз докручивают вручную (а не через
+    // scrollIntoView). scroll-mb на сентинеле — для самого scrollIntoView:
+    // block:'end' иначе подводит контент вплотную к краю вьюпорта и
+    // "съедает" любой pb родителя (он просто уезжает за экран вместе с
+    // контентом) — scroll-margin браузер учитывает при вычислении, докуда
+    // скроллить, так что именно он и держит зазор под sticky ChatInput.
+    // На мобиле запас больше: там у ChatInput ещё и отступ от плавающего
+    // BottomNav (bottom-[calc(96px+...)]).
     <div className="mt-4 flex flex-col gap-3 pb-36 desktop:pb-20">
       {messages.map((message) => (
         <ChatMessageBubble key={message.id} message={message} onRetry={onRetry} />
       ))}
-      <div ref={bottomRef} />
+      <div ref={bottomRef} className="scroll-mb-36 desktop:scroll-mb-20" />
     </div>
   );
 };
