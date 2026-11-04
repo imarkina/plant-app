@@ -27,7 +27,11 @@ export const ChatMessageList = ({ messages, onRetry }: Props) => {
   }
 
   return (
-    <div className="mt-4 flex flex-col gap-3 pb-4">
+    // pb с запасом под sticky ChatInput (bottom-смещение + его собственная
+    // высота) — иначе последние строки последнего сообщения прячутся под
+    // ним. На мобиле запас больше: там у ChatInput ещё и отступ от
+    // плавающего BottomNav (bottom-[calc(96px+...)]).
+    <div className="mt-4 flex flex-col gap-3 pb-36 desktop:pb-20">
       {messages.map((message) => (
         <ChatMessageBubble key={message.id} message={message} onRetry={onRetry} />
       ))}
