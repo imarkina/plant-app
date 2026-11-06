@@ -7,6 +7,7 @@ const TOOL_LABELS: Record<string, string> = {
   get_today_tasks: 'Смотрю задачи на сегодня',
   get_weather: 'Смотрю погоду',
   mark_task_done: 'Отмечаю задачу',
+  get_care_guide: 'Открываю справочник по уходу',
 };
 
 export function toolLabel(tool: string): string {
