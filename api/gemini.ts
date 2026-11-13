@@ -1,10 +1,8 @@
-export const config = { runtime: 'edge' };
-
 const GOOGLE_BASE = 'https://generativelanguage.googleapis.com';
 
 const { GEMINI_PROXY_SECRET, GEMINI_API_KEY } = process.env;
 
-export default async function handler(req: Request): Promise<Response> {
+export async function handler(req: Request): Promise<Response> {
   if (!GEMINI_PROXY_SECRET || !GEMINI_API_KEY) {
     return Response.json({ error: 'Proxy is not configured' }, { status: 500 });
   }
@@ -40,3 +38,6 @@ export default async function handler(req: Request): Promise<Response> {
     headers: { 'content-type': upstream.headers.get('content-type') ?? 'application/json' },
   });
 }
+
+export const POST = handler;
+export const GET = handler;
