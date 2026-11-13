@@ -1,5 +1,8 @@
 {
   "rewrites": [
     { "source": "/api/gemini/:path*", "destination": "/api/gemini?path=:path*" }
-  ]
+  ],
+  "functions": {
+    "api/gemini.ts": { "maxDuration": 60 }
+  }
 }
